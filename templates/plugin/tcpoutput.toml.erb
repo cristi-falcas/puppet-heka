@@ -1,0 +1,14 @@
+# This file is controlled via puppet.
+[<%= @plugin_name -%>]
+type = "TcpOutput"
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
+address = "<%= @host -%>:<%= @port -%>"
+use_tls = <%= @use_tls %>
+<% if @local_address then -%>local_address = "<%= @local_address -%>"
+<% end -%>
+keep_alive = <%= @keep_alive %>
+keep_alive_period = <%= @keep_alive_period %>
+queue_max_buffer_size = <%= @queue_max_buffer_size %>
+queue_full_action = "<%= @queue_full_action -%>"
+
+<%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>

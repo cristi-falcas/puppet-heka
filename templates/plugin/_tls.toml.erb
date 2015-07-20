@@ -1,0 +1,21 @@
+<% if @use_tls then -%>
+  [<%= @plugin_name -%>.tls]
+<% if @tls_server_name then -%>    server_name = "<%= @tls_server_name -%>"
+<% end -%>
+    cert_file = "<%= @tls_cert_file -%>"
+    key_file = "<%= @tls_key_file -%>"
+    client_auth = "<%= @tls_client_auth -%>"
+<% if @tls_ciphers.any? then -%>    ciphers = "<%= @tls_ciphers -%>"
+<% end -%>
+    insecure_skip_verify = <%= @tls_insecure_skip_verify %>
+    prefer_server_ciphers = <%= @tls_prefer_server_ciphers %>
+    session_tickets_disabled = <%= @tls_session_tickets_disabled %>
+<% if @tls_session_ticket_key then -%>    session_ticket_key = "<%= @tls_session_ticket_key -%>"
+<% end -%>
+    min_version = "<%= @tls_min_version -%>"
+    max_version = "<%= @tls_max_version -%>"
+<% if @tls_client_cafile then -%>    client_cafile = "<%= @tls_client_cafile -%>"
+<% end -%>
+<% if @tls_root_cafile then -%>    root_cafile = "<%= @tls_root_cafile -%>"
+<% end -%>
+<% end %>

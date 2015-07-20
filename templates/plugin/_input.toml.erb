@@ -1,0 +1,10 @@
+<% if @decoder  then -%>decoder = "<%= @decoder -%>"
+<% end -%>
+<% if @splitter  then -%>splitter = "<%= @splitter -%>"
+<% end -%>
+<% if @synchronous_decode  then -%>synchronous_decode = "<%= @synchronous_decode -%>"
+<% end -%>
+<% if @send_decode_failures  then -%>send_decode_failures = <%= @send_decode_failures %>
+<% end -%>
+<% if @can_exit then -%>can_exit = <%= @can_exit %>
+<% end -%>
