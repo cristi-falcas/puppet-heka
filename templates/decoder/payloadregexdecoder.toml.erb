@@ -1,0 +1,23 @@
+[<%= @name -%>]
+type = "PayloadRegexDecoder"
+match_regex = '<%= match_regex -%>'
+<% if @timestamp_layout then -%>timestamp_layout = "<%= timestamp_layout -%>"
+<% end -%>
+<% if @timestamp_location then -%>timestamp_location = "<%= timestamp_location -%>"
+<% end -%>
+<% if @log_errors then -%>log_errors = "<%= log_errors -%>"
+<% end -%>
+
+<% if @severity_map then -%>
+[<%= @name -%>.severity_map]
+<% @severity_map.each do |key, value| -%>
+<%= key -%> = "<%= value -%>"
+<% end -%>
+<% end -%>
+
+<% if @message_fields then -%>
+[<%= @name -%>.message_fields]
+<% @message_fields.each do |key, value| -%>
+<%= key -%> = "<%= value -%>"
+<% end -%>
+<% end -%>

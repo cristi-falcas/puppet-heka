@@ -1,0 +1,19 @@
+# This file is controlled via puppet.
+[<%= @plugin_name -%>]
+type = "ElasticSearchOutput"
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
+flush_interval = <%= @flush_interval %>
+flush_count = <%= @flush_count %>
+server = "<%= @server -%>"
+connect_timeout = <%= @connect_timeout %>
+http_timeout = <%= @http_timeout %>
+http_disable_keepalives = <%= @http_disable_keepalives %>
+<% if @username then -%>username = "<%= @username -%>"
+<% end -%>
+<% if @password then -%>password = "<%= @password -%>"
+<% end -%>
+use_buffering = <%= @use_buffering %>
+queue_max_buffer_size = <%= @queue_max_buffer_size %>
+queue_full_action = "<%= @queue_full_action %>"
+
+<%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>
