@@ -1,3 +1,0 @@
-# heka #
-
-This is the heka module. It provides...
