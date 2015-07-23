@@ -1,24 +1,24 @@
-# == Class: heka::plugin::tcpoutput
+# Output plugin that delivers Heka message data to a listening TCP connection. Can be used to deliver
+# messages from a local running Heka agent to a remote Heka instance set up as an aggregator and/or
+# router, or to any other arbitrary listening TCP server that knows how to process the encoded data.
 #
-# Setup `TcpOutput` to send messages to another Heka instance.
+# === Parameters:
 #
-# === Parameters
+# $ensure::                      This is used to set the status of the config file: present or absent
 #
-# [*host*]
-# Host to send to.
+# $message_matcher::             Boolean expression, when evaluated to true passes the message to the filter for processing. Defaults to matching nothing
 #
-# [*port*]
-# Port to send to.
+# $message_signer::              The name of the message signer. If specified only messages with this signer are passed to the filter for processing.
 #
-# [*enable*]
-# Disable this plugin. Useful for overriding with hiera on an aggregation
-# machine that also has `heka::plugin::tcp_input`.
-# Default: false
+# $ticker_interval::             Frequency (in seconds) that a timer event will be sent to the filter. Defaults to not sending timer events.
 #
-# [*matcher_additional*]
-# Additional `message_matcher` expressions to filter messages that you
-# don't want to send to another host.
-# Default: ''
+# $encoder::                     Encoder to be used by the output. This should refer to the name of an encoder plugin section that is
+#                                specified elsewhere in the TOML configuration.
+#                                Messages can be encoded using the specified encoder by calling the OutputRunner’s Encode() method.
+#
+# $use_framing::                 Specifies whether or not Heka’s Stream Framing should be applied to the binary data returned from the OutputRunner’s Encode() method.
+#
+# $can_exit::                    Whether or not this plugin can exit without causing Heka to shutdown. Defaults to false.
 #
 define heka::plugin::tcpoutput (
   $ensure            = 'present',

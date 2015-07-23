@@ -1,3 +1,29 @@
+# Output plugin that uses HTTP or UDP to insert records into an ElasticSearch database.
+# Note that it is up to the specified encoder to both serialize the message into a JSON
+# structure and to prepend that with the appropriate ElasticSearch BulkAPI indexing JSON.
+# Usually this output is used in conjunction with an ElasticSearch-specific encoder plugin,
+# such as ElasticSearch JSON Encoder, ElasticSearch Logstash V0 Encoder, or ElasticSearch Payload Encoder.
+#
+# === Parameters:
+#
+# $ensure::                      This is used to set the status of the config file: present or absent
+#
+# $message_matcher::             Boolean expression, when evaluated to true passes the message to the filter for processing. Defaults to matching nothing
+#
+# $message_signer::              The name of the message signer. If specified only messages with this signer are passed to the filter for processing.
+#
+# $ticker_interval::             Frequency (in seconds) that a timer event will be sent to the filter. Defaults to not sending timer events.
+#
+# $encoder::                     Encoder to be used by the output. This should refer to the name of an encoder plugin section that is
+#                                specified elsewhere in the TOML configuration.
+#                                Messages can be encoded using the specified encoder by calling the OutputRunner’s Encode() method.
+#
+# $use_framing::                 Specifies whether or not Heka’s Stream Framing should be applied to the binary data returned from the
+#                                OutputRunner’s Encode() method.
+#
+# $can_exit::                    Whether or not this plugin can exit without causing Heka to shutdown. Defaults to false.
+#
+# tbc
 define heka::plugin::elasticsearch (
   $ensure            = 'present',
   # Common Output Parameters
