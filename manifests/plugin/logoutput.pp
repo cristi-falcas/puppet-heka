@@ -1,3 +1,23 @@
+# Logs messages to stdout using Go’s log package.
+#
+# === Parameters:
+#
+# $ensure::                      This is used to set the status of the config file: present or absent
+#
+# $message_matcher::             Boolean expression, when evaluated to true passes the message to the filter for processing. Defaults to matching nothing
+#
+# $message_signer::              The name of the message signer. If specified only messages with this signer are passed to the filter for processing.
+#
+# $ticker_interval::             Frequency (in seconds) that a timer event will be sent to the filter. Defaults to not sending timer events.
+#
+# $encoder::                     Encoder to be used by the output. This should refer to the name of an encoder plugin section that is
+#                                specified elsewhere in the TOML configuration.
+#                                Messages can be encoded using the specified encoder by calling the OutputRunner’s Encode() method.
+#
+# $use_framing::                 Specifies whether or not Heka’s Stream Framing should be applied to the binary data returned from the OutputRunner’s Encode() method.
+#
+# $can_exit::                    Whether or not this plugin can exit without causing Heka to shutdown. Defaults to false.
+#
 define heka::plugin::logoutput (
   $ensure          = 'present',
   # Common Output Parameters

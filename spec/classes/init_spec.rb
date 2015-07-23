@@ -1,7 +1,7 @@
 require 'spec_helper'
-describe 'zram' do
+describe 'heka' do
 
   context 'with defaults for all parameters' do
-    it { should contain_class('zram') }
+    it { should contain_class('heka') }
   end
 end

@@ -6,19 +6,15 @@
 1. [Overview](#overview)
 2. [Module Description - What the module does and why it is useful](#module-description)
 3. [Setup - The basics of getting started with heka](#setup)
-    * [What heka affects](#what-heka-affects)
-    * [Setup requirements](#setup-requirements)
     * [Beginning with heka](#beginning-with-heka)
-4. [Usage - Configuration options and additional functionality](#usage)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves.
-This is your 30 second elevator pitch for your module. Consider including
-OS/Puppet version it works with.
+Heka is a tool for collecting and collating data from a number of different sources, performing "in-flight"
+processing of collected data, and delivering the results to any number of destinations for further analysis.
 
 ## Module Description
 
@@ -32,49 +28,59 @@ management, etc.) this is the time to mention it.
 
 ## Setup
 
-### What heka affects
-
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
-
 ### Beginning with heka
 
-The very basic steps needed for a user to get the module up and running.
+Install the heka server:
 
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you may wish to include an additional section here: Upgrading
-(For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+    include heka
 
-## Usage
+Install plugins:
 
-Put the classes, types, and resources for customizing, configuring, and doing
-the fancy stuff with your module here.
+    heka::plugin::dashboard { 'Dashboard': }
 
-## Reference
+    heka::plugin::tcpinput { 'RsyslogDecoder':
+	    port                 => 1514,
+	    decoder              => 'RsyslogDecoder',
+	    send_decode_failures => true,
+	    splitter             => 'NullSplitter',
+	    use_tls              => false,
+	    net                  => 'tcp4',
+	}
+	
+	heka::decoder::rsyslogdecoder { 'RsyslogDecoder': template => '<%PRI%>%TIMESTAMP:::date-rfc3339% %HOSTNAME% %syslogtag%%msg%\n' }
 
-Here, list the classes, types, providers, facts, etc contained in your module.
-This section should include all of the under-the-hood workings of your module so
-people know what the module is touching on their system but don't need to mess
-with things. (We are working on automating this section!)
+Configure a heka server:
 
-## Limitations
+	heka::plugin::tcpinput { 'heka_server':
+	    port    => 5565,
+	    send_decode_failures      => true,
+	    use_tls => true,
+	    tls_cert_file             => "${::settings::ssldir}/certs/${::clientcert}.pem",
+	    tls_key_file              => "${::settings::ssldir}/private_keys/${::clientcert}.pem",
+	    tls_client_cafile         => "${::settings::ssldir}/certs/ca.pem",
+	    tls_client_auth           => 'RequireAndVerifyClientCert',
+	    tls_prefer_server_ciphers => true,
+	    tls_min_version           => 'TLS11',
+	    net                       => 'tcp4',
+	}
 
-This is where you list OS compatibility, version compatibility, etc.
+On the server, we don't want to have the tcpinput plugin enabled:
+
+    Heka::Plugin::Tcpoutput <| title == 'to_heka_server' |> {
+	    ensure => absent
+	}
+
+Print all messages to stdout:
+
+    heka::encoder::rstencoder {'RstEncoder': }
+
+    heka::plugin::logoutput {'debug':
+        message_matcher => "Type == 'heka.counter-output'",
+        encoder         => 'RstEncoder',
+    }
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
-
-## Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You may also add any additional sections you feel are
-necessary or important to include here. Please use the `## ` header.
+* Fork the project
+* Commit and push until you are happy with your contribution
+* Send a pull request with a description of your changes

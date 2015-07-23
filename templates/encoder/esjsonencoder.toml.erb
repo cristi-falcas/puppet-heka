@@ -10,6 +10,8 @@ es_index_from_timestamp = <%= es_index_from_timestamp %>
 <% end -%>
 <% if @raw_bytes_fields then -%>raw_bytes_fields = "<%= raw_bytes_fields -%>"
 <% end -%>
+<% if @dynamic_fields then -%>dynamic_fields = "<%= dynamic_fields -%>"
+<% end -%>
 
 <% if @field_mappings then -%>
 [<%= @name -%>.field_mappings]
