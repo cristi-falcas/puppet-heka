@@ -74,6 +74,7 @@ class heka (
   $max_message_size     = $heka::params::max_message_size,
   $cpuprof              = $heka::params::cpuprof,
   $memprof              = $heka::params::memprof,
+  $logrotate            = $heka::params::logrotate,
 ) inherits heka::params {
   contain heka::install
   contain heka::config

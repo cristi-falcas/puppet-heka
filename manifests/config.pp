@@ -1,5 +1,6 @@
 # configures heka
 class heka::config {
+
   file { '/etc/heka':
     ensure  => directory,
     recurse => true,
@@ -12,6 +13,10 @@ class heka::config {
     ensure  => file,
     content => template("${module_name}/heka.toml.erb"),
     notify  => Service['heka'],
+  }
+
+  if $heka::logrotate {
+    include heka::logrotate
   }
 
   case $::osfamily {

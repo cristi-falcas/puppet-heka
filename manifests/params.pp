@@ -17,4 +17,5 @@ class heka::params {
   $pid_file = undef
   $hostname = undef
   $max_message_size = 65536
+  $logrotate = true
 }
