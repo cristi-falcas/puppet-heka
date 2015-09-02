@@ -56,6 +56,8 @@
 #
 # $memprof::                              Enable memory profiling; output is logged to the output_file.
 #
+# $logrotate::                            Enable logrotating the heka log.
+#
 class heka (
   $package_ensure       = $heka::params::package_ensure,
   $max_message_loops    = $heka::params::max_message_loops,
@@ -74,6 +76,7 @@ class heka (
   $max_message_size     = $heka::params::max_message_size,
   $cpuprof              = $heka::params::cpuprof,
   $memprof              = $heka::params::memprof,
+  $logrotate            = $heka::params::logrotate,
 ) inherits heka::params {
   contain heka::install
   contain heka::config

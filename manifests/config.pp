@@ -14,11 +14,15 @@ class heka::config {
     notify  => Service['heka'],
   }
 
+  if $heka::logrotate {
+    include heka::logrotate
+  }
+
   case $::osfamily {
     'RedHat' : {
       case $::operatingsystemmajrelease {
         '6' : {
-          # File resource for /etc/init/heka.conf, the Upstart config file:
+        # File resource for /etc/init/heka.conf, the Upstart config file:
           file { '/etc/init.d/heka':
             ensure  => 'file',
             owner   => 'root',
