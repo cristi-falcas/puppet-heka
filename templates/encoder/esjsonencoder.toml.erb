@@ -1,16 +1,16 @@
 [<%= @name -%>]
 type = "ESJsonEncoder"
-index = "<%= index -%>"
-type_name = "<%= type_name -%>"
-<% if @fields then -%>fields = "<%= fields -%>"
+index = "<%= @index -%>"
+type_name = "<%= @type_name -%>"
+<% if @fields then -%>fields = "<%= @fields -%>"
 <% end -%>
 timestamp = "<%= timestamp -%>"
-es_index_from_timestamp = <%= es_index_from_timestamp %>
-<% if @id then -%>id = "<%= id -%>"
+es_index_from_timestamp = <%= @es_index_from_timestamp %>
+<% if @id then -%>id = "<%= @id -%>"
 <% end -%>
-<% if @raw_bytes_fields then -%>raw_bytes_fields = "<%= raw_bytes_fields -%>"
+<% if @raw_bytes_fields then -%>raw_bytes_fields = "<%= @raw_bytes_fields -%>"
 <% end -%>
-<% if @dynamic_fields then -%>dynamic_fields = "<%= dynamic_fields -%>"
+<% if @dynamic_fields then -%>dynamic_fields = "<%= @dynamic_fields -%>"
 <% end -%>
 
 <% if @field_mappings then -%>

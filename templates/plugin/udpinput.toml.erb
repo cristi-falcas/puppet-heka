@@ -1,0 +1,14 @@
+# This file is controlled via puppet.
+[<%= @plugin_name -%>]
+type = "UdpInput"
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) -%>
+address = "<%= @address -%>"
+net = "<%= @net -%>"
+set_hostname = <%= @set_hostname %>
+
+<% if @signer then -%>
+<% @signer.each do |key, value| -%>
+[<%= @plugin_name -%>.signer.<%= key -%>]
+hmac_key = "<%= value -%>"
+<% end -%>
+<% end -%>

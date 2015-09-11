@@ -19,6 +19,7 @@
 # $log_sub_errors::                If true, the DecoderRunner will log the errors returned whenever a delegate
 #                                  decoder fails to decode a message. Defaults to false.
 #
+
 define heka::decoder::multidecoder (
   $subs,
   $cascade_strategy = undef,

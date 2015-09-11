@@ -1,5 +1,6 @@
-# The Logstreamer plugin scans, sorts, and reads logstreams in a sequential user-defined order,
-# differentiating multiple logstreams found in a search based on a user-defined differentiator.
+# Listens on a specific UDP address and port for messages. If the message is signed it is verified against
+# the signer name and specified key version. If the signature is not valid the message is discarded otherwise
+# the signer name is added to the pipeline pack and can be use to accept messages using the message_signer configuration option.
 #
 # === Parameters:
 #
@@ -31,45 +32,44 @@
 # $can_exit::                    If false, the input plugin exiting will trigger a Heka shutdown. If set to true,
 #                                Heka will continue processing other plugins. Defaults to false on most inputs.
 #
-define heka::plugin::logstreamerinput (
-  $ensure               = 'present',
+# $host, $port::                 An IP address:port or Unix datagram socket file path on which this plugin will listen.
+#
+# $signer                        Section name consists of a signer name, underscore, and numeric version of the key
+#
+# $net                           Network value must be one of: “udp”, “udp4”, “udp6”, or “unixgram”.
+#
+# $set_hostname                  Set Hostname field from remote address.
+#
+
+define heka::inputs::udpinput (
+  $ensure                       = 'present',
   # Common Input Parameters
-  $splitter             = undef,
-  $decoder              = undef,
-  $synchronous_decode   = undef,
-  $send_decode_failures = undef,
-  $can_exit             = undef,
-  # LogstreamerInput specific Parameters
-  $log_directory,
-  $file_match,
-  $hostname             = undef,
-  $oldest_duration      = undef,
-  $journal_directory    = undef,
-  $rescan_interval      = undef,
-  $priority             = undef,
-  $differentiator       = undef,
-  $translation          = undef,
+  $decoder                      = 'ProtobufDecoder',
+  $synchronous_decode           = false,
+  $send_decode_failures         = false,
+  $can_exit                     = undef,
+  $splitter                     = 'HekaFramingSplitter',
+  # UDP Input
+  $address                      = ':514',
+  $signer                       = undef,
+  $net                          = 'udp',
+  $set_hostname                 = false,
 ) {
   # Common Input Parameters
-  if $splitter { validate_string($splitter) }
   if $decoder { validate_string($decoder) }
   if $synchronous_decode { validate_bool($synchronous_decode) }
   if $send_decode_failures { validate_bool($send_decode_failures) }
   if $can_exit { validate_bool($can_exit) }
-  # LogstreamerInput specific Parameters
-  if $hostname { validate_string($hostname) }
-  if $oldest_duration { validate_string($oldest_duration) }
-  if $journal_directory { validate_string($hostname) }
-  if $log_directory { validate_string($log_directory) }
-  if $rescan_interval { validate_integer($rescan_interval) }
-  if $file_match { validate_string($file_match) }
-  if $priority { validate_array($priority) }
-  if $differentiator { validate_array($differentiator) }
-  if $translation { validate_hash($translation) }
+  validate_string($splitter)
+  # UDP Input
+  validate_string($address)
+  if $signer { validate_string($signer) }
+  validate_string($net)
+  validate_bool($set_hostname)
 
-  $plugin_name = "logstreamerinput_${name}"
+  $plugin_name = "udpinput_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/logstreamerinput.toml.erb"),
+    content => template("${module_name}/plugin/udpinput.toml.erb"),
     ensure  => $ensure,
   }
 }

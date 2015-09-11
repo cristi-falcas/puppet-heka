@@ -1,6 +1,7 @@
 # This encoder serializes a Heka message into a clean JSON format, preceded by a separate JSON structure containing information
-# required for ElasticSearch BulkAPI indexing. The JSON serialization is done by hand, without the use of Go’s stdlib JSON marshalling.
-# This is so serialization can succeed even if the message contains invalid UTF-8 characters, which will be encoded as U+FFFD.
+# required for ElasticSearch BulkAPI indexing. The JSON serialization is done by hand, without the use of Go’s stdlib JSON
+# marshalling. This is so serialization can succeed even if the message contains invalid UTF-8 characters, which will be encoded as
+# U+FFFD.
 #
 # === Parameters:
 #
@@ -12,21 +13,27 @@
 #                                        Allows to use strftime format codes. Defaults to ‘heka-%{%Y.%m.%d}’.
 #
 # $type_name::                           Name of ES record type to create. Supports interpolation of message field values
-#                                        (from ‘Type’, ‘Hostname’, ‘Pid’, ‘UUID’, ‘Logger’, ‘EnvVersion’, ‘Severity’, field name, or a timestamp format)
-#                                        with the use of ‘%{}’ chars, so ‘%{Hostname}-stat’ would create an ES record with a type of ‘some.example.com-stat’.
+#                                        (from ‘Type’, ‘Hostname’, ‘Pid’, ‘UUID’, ‘Logger’, ‘EnvVersion’, ‘Severity’, field name, or
+#                                        a timestamp format) with the use of ‘%{}’ chars, so ‘%{Hostname}-stat’ would create an ES
+#                                        record with a type of ‘some.example.com-stat’.
 #                                        Defaults to ‘message’.
 #
-# $fields::                              The ‘fields’ parameter specifies that only specific message data should be indexed into ElasticSearch.
-#                                        Available fields to choose are “Uuid”, “Timestamp”, “Type”, “Logger”, “Severity”, “Payload”, “EnvVersion”,
-#                                        “Pid”, “Hostname”, and “DynamicFields” (where “DynamicFields” causes the inclusion of dynamically
-#                                        specified message fields, see dynamic_fields). Defaults to including all of the supported message fields.
+# $fields::                              The ‘fields’ parameter specifies that only specific message data should be indexed into
+# ElasticSearch.
+#                                        Available fields to choose are “Uuid”, “Timestamp”, “Type”, “Logger”, “Severity”,
+#                                        “Payload”, “EnvVersion”, “Pid”, “Hostname”, and “DynamicFields” (where “DynamicFields” causes
+#                                        the inclusion of dynamically specified message fields, see dynamic_fields). Defaults to
+#                                        including all of the supported message fields.
 #
-# $timestamp::                           Format to use for timestamps in generated ES documents. Allows to use strftime format codes.
+# $timestamp::                           Format to use for timestamps in generated ES documents. Allows to use strftime format
+# codes.
 #                                        Defaults to “%Y-%m-%dT%H:%M:%S”.
 #
-# $es_index_from_timestamp::             When generating the index name use the timestamp from the message instead of the current time. Defaults to false.
+# $es_index_from_timestamp::             When generating the index name use the timestamp from the message instead of the current
+#                                        time. Defaults to false.
 #
-# $id::                                  Allows you to optionally specify the document id for ES to use. Useful for overwriting existing ES documents.
+# $id::                                  Allows you to optionally specify the document id for ES to use. Useful for overwriting
+#                                        existing ES documents.
 #                                        If the value specified is placed within %{}, it will be interpolated to its Field value.
 #                                        Default is allow ES to auto-generate the id.
 #
@@ -41,8 +48,10 @@
 #
 # $dynamic_fields::                      This specifies which of the message’s dynamic fields should be included in the JSON output.
 #                                        Defaults to including all of the messages dynamic fields.
-#                                        If dynamic_fields is non-empty, then the fields list must contain “DynamicFields” or an error will be raised.
+#                                        If dynamic_fields is non-empty, then the fields list must contain “DynamicFields” or an
+#                                        error will be raised.
 #
+
 define heka::encoder::esjsonencoder (
   $index                   = 'heka-%{2006.01.02}',
   $type_name               = 'message',

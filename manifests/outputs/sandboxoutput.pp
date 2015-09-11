@@ -1,7 +1,12 @@
-# The SandboxDecoder provides an isolated execution environment for data parsing and complex transformations without the need to
-# recompile Heka
+# The SandboxInput provides a flexible execution environment for data ingestion and transformation without
+# the need to recompile Heka. Like all other sandboxes it needs to implement a process_message function.
+# However, it doesn’t have to return until shutdown. If you would like to implement a polling interface process_message
+# can return zero when complete and it will be called again the next time TickerInterval fires
+# (if ticker_interval was set to zero it would simply exit after running once).
 #
 # === Parameters:
+#
+# $ensure::                       This is used to set the status of the config file: present or absent
 #
 # $script_type::                  The language the sandbox is written in. Currently the only valid option is ‘lua’ which is the
 #                                 default.
@@ -31,7 +36,8 @@
 #                                 The map consists of a string key with: string, bool, int64, or float64 values.
 #
 
-define heka::decoder::sandboxdecoder (
+define heka::outputs::sandboxoutput (
+  $ensure                       = 'present',
   # Common Sandbox Parameters
   $script_type       = 'lua',
   $filename,
@@ -40,7 +46,6 @@ define heka::decoder::sandboxdecoder (
   $instruction_limit = undef,
   $output_limit      = undef,
   $module_directory  = undef,
-  # decoder specific
   $config            = undef,
 ) {
   # Common Sandbox Parameters
@@ -51,5 +56,9 @@ define heka::decoder::sandboxdecoder (
   if $output_limit { validate_integer($output_limit) }
   if $module_directory { validate_string($module_directory) }
 
-  heka::snippet { $name: content => template("${module_name}/decoder/sandboxdecoder.toml.erb"), }
+  $plugin_name = "sandboxinput_${name}"
+  heka::snippet { $plugin_name:
+    content => template("${module_name}/plugin/sandboxoutput.toml.erb"),
+    ensure  => $ensure,
+  }
 }

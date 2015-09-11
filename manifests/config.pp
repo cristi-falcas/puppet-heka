@@ -22,7 +22,7 @@ class heka::config {
     'RedHat' : {
       case $::operatingsystemmajrelease {
         '6' : {
-        # File resource for /etc/init/heka.conf, the Upstart config file:
+          # File resource for /etc/init/heka.conf, the Upstart config file:
           file { '/etc/init.d/heka':
             ensure  => 'file',
             owner   => 'root',
@@ -46,7 +46,7 @@ class heka::config {
         }
       }
     }
-    default            : {
+    default  : {
       fail("${::operatingsystem} is not a supported operating system!")
     }
   }

@@ -1,0 +1,8 @@
+<% if @keep_truncated           then -%>keep_truncated = "<%= @keep_truncated -%>"
+<% end -%>
+<% if @use_message_bytes        then -%>use_message_bytes = "<%= @use_message_bytes -%>"
+<% end -%>
+<% if @min_buffer_size          then -%>min_buffer_size = "<%= @min_buffer_size -%>"
+<% end -%>
+<% if @deliver_incomplete_final then -%>deliver_incomplete_final = <%= @deliver_incomplete_final %>
+<% end -%>

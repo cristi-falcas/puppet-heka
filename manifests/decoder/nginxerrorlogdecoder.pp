@@ -1,7 +1,7 @@
-# Produces more human readable alert messages.
-# It uses the sandboxencoder
+# Parses the Nginx error logs based on the Nginx hard coded internal format.
+# It uses the sandboxdecoder
 #
-# === Parameters: none
+# === Parameters:
 #
 # $preserve_data::                True if the sandbox global data should be preserved/restored on plugin shutdown/startup.
 #                                 When true this works in conjunction with a global Lua _PRESERVATION_VERSION variable which
@@ -21,14 +21,30 @@
 #
 # $module_directory::             The directory where ‘require’ will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
 #
+# $tz::                           The conversion actually happens on the Go side since there isn’t good TZ support here.
+#
+# $type::                         Sets the message ‘Type’ header to the specified value
+#
 
-define heka::encoder::alertencoder (
+define heka::decoder::nginxerrorlogdecoder (
   # Common Sandbox Parameters
-  $preserve_data     = undef,
-  $memory_limit      = undef,
-  $instruction_limit = undef,
-  $output_limit      = undef,
-  $module_directory  = undef,
+  $preserve_data          = undef,
+  $memory_limit           = undef,
+  $instruction_limit      = undef,
+  $output_limit           = undef,
+  $module_directory       = undef,
+  # Nginx error logs Parameters
+  $tz   = 'UTC',
+  $type = 'nginx.error',
 ) {
-  heka::encoder::sandboxencoder { $name: filename => "lua_encoders/alert.lua", }
+  validate_string($tz)
+  validate_string($type)
+
+  heka::decoder::sandboxdecoder { $name:
+    filename => 'lua_decoders/nginx_error.lua',
+    config   => {
+      tz   => $tz,
+      type => $type,
+    }
+  }
 }

@@ -1,0 +1,7 @@
+[<%= @name -%>]
+type = "RegexSplitter"
+<%= scope.function_template(['heka/splitters/_splitter.toml.erb']) -%>
+<% if @delimiter     then -%>delimiter = "<%= delimiter -%>"
+<% end -%>
+<% if @delimiter_eol then -%>delimiter_eol = "<%= delimiter_eol -%>"
+<% end -%>

@@ -33,7 +33,7 @@
 #                                Heka will continue processing other plugins. Defaults to false on most inputs.
 #
 
-define heka::plugin::tcpinput (
+define heka::inputs::tcpinput (
   $ensure                       = 'present',
   # Common Input Parameters
   $decoder                      = 'ProtobufDecoder',
@@ -42,8 +42,7 @@ define heka::plugin::tcpinput (
   $can_exit                     = undef,
   $splitter                     = 'HekaFramingSplitter',
   # TCP Input
-  $host                         = '',
-  $port                         = '514',
+  $address                      = ':514',
   $use_tls                      = false,
   $net                          = 'tcp',
   $keep_alive                   = false,
@@ -70,8 +69,7 @@ define heka::plugin::tcpinput (
   if $can_exit { validate_bool($can_exit) }
   validate_string($splitter)
   # TCP Input
-  validate_string($host)
-  validate_integer($port)
+  validate_string($address)
   validate_bool($use_tls)
   validate_string($net)
   validate_bool($keep_alive)

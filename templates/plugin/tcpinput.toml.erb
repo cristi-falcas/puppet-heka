@@ -6,6 +6,6 @@ use_tls = <%= @use_tls %>
 net = "<%= @net -%>"
 keep_alive = <%= @keep_alive %>
 keep_alive_period = <%= @keep_alive_period %>
-address = "<%= @host -%>:<%= @port -%>"
+address = "<%= @address -%>"
 
 <%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>
