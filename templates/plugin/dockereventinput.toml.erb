@@ -3,5 +3,5 @@
 type = "DockerEventInput"
 <%= scope.function_template(['heka/plugin/_input.toml.erb']) -%>
 endpoint = "<%= endpoint -%>
-<% if @cert_path then -%>cert_path = "<%= cert_path -%>"
+<% if @cert_path then -%>cert_path = "<%= @cert_path -%>"
 <% end -%>

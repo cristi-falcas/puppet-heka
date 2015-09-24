@@ -13,7 +13,6 @@ filename = "<%= @filename -%>"
 
 <% if @config then -%>
 [<%= @name -%>.config]
-type = "<%= @name -%>"
 <% @config.sort.each do |key, value| -%>
 <%= key -%> = "<%= value -%>"
 <% end -%>

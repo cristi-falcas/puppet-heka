@@ -19,14 +19,14 @@
 #                                        Defaults to ‘message’.
 #
 # $fields::                              The ‘fields’ parameter specifies that only specific message data should be indexed into
-# ElasticSearch.
+#                                        ElasticSearch.
 #                                        Available fields to choose are “Uuid”, “Timestamp”, “Type”, “Logger”, “Severity”,
 #                                        “Payload”, “EnvVersion”, “Pid”, “Hostname”, and “DynamicFields” (where “DynamicFields” causes
 #                                        the inclusion of dynamically specified message fields, see dynamic_fields). Defaults to
 #                                        including all of the supported message fields.
 #
 # $timestamp::                           Format to use for timestamps in generated ES documents. Allows to use strftime format
-# codes.
+#                                        codes.
 #                                        Defaults to “%Y-%m-%dT%H:%M:%S”.
 #
 # $es_index_from_timestamp::             When generating the index name use the timestamp from the message instead of the current

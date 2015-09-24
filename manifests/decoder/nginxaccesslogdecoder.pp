@@ -48,7 +48,7 @@ define heka::decoder::nginxaccesslogdecoder (
   $module_directory       = undef,
   # Nginx access logs Parameters
   $log_format,
-  $type                   = undef,
+  $type                   = $name,
   $user_agent_transform   = false,
   $user_agent_keep        = false,
   $user_agent_conditional = false,
@@ -63,6 +63,7 @@ define heka::decoder::nginxaccesslogdecoder (
   heka::decoder::sandboxdecoder { $name:
     filename => 'lua_decoders/nginx_access.lua',
     config   => {
+      log_format             => $log_format,
       type                   => $type,
       user_agent_transform   => $user_agent_transform,
       user_agent_keep        => $user_agent_keep,

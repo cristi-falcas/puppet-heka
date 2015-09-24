@@ -1,11 +1,11 @@
 [<%= @name -%>]
 type = "PayloadRegexDecoder"
 match_regex = '<%= match_regex -%>'
-<% if @timestamp_layout then -%>timestamp_layout = "<%= timestamp_layout -%>"
+<% if @timestamp_layout then -%>timestamp_layout = "<%= @timestamp_layout -%>"
 <% end -%>
-<% if @timestamp_location then -%>timestamp_location = "<%= timestamp_location -%>"
+<% if @timestamp_location then -%>timestamp_location = "<%= @timestamp_location -%>"
 <% end -%>
-<% if @log_errors then -%>log_errors = "<%= log_errors -%>"
+<% if @log_errors then -%>log_errors = "<%= @log_errors -%>"
 <% end -%>
 
 <% if @severity_map then -%>

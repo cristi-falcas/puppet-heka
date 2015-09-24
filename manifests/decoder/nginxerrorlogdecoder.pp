@@ -34,8 +34,8 @@ define heka::decoder::nginxerrorlogdecoder (
   $output_limit           = undef,
   $module_directory       = undef,
   # Nginx error logs Parameters
-  $tz   = 'UTC',
-  $type = 'nginx.error',
+  $tz                     = 'UTC',
+  $type                   = $name,
 ) {
   validate_string($tz)
   validate_string($type)

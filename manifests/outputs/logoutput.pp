@@ -26,10 +26,10 @@
 define heka::outputs::logoutput (
   $ensure          = 'present',
   # Common Output Parameters
-  $message_matcher,
+  $message_matcher = 'TRUE',
   $message_signer  = undef,
   $ticker_interval = undef,
-  $encoder,
+  $encoder         = 'PayloadEncoder',
   $use_framing     = undef,
   $can_exit        = undef,
 ) {
