@@ -30,54 +30,135 @@ management, etc.) this is the time to mention it.
 
 ### Beginning with heka
 
-Install the heka server:
-
-    include heka
-
-Install plugins:
-
-    heka::plugin::dashboard { 'Dashboard': }
-
-    heka::plugin::tcpinput { 'RsyslogDecoder':
-	    port                 => 1514,
+Install a heka server:
+	
+	    include heka
+	
+Forward rsyslog to heka:
+	
+	  class { 'rsyslog':
+	    package_status  => 'latest',
+	    purge_rsyslog_d => true,
+	    preserve_fqdn   => true,
+	  }
+	
+	  class { 'rsyslog::client':
+	    log_local                 => true,
+	    listen_localhost          => false,
+	    high_precision_timestamps => true,
+	    spool_size                => '1g',
+	    server                    => 'localhost',
+	    port                      => 1514,
+	    remote_servers            => false,
+	    remote_type               => 'tcp',
+	    remote_forward_format     => 'RSYSLOG_ForwardFormat',
+	    rate_limit_burst          => 2000,
+	    rate_limit_interval       => 0,
+	  }
+	  
+	  include heka
+	  
+	  heka::inputs::tcpinput { 'FromRsyslog':
+	    address              => ':1514',
 	    decoder              => 'RsyslogDecoder',
+	    splitter             => 'split_on_newline',
 	    send_decode_failures => true,
-	    splitter             => 'NullSplitter',
 	    use_tls              => false,
 	    net                  => 'tcp4',
-	}
+	    keep_alive           => true,
+	  }
 	
-	heka::decoder::rsyslogdecoder { 'RsyslogDecoder': template => '<%PRI%>%TIMESTAMP:::date-rfc3339% %HOSTNAME% %syslogtag%%msg%\n' }
-
-Configure a heka server:
-
-	heka::plugin::tcpinput { 'heka_server':
-	    port    => 5565,
-	    send_decode_failures      => true,
-	    use_tls => true,
+	  heka::splitters::tokensplitter { 'split_on_newline': }
+	
+	
+Forward all logs to a central logging server:
+	
+	  heka::outputs::tcpoutput { 'SendToServer':
+	    message_matcher           => 'TRUE',
+	    address                   => 'heka_server.company.net:5565',
+	    use_tls                   => true,
 	    tls_cert_file             => "${::settings::ssldir}/certs/${::clientcert}.pem",
 	    tls_key_file              => "${::settings::ssldir}/private_keys/${::clientcert}.pem",
 	    tls_client_cafile         => "${::settings::ssldir}/certs/ca.pem",
 	    tls_client_auth           => 'RequireAndVerifyClientCert',
 	    tls_prefer_server_ciphers => true,
 	    tls_min_version           => 'TLS11',
-	    net                       => 'tcp4',
-	}
-
-On the server, we don't want to have the tcpinput plugin enabled:
-
-    Heka::Plugin::Tcpoutput <| title == 'to_heka_server' |> {
-	    ensure => absent
-	}
-
+	    queue_max_buffer_size     => 1073741824,
+	    queue_full_action         => 'drop',
+	  }
+	
+	
+Configure a heka server:
+	
+	  include heka
+	
+	  heka::inputs::tcpinput { 'heka_server':
+	    address                   => ':5565',
+	    send_decode_failures      => true,
+	    use_tls                   => true,
+	    tls_cert_file             => "${::settings::ssldir}/certs/${::clientcert}.pem",
+	    tls_key_file              => "${::settings::ssldir}/private_keys/${::clientcert}.pem",
+	    tls_client_cafile         => "${::settings::ssldir}/certs/ca.pem",
+	    tls_client_auth           => 'RequireAndVerifyClientCert',
+	    tls_prefer_server_ciphers => true,
+	    tls_min_version           => 'TLS11',
+	    net     => 'tcp4',
+	  }
+	
+	  # don't forward to any server from here
+	  Heka::Outputs::Tcpoutput <| title == 'SendToServer' |> {
+	    ensure => 'absent',
+	  }
+	
+	
+Send logs to an elasticsearch instance:
+	
+	  heka::outputs::elasticsearchoutput { 'es':
+	    message_matcher   => 'TRUE',
+	    encoder           => 'ESJsonEncoder',
+	    flush_count       => 10000,
+	    server            => 'http://localhost:9200',
+	    queue_full_action => 'drop',
+	  }
+	
+	  heka::encoder::esjsonencoder { 'ESJsonEncoder':
+	    es_index_from_timestamp => true,
+	  }
+	
+	
+Install various plugins:
+	
+	  heka::outputs::dashboardoutput { 'Dashboard': }
+	
+	
 Print all messages to stdout:
-
-    heka::encoder::rstencoder {'RstEncoder': }
-
-    heka::plugin::logoutput {'debug':
-        message_matcher => "Type == 'heka.counter-output'",
-        encoder         => 'RstEncoder',
-    }
+	
+	  # debug
+	  heka::outputs::logoutput { 'stdout_debug':
+	    message_matcher => 'TRUE',
+	    encoder         => 'rstencoder'
+	  }
+	
+	  heka::encoder::rstencoder { 'rstencoder': }
+	
+	
+Collect nginx logs:
+	
+	  heka::inputs::logstreamerinput { 'logstreamerinput':
+	    decoder       => 'nginx_access',
+	    log_directory => '/var/log/nginx',
+	    file_match => 'access\.log(-)?(?P<Index>\d+)?(.gz)?',
+	    priority => ["^Index"]
+	  }
+	
+	  heka::decoder::nginxaccesslogdecoder { 'nginx_access':
+	    log_format           => '$remote_addr - [$time_local] "$request" $status $body_bytes_sent $request_time "$http_referer" "$http_user_agent" "$cookie_JSESSIONID" ',
+	    type                 => 'combined',
+	    payload_keep         => true,
+	    user_agent_keep      => true,
+	    user_agent_transform => true
+	  }
+	  
 
 ## Development
 
