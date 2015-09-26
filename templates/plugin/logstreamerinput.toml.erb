@@ -2,17 +2,19 @@
 [<%= @plugin_name -%>]
 type = "LogstreamerInput"
 <%= scope.function_template(['heka/plugin/_input.toml.erb']) -%>
-log_directory = "<%= @log_directory -%>"
+log_directory = '<%= @log_directory -%>'
 file_match = '<%= @file_match -%>'
-<% if @hostname  then -%>hostname = "<%= @hostname -%>"
+<% if @hostname           then -%>hostname = "<%= @hostname -%>"
 <% end -%>
 <% if @journal_directory  then -%>journal_directory = "<%= @journal_directory -%>"
 <% end -%>
-<% if @rescan_interval  then -%>rescan_interval = "<%= @rescan_interval -%>"
+<% if @rescan_interval    then -%>rescan_interval = "<%= @rescan_interval -%>"
 <% end -%>
-<% if @priority  then %> priority = [ <%= priority.map {|sub| '"'+sub+'"'}.join(",") -%> ]
+<% if @priority            then %>priority = [ <%= priority.map {|sub| '"'+sub+'"'}.join(",") -%> ]
 <% end -%>
-<% if @differentiator  then -%>differentiator = [ <%= differentiator.map {|sub| '"'+sub+'"'}.join(",") -%> ]
+<% if @differentiator     then -%>differentiator = [ <%= differentiator.map {|sub| '"'+sub+'"'}.join(",") -%> ]
 <% end -%>
-<% if @translation  then -%>translation = "<%= @translation -%>"
+<% if @translation        then -%>translation = "<%= @translation -%>"
 <% end -%>
+#[<%= @plugin_name -%>.translation.Index]
+#missing = 99999999

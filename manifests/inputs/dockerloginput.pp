@@ -30,7 +30,7 @@
 #                                String
 #
 # $cert_path::                   Path to directory containing client certificate and keys. This value works in the same way as
-# DOCKER_CERT_PATH.
+#                                DOCKER_CERT_PATH.
 #                                String (optional)
 #
 # $name_from_env_var::           Overwrite the ContainerName with this environment variable on the Container if exists.
@@ -44,7 +44,7 @@
 define heka::inputs::dockerloginput (
   $ensure                       = 'present',
   # Common Input Parameters
-  $decoder,
+  $decoder                      = 'ProtobufDecoder',
   $synchronous_decode           = false,
   $send_decode_failures         = false,
   $can_exit                     = undef,
