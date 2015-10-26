@@ -11,8 +11,7 @@ filename = "<%= @filename -%>"
 <% if @module_directory then -%>module_directory = "<%= @module_directory -%>"
 <% end -%>
 
-<% if @config then -%>
-[<%= @name -%>.config]
+<% if @config then -%>[<%= @name -%>.config]
 <% @config.sort.each do |key, value| -%>
 <%= key -%> = '<%= value -%>'
 <% end -%>
