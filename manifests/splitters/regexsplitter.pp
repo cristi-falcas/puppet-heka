@@ -55,8 +55,6 @@ define heka::splitters::regexsplitter (
 ) {
   validate_string($ensure)
   validate_bool($keep_truncated)
-  if $id { validate_bool($use_message_bytes) }
-  if $id { validate_integer($min_buffer_size) }
   validate_bool($deliver_incomplete_final)
   validate_string($delimiter)
   validate_bool($delimiter_eol)
@@ -64,7 +62,7 @@ define heka::splitters::regexsplitter (
   $plugin_name = "regexsplitter_${name}"
 
   heka::snippet { $plugin_name:
-    content => template("${module_name}/splitters/regexsplitter.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/splitters/regexsplitter.toml.erb"),
   }
 }

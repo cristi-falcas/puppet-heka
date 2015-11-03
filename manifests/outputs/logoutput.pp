@@ -43,7 +43,7 @@ define heka::outputs::logoutput (
 
   $plugin_name = "logoutput_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/logoutput.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/plugin/logoutput.toml.erb"),
   }
 }

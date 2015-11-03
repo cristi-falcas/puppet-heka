@@ -88,7 +88,7 @@ define heka::inputs::sandboxinput (
 
   $plugin_name = "sandboxinput_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/sandboxinput.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/plugin/sandboxinput.toml.erb"),
   }
 }

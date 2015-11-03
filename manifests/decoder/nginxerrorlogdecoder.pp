@@ -45,6 +45,6 @@ define heka::decoder::nginxerrorlogdecoder (
     config   => {
       tz   => $tz,
       type => $type,
-    }
+    },
   }
 }

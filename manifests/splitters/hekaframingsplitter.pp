@@ -55,8 +55,6 @@ define heka::splitters::hekaframingsplitter (
 ) {
   validate_string($ensure)
   validate_bool($keep_truncated)
-  if $id { validate_bool($use_message_bytes) }
-  if $id { validate_integer($min_buffer_size) }
   validate_bool($deliver_incomplete_final)
   validate_string($signer)
   validate_bool($skip_authentication)
@@ -64,7 +62,7 @@ define heka::splitters::hekaframingsplitter (
   $plugin_name = "hekaframingsplitter_${name}"
 
   heka::snippet { $plugin_name:
-    content => template("${module_name}/splitters/hekaframingsplitter.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/splitters/hekaframingsplitter.toml.erb"),
   }
 }

@@ -61,7 +61,7 @@ define heka::splitters::tokensplitter (
   $plugin_name = "tokensplitter_${name}"
 
   heka::snippet { $plugin_name:
-    content => template("${module_name}/splitters/tokensplitter.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/splitters/tokensplitter.toml.erb"),
   }
 }

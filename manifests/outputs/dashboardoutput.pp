@@ -74,7 +74,7 @@ define heka::outputs::dashboardoutput (
 
   $plugin_name = "dashboard_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/dashboard.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/plugin/dashboard.toml.erb"),
   }
 }

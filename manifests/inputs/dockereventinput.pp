@@ -54,7 +54,7 @@ define heka::inputs::dockereventinput (
 
   $plugin_name = "dockerevent_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/dockereventinput.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/plugin/dockereventinput.toml.erb"),
   }
 }

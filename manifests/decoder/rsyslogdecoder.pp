@@ -52,6 +52,6 @@ define heka::decoder::rsyslogdecoder (
       hostname_keep => $hostname_keep,
       template      => $template,
       tz            => $tz,
-    }
+    },
   }
 }

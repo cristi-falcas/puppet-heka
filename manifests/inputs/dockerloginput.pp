@@ -67,7 +67,7 @@ define heka::inputs::dockerloginput (
 
   $plugin_name = "dockerloginput_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/dockerloginput.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/plugin/dockerloginput.toml.erb"),
   }
 }

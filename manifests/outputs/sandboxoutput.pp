@@ -58,7 +58,7 @@ define heka::outputs::sandboxoutput (
 
   $plugin_name = "sandboxinput_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/sandboxoutput.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/plugin/sandboxoutput.toml.erb"),
   }
 }

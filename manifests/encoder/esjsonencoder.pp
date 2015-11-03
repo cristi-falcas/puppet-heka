@@ -71,7 +71,7 @@ define heka::encoder::esjsonencoder (
 
   $plugin_name = "elasticsearch_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/encoder/esjsonencoder.toml.erb"),
     ensure  => 'file',
+    content => template("${module_name}/encoder/esjsonencoder.toml.erb"),
   }
 }

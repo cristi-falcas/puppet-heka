@@ -69,7 +69,7 @@ define heka::inputs::udpinput (
 
   $plugin_name = "udpinput_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/udpinput.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/plugin/udpinput.toml.erb"),
   }
 }

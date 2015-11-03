@@ -91,7 +91,7 @@ define heka::inputs::tcpinput (
 
   $plugin_name = "tcpinput_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/tcpinput.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/plugin/tcpinput.toml.erb"),
   }
 }

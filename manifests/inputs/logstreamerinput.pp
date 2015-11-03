@@ -104,7 +104,7 @@ define heka::inputs::logstreamerinput (
 
   $plugin_name = "logstreamerinput_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/logstreamerinput.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/plugin/logstreamerinput.toml.erb"),
   }
 }

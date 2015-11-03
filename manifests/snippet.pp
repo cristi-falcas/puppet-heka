@@ -13,7 +13,7 @@
 #   Default: undef
 #
 define heka::snippet ($ensure = 'file', $content = undef, $source = undef,) {
-  include heka
+  include ::heka
 
   if !($content or $source) {
     fail('content or source param must be provided')

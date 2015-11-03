@@ -62,7 +62,7 @@ define heka::outputs::smtpoutput (
 
   $plugin_name = "smtpoutput_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/smtpoutput.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/plugin/smtpoutput.toml.erb"),
   }
 }

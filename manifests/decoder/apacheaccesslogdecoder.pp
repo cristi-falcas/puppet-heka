@@ -69,6 +69,6 @@ define heka::decoder::apacheaccesslogdecoder (
       user_agent_keep        => $user_agent_keep,
       user_agent_conditional => $user_agent_conditional,
       payload_keep           => $payload_keep,
-    }
+    },
   }
 }

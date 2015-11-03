@@ -15,7 +15,7 @@ class heka::config {
   }
 
   if $heka::logrotate {
-    include heka::logrotate
+    include ::heka::logrotate
   }
 
   case $::osfamily {
@@ -34,15 +34,18 @@ class heka::config {
         }
         '7' : {
           file { '/usr/lib/systemd/system/heka.service':
-            ensure  => present,
+            ensure  => 'file',
             force   => true,
-            content => template("heka/heka.service"),
+            content => template("${module_name}/heka.service"),
             notify  => Service['heka'],
           } ~>
           exec { 'heka-systemd-reload':
             command     => '/usr/bin/systemctl daemon-reload',
             refreshonly => true,
           }
+        }
+        default: {
+          fail("Unknown major operating system for RedHat: ${::operatingsystemmajrelease}")
         }
       }
     }

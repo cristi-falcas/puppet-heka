@@ -86,7 +86,7 @@ define heka::outputs::fileoutput (
   $plugin_name = "fileoutput_${name}"
 
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/fileoutput.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/plugin/fileoutput.toml.erb"),
   }
 }

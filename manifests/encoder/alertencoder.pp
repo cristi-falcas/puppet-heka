@@ -30,5 +30,5 @@ define heka::encoder::alertencoder (
   $output_limit      = undef,
   $module_directory  = undef,
 ) {
-  heka::encoder::sandboxencoder { $name: filename => "lua_encoders/alert.lua", }
+  heka::encoder::sandboxencoder { $name: filename => 'lua_encoders/alert.lua', }
 }

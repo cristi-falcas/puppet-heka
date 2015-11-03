@@ -56,12 +56,12 @@ define heka::encoder::es_payload (
   if $id { validate_string($id) }
 
   heka::encoder::sandboxencoder { $name:
-    filename => "lua_encoders/es_payload.lua",
+    filename => 'lua_encoders/es_payload.lua',
     config   => {
       index                   => $index,
       type_name               => $type_name,
       es_index_from_timestamp => $es_index_from_timestamp,
       id                      => $id,
-    }
+    },
   }
 }

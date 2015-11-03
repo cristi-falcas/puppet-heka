@@ -1,6 +1,6 @@
 {
 	"name": "cristifalcas-heka",
-	"version": "0.6.3",
+	"version": "0.7.0",
 	"author": "Falcas Cristian",
 	"dependencies": [{
 			"name": "puppetlabs/stdlib",

@@ -123,7 +123,7 @@ define heka::outputs::tcpoutput (
 
   $plugin_name = "tcpoutput_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/tcpoutput.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/plugin/tcpoutput.toml.erb"),
   }
 }

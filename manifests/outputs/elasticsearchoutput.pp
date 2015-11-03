@@ -102,7 +102,7 @@ define heka::outputs::elasticsearchoutput (
 
   $plugin_name = "elasticsearch_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/elasticsearch.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/plugin/elasticsearch.toml.erb"),
   }
 }

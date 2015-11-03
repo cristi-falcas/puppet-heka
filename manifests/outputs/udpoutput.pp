@@ -68,7 +68,7 @@ define heka::outputs::udpoutput (
 
   $plugin_name = "udpoutput_${name}"
   heka::snippet { $plugin_name:
-    content => template("${module_name}/plugin/udpoutput.toml.erb"),
     ensure  => $ensure,
+    content => template("${module_name}/plugin/udpoutput.toml.erb"),
   }
 }
