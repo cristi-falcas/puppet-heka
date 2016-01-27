@@ -15,20 +15,20 @@
 #
 # $encoder::                     Encoder to be used by the output. This should refer to the name of an encoder plugin section that
 #                                is specified elsewhere in the TOML configuration.
-#                                Messages can be encoded using the specified encoder by calling the OutputRunner’s Encode() method.
+#                                Messages can be encoded using the specified encoder by calling the OutputRunner's Encode() method.
 #
-# $use_framing::                 Specifies whether or not Heka’s Stream Framing should be applied to the binary data returned from
-#                                the OutputRunner’s Encode() method.
+# $use_framing::                 Specifies whether or not Heka's Stream Framing should be applied to the binary data returned from
+#                                the OutputRunner's Encode() method.
 #
 # $can_exit::                    Whether or not this plugin can exit without causing Heka to shutdown. Defaults to false.
 #
 # $path::                        Full path to the output file. If date rotation is in use, then the output file path can support
 #                                strftime syntax to embed timestamps in the file path: http://strftime.org
 #
-# $perm::                        File permission for writing. A string of the octal digit representation. Defaults to “644”.
+# $perm::                        File permission for writing. A string of the octal digit representation. Defaults to "644".
 #
-# $folder_perm::                 Permissions to apply to directories created for FileOutput’s parent directory if it doesn’t exist.
-#                                Must be a string representation of an octal integer. Defaults to “700”.
+# $folder_perm::                 Permissions to apply to directories created for FileOutput's parent directory if it doesn't exist.
+#                                Must be a string representation of an octal integer. Defaults to "700".
 #
 # $flush_interval::              Interval at which accumulated file data should be written to disk, in milliseconds (default 1000,
 #                                i.e. 1 second).
@@ -36,11 +36,11 @@
 #
 # $flush_count::                 Number of messages to accumulate until file data should be written to disk (default 1, minimum 1).
 #
-# $flush_operator::              Operator describing how the two parameters “flush_interval” and “flush_count” are combined.
-#                                Allowed values are “AND” or “OR” (default is “AND”).
+# $flush_operator::              Operator describing how the two parameters "flush_interval" and "flush_count" are combined.
+#                                Allowed values are "AND" or "OR" (default is "AND").
 #
 # $use_framing::                 Specifies whether or not the encoded data sent out over the TCP connection should be delimited by
-#                                Heka’s Stream Framing.
+#                                Heka's Stream Framing.
 #                                Defaults to true if a ProtobufEncoder is used, false otherwise.
 #
 # $rotation_interval::           Interval at which the output file should be rotated, in hours. Only the following values are

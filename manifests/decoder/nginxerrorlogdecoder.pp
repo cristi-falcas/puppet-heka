@@ -19,11 +19,11 @@
 #                                 Warning: messages exceeding 64KiB will generate an error and be discarded by the standard output
 #                                 plugins (File, TCP, UDP) since they exceed the maximum message size.
 #
-# $module_directory::             The directory where ‘require’ will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
+# $module_directory::             The directory where 'require' will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
 #
-# $tz::                           The conversion actually happens on the Go side since there isn’t good TZ support here.
+# $tz::                           The conversion actually happens on the Go side since there isn't good TZ support here.
 #
-# $type::                         Sets the message ‘Type’ header to the specified value
+# $type::                         Sets the message 'Type' header to the specified value
 #
 
 define heka::decoder::nginxerrorlogdecoder (

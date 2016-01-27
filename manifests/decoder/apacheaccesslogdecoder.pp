@@ -1,4 +1,4 @@
-# Parses the Apache access logs based on the Apache ‘LogFormat’ configuration directive.
+# Parses the Apache access logs based on the Apache 'LogFormat' configuration directive.
 # The Apache format specifiers are mapped onto the Nginx variable names where applicable e.g. %a -> remote_addr.
 # This allows generic web filters and outputs to work with any HTTP server input.
 # It uses the sandboxdecoder
@@ -21,14 +21,14 @@
 #                                 Warning: messages exceeding 64KiB will generate an error and be discarded by the standard output
 #                                 plugins (File, TCP, UDP) since they exceed the maximum message size.
 #
-# $module_directory::             The directory where ‘require’ will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
+# $module_directory::             The directory where 'require' will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
 #
-# $log_format::                   The ‘LogFormat’ configuration directive from the apache2.conf. %t variables are converted to
+# $log_format::                   The 'LogFormat' configuration directive from the apache2.conf. %t variables are converted to
 #                                 the number of nanosecond since the Unix epoch and used to set the Timestamp on the message.
 #                                 http://httpd.apache.org/docs/2.4/mod/mod_log_config.html
 #                                 Example: '%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"'
 #
-# $type::                         Sets the message ‘Type’ header to the specified value
+# $type::                         Sets the message 'Type' header to the specified value
 #
 # $user_agent_transform::         Transform the http_user_agent into user_agent_browser, user_agent_version, user_agent_os.
 #

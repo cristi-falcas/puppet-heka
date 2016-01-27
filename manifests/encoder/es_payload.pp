@@ -19,21 +19,21 @@
 #                                 Warning: messages exceeding 64KiB will generate an error and be discarded by the standard output
 #                                 plugins (File, TCP, UDP) since they exceed the maximum message size.
 #
-# $module_directory::             The directory where ‘require’ will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
+# $module_directory::             The directory where 'require' will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
 #
-# $index::                        (string, optional, default “heka-%{%Y.%m.%d}”)
-#                                 String to use as the _index key’s value in the generated JSON.
+# $index::                        (string, optional, default "heka-%{%Y.%m.%d}")
+#                                 String to use as the _index key's value in the generated JSON.
 #                                 Supports field interpolation as described below.
 #
-# $type_name::                    (string, optional, default “message”)
-#                                 String to use as the _type key’s value in the generated JSON.
+# $type_name::                    (string, optional, default "message")
+#                                 String to use as the _type key's value in the generated JSON.
 #
 # $es_index_from_timestamp::      (boolean, optional)
 #                                 If true, then any time interpolation (often used to generate the ElasticSeach index)
 #                                 will use the timestamp from the processed message rather than the system time.
 #
 # $id::                           (string, optional)
-#                                 String to use as the _id key’s value in the generated JSON.
+#                                 String to use as the _id key's value in the generated JSON.
 #                                 Supports field interpolation as described below
 #
 

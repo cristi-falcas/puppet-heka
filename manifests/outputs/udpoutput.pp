@@ -15,23 +15,23 @@
 #
 # $encoder::                     Encoder to be used by the output. This should refer to the name of an encoder plugin section that
 #                                is specified elsewhere in the TOML configuration.
-#                                Messages can be encoded using the specified encoder by calling the OutputRunner’s Encode() method.
+#                                Messages can be encoded using the specified encoder by calling the OutputRunner's Encode() method.
 #
-# $use_framing::                 Specifies whether or not Heka’s Stream Framing should be applied to the binary data returned from
-#                                the OutputRunner’s Encode() method.
+# $use_framing::                 Specifies whether or not Heka's Stream Framing should be applied to the binary data returned from
+#                                the OutputRunner's Encode() method.
 #
 # $can_exit::                    Whether or not this plugin can exit without causing Heka to shutdown. Defaults to false.
 #
-# $net::                         Network type to use for communication. Must be one of “udp”, “udp4”, “udp6”, or “unixgram”.
-#                                “unixgram” option only available on systems that support Unix datagram sockets.
-#                                Defaults to “udp”.
+# $net::                         Network type to use for communication. Must be one of "udp", "udp4", "udp6", or "unixgram".
+#                                "unixgram" option only available on systems that support Unix datagram sockets.
+#                                Defaults to "udp".
 #
-# $address::                     Address to which we will be sending the data. Must be IP:port for net types of “udp”, “udp4”, or
-#                                “udp6”. Must be a path to a Unix datagram socket file for net type “unixgram”.
+# $address::                     Address to which we will be sending the data. Must be IP:port for net types of "udp", "udp4", or
+#                                "udp6". Must be a path to a Unix datagram socket file for net type "unixgram".
 #
 # $local_address::               Local address to use on the datagram packets being generated. Must be IP:port for net types of
-#                                “udp”, “udp4”, or “udp6”.
-#                                Must be a path to a Unix datagram socket file for net type “unixgram”.
+#                                "udp", "udp4", or "udp6".
+#                                Must be a path to a Unix datagram socket file for net type "unixgram".
 #
 # $max_message_size::            Maximum size of message that is allowed to be sent via UdpOutput. Messages which exceeds this limit
 # will be dropped.

@@ -7,7 +7,7 @@
 #
 # $decoder::                     Decoder to be used by the input. This should refer to the name of a registered
 #                                decoder plugin configuration. If supplied, messages will be decoded before being
-#                                passed on to the router when the InputRunner’s Deliver method is called.
+#                                passed on to the router when the InputRunner's Deliver method is called.
 #                                No default decoder is specified.
 #
 # $synchronous_decode::          If synchronous_decode is false, then any specified decoder plugin will be
@@ -26,7 +26,7 @@
 # $can_exit::                    If false, the input plugin exiting will trigger a Heka shutdown. If set to true,
 #                                Heka will continue processing other plugins. Defaults to false on most inputs.
 #
-# $endpoint::                    A Docker endpoint. Defaults to “unix:///var/run/docker.sock”.
+# $endpoint::                    A Docker endpoint. Defaults to "unix:///var/run/docker.sock".
 #                                String
 #
 # $cert_path::                   Path to directory containing client certificate and keys. This value works in the same way as
