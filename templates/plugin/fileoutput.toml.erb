@@ -3,9 +3,9 @@
 type = "FileOutput"
 <%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
 path = "<%= @path -%>"
-perm = <%= @perm %>
-folder_perm = <%= @folder_perm %>
+perm = "<%= @perm %>"
+folder_perm = "<%= @folder_perm %>"
 flush_interval = <%= @flush_interval %>
 flush_count = <%= @flush_count %>
-flush_operator = <%= @flush_operator %>
+flush_operator = "<%= @flush_operator %>"
 rotation_interval = <%= @rotation_interval %>
