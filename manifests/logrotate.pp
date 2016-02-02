@@ -9,7 +9,7 @@
 # === Authors
 #
 class heka::logrotate ($log_file = '/var/log/hekad.log') {
-  if $::operatingsystemmajrelease < '7' {
+if $heka::service_provider == 'init' {
     logrotate::rule { 'heka':
       path         => $log_file,
       rotate       => 5,

@@ -18,4 +18,37 @@ class heka::params {
   $hostname = undef
   $max_message_size = 65536
   $logrotate = true
+
+  case $::operatingsystem {
+    'RedHat', 'CentOS', 'Fedora', 'Scientific', 'OracleLinux': {
+      if versioncmp($::operatingsystemmajrelease, '7') >= 0 {
+        $service_provider = 'systemd'
+        $service_template = 'heka.systemd.service.erb'
+      } else {
+        $service_provider = 'init'
+        $service_template = 'heka.init.redhat.erb'
+      }
+    }
+    'Debian': {
+      if versioncmp($::operatingsystemmajrelease, '8') >= 0 {
+        $service_provider = 'systemd'
+        $service_template = 'heka.systemd.service.erb'
+      } else {
+        $service_provider = 'init'
+        $service_template = 'heka.init.debian.erb'
+      }
+    }
+    'Ubuntu': {
+      if versioncmp($::operatingsystemmajrelease, '15') >= 0 {
+        $service_provider = 'systemd'
+        $service_template = 'heka.systemd.service.erb'
+      } else {
+        $service_provider = 'init'
+        $service_template = 'heka.init.debian.erb'
+      }
+    }
+    default: {
+      fail("${::operatingsystem} not supported")
+    }
+  }
 }
