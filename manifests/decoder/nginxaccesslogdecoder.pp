@@ -1,4 +1,4 @@
-# Parses the Nginx access logs based on the Nginx ‘log_format’ configuration directive.
+# Parses the Nginx access logs based on the Nginx 'log_format' configuration directive.
 # It uses the sandboxdecoder
 #
 # === Parameters:
@@ -19,16 +19,16 @@
 #                                 Warning: messages exceeding 64KiB will generate an error and be discarded by the standard output
 #                                 plugins (File, TCP, UDP) since they exceed the maximum message size.
 #
-# $module_directory::             The directory where ‘require’ will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
+# $module_directory::             The directory where 'require' will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
 #
-# $log_format::                   The ‘log_format’ configuration directive from the nginx.conf. $time_local or $time_iso8601
+# $log_format::                   The 'log_format' configuration directive from the nginx.conf. $time_local or $time_iso8601
 #                                 variable is converted to the number of nanosecond since the Unix epoch and used to set the
 #                                 Timestamp on the message.
 #                                 http://nginx.org/en/docs/http/ngx_http_log_module.html
 #                                 Example: '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent
 #                                 "$http_referer" "$http_user_agent"'
 #
-# $type::                         Sets the message ‘Type’ header to the specified value
+# $type::                         Sets the message 'Type' header to the specified value
 #
 # $user_agent_transform::         Transform the http_user_agent into user_agent_browser, user_agent_version, user_agent_os.
 #

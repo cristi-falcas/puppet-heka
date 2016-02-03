@@ -1,0 +1,27 @@
+# This file is controlled via puppet.
+[<%= @plugin_name -%>]
+type = "ProcessInput"
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) -%>
+
+<% if @ticker_interval then -%>ticker_interval = <%= @ticker_interval %>
+<% end -%>
+<% if @immediate_start != nil then -%>immediate_start = <%= @immediate_start %>
+<% end -%>
+<% if @stdout != nil then -%>stdout = <%= @stdout %>
+<% end -%>
+<% if @stderr != nil then -%>stderr = <%= @stderr %>
+<% end -%>
+<% if @timeout then -%>timeout = <%= @timeout %>
+<% end -%>
+
+<% @command.each_with_index do |item, index| -%>
+[<%= @plugin_name -%>.command.<%= index -%>]
+<% if item["bin"] then -%>bin = "<%= item["bin"] -%>"
+<% end -%>
+<% if item["args"] then -%>args = [<%= item["args"].collect{ |x| '"%s"' % x }.join(", ") -%>]
+<% end -%>
+<% if item["env"] then -%>env = [<%= item["env"].collect{ |x| '"%s"' % x }.join(", ") -%>]
+<% end -%>
+<% if item["directory"] then -%>directory = "<%= item["directory"] -%>"
+<% end -%>
+<% end %>

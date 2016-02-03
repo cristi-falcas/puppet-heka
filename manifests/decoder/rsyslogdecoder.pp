@@ -19,17 +19,17 @@
 #                                 Warning: messages exceeding 64KiB will generate an error and be discarded by the standard output
 #                                 plugins (File, TCP, UDP) since they exceed the maximum message size.
 #
-# $module_directory::             The directory where ‘require’ will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
+# $module_directory::             The directory where 'require' will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
 #
-# $hostname_keep::                Always preserve the original ‘Hostname’ field set by Logstreamer’s ‘hostname’ configuration
+# $hostname_keep::                Always preserve the original 'Hostname' field set by Logstreamer's 'hostname' configuration
 # setting.
 #
-# $template::                     The ‘template’ configuration string from rsyslog.conf.
+# $template::                     The 'template' configuration string from rsyslog.conf.
 #                                 http://rsyslog-5-8-6-doc.neocities.org/rsyslog_conf_templates.html
 #
 # $tz::                           If your rsyslog timestamp field in the template does not carry zone offset information, you may
 #                                 set an offset to be applied to your events here. Typically this would be used with the
-#                                 “Traditional” rsyslog formats.
+#                                 "Traditional" rsyslog formats.
 #
 
 define heka::decoder::rsyslogdecoder (

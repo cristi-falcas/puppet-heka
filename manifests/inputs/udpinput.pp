@@ -9,12 +9,12 @@
 # $splitter::                    Splitter to be used by the input. This should refer to the name of a
 #                                registered splitter plugin configuration. It specifies how the input
 #                                should split the incoming data stream into individual records prior
-#                                to decoding and/or injection to the router. Typically defaults to “NullSplitter”,
+#                                to decoding and/or injection to the router. Typically defaults to "NullSplitter",
 #                                although certain inputs override this with a different default value.
 #
 # $decoder::                     Decoder to be used by the input. This should refer to the name of a registered
 #                                decoder plugin configuration. If supplied, messages will be decoded before being
-#                                passed on to the router when the InputRunner’s Deliver method is called.
+#                                passed on to the router when the InputRunner's Deliver method is called.
 #
 # $synchronous_decode::          If synchronous_decode is false, then any specified decoder plugin will be
 #                                run by a DecoderRunner in its own goroutine and messages will be passed in
@@ -36,7 +36,7 @@
 #
 # $signer                        Section name consists of a signer name, underscore, and numeric version of the key
 #
-# $net                           Network value must be one of: “udp”, “udp4”, “udp6”, or “unixgram”.
+# $net                           Network value must be one of: "udp", "udp4", "udp6", or "unixgram".
 #
 # $set_hostname                  Set Hostname field from remote address.
 #

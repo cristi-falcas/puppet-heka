@@ -19,7 +19,7 @@
 #                                 Warning: messages exceeding 64KiB will generate an error and be discarded by the standard output
 #                                 plugins (File, TCP, UDP) since they exceed the maximum message size.
 #
-# $module_directory::             The directory where ‘require’ will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
+# $module_directory::             The directory where 'require' will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
 #
 
 define heka::encoder::alertencoder (
