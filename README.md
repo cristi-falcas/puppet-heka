@@ -118,7 +118,6 @@ Send logs to an elasticsearch instance:
 	    encoder           => 'ESJsonEncoder',
 	    flush_count       => 10000,
 	    server            => 'http://localhost:9200',
-	    queue_full_action => 'drop',
 	  }
 	
 	  heka::encoder::esjsonencoder { 'ESJsonEncoder':

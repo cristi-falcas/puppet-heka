@@ -48,8 +48,6 @@ define heka::outputs::elasticsearchoutput (
   $password                     = undef,
   $use_tls                      = false,
   $use_buffering                = true,
-  $queue_max_buffer_size        = 0,
-  $queue_full_action            = 'shutdown',
   # TLS configuration settings
   $tls_server_name              = undef,
   $tls_cert_file                = undef,
@@ -83,8 +81,6 @@ define heka::outputs::elasticsearchoutput (
   if $password { validate_string($password) }
   validate_bool($use_tls)
   validate_bool($use_buffering)
-  validate_integer($queue_max_buffer_size)
-  validate_string($queue_full_action)
   # TLS configuration settings
   if $tls_server_name { validate_string($tls_server_name) }
   if $tls_cert_file { validate_string($tls_cert_file) }
