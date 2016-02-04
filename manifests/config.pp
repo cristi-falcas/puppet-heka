@@ -32,7 +32,7 @@ class heka::config {
       fail("Unknown service provider ${$heka::service_provider}")
     }
   }
-  
+
   file { '/etc/heka':
     ensure  => directory,
     recurse => true,
