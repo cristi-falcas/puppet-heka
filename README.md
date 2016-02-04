@@ -83,8 +83,6 @@ Forward all logs to a central logging server:
 	    tls_client_auth           => 'RequireAndVerifyClientCert',
 	    tls_prefer_server_ciphers => true,
 	    tls_min_version           => 'TLS11',
-	    queue_max_buffer_size     => 1073741824,
-	    queue_full_action         => 'drop',
 	  }
 	
 	
