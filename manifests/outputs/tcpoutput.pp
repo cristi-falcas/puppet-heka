@@ -36,10 +36,6 @@
 #                                being sent.
 #                                Defaults to 7200 (i.e. 2 hours).
 #
-# $queue_max_buffer_size::
-#
-# $queue_full_action::
-#
 # $use_buffering::               Buffer records to a disk-backed buffer on the Heka server before sending them out over the TCP
 #                                connection.
 #                                Defaults to true.
@@ -65,8 +61,6 @@ define heka::outputs::tcpoutput (
   $local_address                = undef,
   $keep_alive                   = false,
   $keep_alive_period            = 7200,
-  $queue_max_buffer_size        = 0,
-  $queue_full_action            = 'shutdown',
   $use_buffering                = undef,
   $buffering                    = undef,
   $reconnect_after              = undef,
@@ -96,8 +90,6 @@ define heka::outputs::tcpoutput (
   validate_bool($use_tls)
   validate_bool($keep_alive)
   validate_integer($keep_alive_period)
-  validate_integer($queue_max_buffer_size)
-  validate_string($queue_full_action)
   if $use_buffering { validate_bool($use_buffering) }
   if $buffering { validate_string($buffering) }
   if $reconnect_after { validate_integer($reconnect_after) }

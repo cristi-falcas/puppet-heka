@@ -8,8 +8,6 @@ use_tls = <%= @use_tls %>
 <% end -%>
 keep_alive = <%= @keep_alive %>
 keep_alive_period = <%= @keep_alive_period %>
-queue_max_buffer_size = <%= @queue_max_buffer_size %>
-queue_full_action = "<%= @queue_full_action -%>"
 <% if @use_buffering   then -%>use_buffering = "<%= @use_buffering -%>"
 <% end -%>
 <% if @buffering       then -%>buffering = "<%= @buffering -%>"
