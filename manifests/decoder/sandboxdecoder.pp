@@ -3,10 +3,10 @@
 #
 # === Parameters:
 #
-# $script_type::                  The language the sandbox is written in. Currently the only valid option is ‘lua’ which is the
+# $script_type::                  The language the sandbox is written in. Currently the only valid option is 'lua' which is the
 #                                 default.
 #
-# $filename::                     The path to the sandbox code; if specified as a relative path it will be appended to Heka’s global
+# $filename::                     The path to the sandbox code; if specified as a relative path it will be appended to Heka's global
 #                                 share_dir.
 #
 # $preserve_data::                True if the sandbox global data should be preserved/restored on plugin shutdown/startup.
@@ -25,7 +25,7 @@
 #                                 Warning: messages exceeding 64KiB will generate an error and be discarded by the standard output
 #                                 plugins (File, TCP, UDP) since they exceed the maximum message size.
 #
-# $module_directory::             The directory where ‘require’ will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
+# $module_directory::             The directory where 'require' will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
 #
 # $config::                       A map of configuration variables available to the sandbox via read_config.
 #                                 The map consists of a string key with: string, bool, int64, or float64 values.

@@ -12,21 +12,21 @@
 # $message_fields::                Subsection defining message fields to populate and the interpolated values that should be used.
 #                                  Valid interpolated values are any captured in a regex in the message_matcher,
 #                                  and any other field that exists in the message. In the event that a captured name overlaps with a
-#                                  message field, the captured name’s value will be used
+#                                  message field, the captured name's value will be used
 #
 # $timestamp_layout::              A formatting string instructing hekad how to turn a time string into the actual time
 #                                  representation used internally.
-#                                  Example timestamp layouts can be seen in Go’s time documentation. In addition to the Go time
-#                                  formatting, special timestamp_layout values of “Epoch”, “EpochMilli”, “EpochMicro”, and
-#                                  “EpochNano” are supported for Unix style timestamps represented in seconds, milliseconds,
+#                                  Example timestamp layouts can be seen in Go's time documentation. In addition to the Go time
+#                                  formatting, special timestamp_layout values of 'Epoch", "EpochMilli", "EpochMicro", and
+#                                  "EpochNano" are supported for Unix style timestamps represented in seconds, milliseconds,
 #                                  microseconds, and nanoseconds since the Epoch, respectively.
 #
 # $timestamp_location::            Time zone in which the timestamps in the text are presumed to be in. Should be a location name
-#                                  corresponding to a file in the IANA Time Zone database (e.g. “America/Los_Angeles”), as parsed
-#                                  by Go’s time.LoadLocation() function (see http://golang.org/pkg/time/#LoadLocation). Defaults to
-#                                  “UTC”. Not required if valid time zone info is embedded in every parsed timestamp, since those
+#                                  corresponding to a file in the IANA Time Zone database (e.g. "America/Los_Angeles"), as parsed
+#                                  by Go's time.LoadLocation() function (see http://golang.org/pkg/time/#LoadLocation). Defaults to
+#                                  "UTC". Not required if valid time zone info is embedded in every parsed timestamp, since those
 #                                  can be parsed as specified in the timestamp_layout.
-#                                  This setting will have no impact if one of the supported “Epoch*” values is used as the
+#                                  This setting will have no impact if one of the supported "Epoch*" values is used as the
 #                                  timestamp_layout setting.
 #
 # $log_errors::                    If set to false, payloads that can not be matched against the regex will not be logged as errors.

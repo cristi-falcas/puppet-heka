@@ -1,4 +1,4 @@
-# Logs messages to stdout using Go’s log package.
+# Logs messages to stdout using Go's log package.
 #
 # === Parameters:
 #
@@ -15,10 +15,10 @@
 #
 # $encoder::                     Encoder to be used by the output. This should refer to the name of an encoder plugin section that
 #                                is specified elsewhere in the TOML configuration.
-#                                Messages can be encoded using the specified encoder by calling the OutputRunner’s Encode() method.
+#                                Messages can be encoded using the specified encoder by calling the OutputRunner's Encode() method.
 #
-# $use_framing::                 Specifies whether or not Heka’s Stream Framing should be applied to the binary data returned from
-#                                the OutputRunner’s Encode() method.
+# $use_framing::                 Specifies whether or not Heka's Stream Framing should be applied to the binary data returned from
+#                                the OutputRunner's Encode() method.
 #
 # $can_exit::                    Whether or not this plugin can exit without causing Heka to shutdown. Defaults to false.
 #

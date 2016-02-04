@@ -1,5 +1,38 @@
 # configures heka
 class heka::config {
+  case $heka::service_provider {
+    'init': {
+      # File resource for /etc/init/heka.conf, the Upstart config file:
+      file { '/etc/init.d/heka':
+        ensure  => 'file',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => template("${module_name}/${heka::service_template}"),
+        notify  => Service['heka'],
+      }
+    }
+    'systemd': {
+      file { '/etc/init.d/heka':
+        ensure => 'absent',
+      } ~>
+      file { '/lib/systemd/system/heka.service':
+        ensure  => 'file',
+        force   => true,
+        content => template("${module_name}/${heka::service_template}"),
+        notify  => Service['heka'],
+      } ~>
+      exec { 'heka-systemd-reload':
+        command     => 'systemctl daemon-reload',
+        path        => ['/bin', '/usr/bin'],
+        refreshonly => true,
+      }
+    }
+    default: {
+      fail("Unknown service provider ${$heka::service_provider}")
+    }
+  }
+  
   file { '/etc/heka':
     ensure  => directory,
     recurse => true,
@@ -16,41 +49,5 @@ class heka::config {
 
   if $heka::logrotate {
     include ::heka::logrotate
-  }
-
-  case $::osfamily {
-    'RedHat' : {
-      case $::operatingsystemmajrelease {
-        '6' : {
-          # File resource for /etc/init/heka.conf, the Upstart config file:
-          file { '/etc/init.d/heka':
-            ensure  => 'file',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0755',
-            content => template('heka/heka.sh'),
-            notify  => Service['heka'],
-          }
-        }
-        '7' : {
-          file { '/usr/lib/systemd/system/heka.service':
-            ensure  => 'file',
-            force   => true,
-            content => template("${module_name}/heka.service"),
-            notify  => Service['heka'],
-          } ~>
-          exec { 'heka-systemd-reload':
-            command     => '/usr/bin/systemctl daemon-reload',
-            refreshonly => true,
-          }
-        }
-        default: {
-          fail("Unknown major operating system for RedHat: ${::operatingsystemmajrelease}")
-        }
-      }
-    }
-    default  : {
-      fail("${::operatingsystem} is not a supported operating system!")
-    }
   }
 }

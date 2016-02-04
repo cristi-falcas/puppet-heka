@@ -1,6 +1,5 @@
-# Listens on a specific TCP address and port for messages. If the message is signed it is verified against
-# the signer name and specified key version. If the signature is not valid the message is discarded otherwise
-# the signer name is added to the pipeline pack and can be use to accept messages using the message_signer configuration option.
+# Executes one or more external programs on an interval, creating messages from the output. Supports a chain
+# of commands, where stdout from each process will be piped into the stdin for the next process in the chain.
 #
 # === Parameters:
 #
@@ -32,66 +31,61 @@
 # $can_exit::                    If false, the input plugin exiting will trigger a Heka shutdown. If set to true,
 #                                Heka will continue processing other plugins. Defaults to false on most inputs.
 #
+# $command::                     The command is a structure that contains the full path to the binary, command line
+#                                arguments, optional enviroment variables and an optional working directory (see below).
+#
+# $ticker_interval::             The number of seconds to wait between each run of command. Defaults to 15.
+#                                A ticker_interval of 0 indicates that the command is run only once, and should only be
+#                                used for long running processes that do not exit.
+#
+# $immediate_start::             If true, heka starts process immediately instead of waiting for first interval
+#                                defined by ticker_interval to pass. Defaults to false.
+#
+# $stdout::                      If true, for each run of the process chain a message will be generated with the last
+#                                command in the chain's stdout as the payload. Defaults to true.
+#
+# $stderr::                      If true, for each run of the process chain a message will be generated with the last
+#                                command in the chain's stderr as the payload. Defaults to false.
+#
+# $timeout::                     Timeout in seconds before any one of the commands in the chain is terminated.
+#
 
-define heka::inputs::tcpinput (
-  $ensure                       = 'present',
+define heka::inputs::processinput (
+  $ensure               = 'present',
   # Common Input Parameters
-  $decoder                      = 'ProtobufDecoder',
-  $synchronous_decode           = false,
-  $send_decode_failures         = false,
-  $can_exit                     = undef,
-  $splitter                     = 'HekaFramingSplitter',
-  # TCP Input
-  $address                      = ':514',
-  $use_tls                      = false,
-  $net                          = 'tcp',
-  $keep_alive                   = false,
-  $keep_alive_period            = 7200,
-  # TLS configuration settings
-  $tls_server_name              = undef,
-  $tls_cert_file                = undef,
-  $tls_key_file                 = undef,
-  $tls_client_auth              = 'NoClientCert',
-  $tls_ciphers                  = [],
-  $tls_insecure_skip_verify     = false,
-  $tls_prefer_server_ciphers    = true,
-  $tls_session_tickets_disabled = false,
-  $tls_session_ticket_key       = undef,
-  $tls_min_version              = 'SSL30',
-  $tls_max_version              = 'TLS12',
-  $tls_client_cafile            = undef,
-  $tls_root_cafile              = undef,
+  $splitter             = 'TokenSplitter',
+  $decoder              = undef,
+  $synchronous_decode   = undef,
+  $send_decode_failures = undef,
+  $can_exit             = undef,
+  # ProcessInput specific Parameters
+  $command              = undef,
+  $ticker_interval      = undef,
+  $immediate_start      = undef,
+  $stdout               = undef,
+  $stderr               = undef,
+  $timeout              = undef,
 ) {
   # Common Input Parameters
+  if $splitter { validate_string($splitter) }
   if $decoder { validate_string($decoder) }
   if $synchronous_decode { validate_bool($synchronous_decode) }
   if $send_decode_failures { validate_bool($send_decode_failures) }
   if $can_exit { validate_bool($can_exit) }
-  validate_string($splitter)
-  # TCP Input
-  validate_string($address)
-  validate_bool($use_tls)
-  validate_string($net)
-  validate_bool($keep_alive)
-  validate_integer($keep_alive_period)
-  # TLS configuration settings
-  if $tls_server_name { validate_string($tls_server_name) }
-  if $tls_cert_file { validate_string($tls_cert_file) }
-  if $tls_key_file { validate_string($tls_key_file) }
-  validate_string($tls_client_auth)
-  validate_array($tls_ciphers)
-  validate_bool($tls_insecure_skip_verify)
-  validate_bool($tls_prefer_server_ciphers)
-  validate_bool($tls_session_tickets_disabled)
-  validate_string($tls_session_ticket_key)
-  validate_string($tls_min_version)
-  validate_string($tls_max_version)
-  if $tls_client_cafile { validate_string($tls_client_cafile) }
-  if $tls_root_cafile { validate_string($tls_root_cafile) }
 
-  $plugin_name = "tcpinput_${name}"
+  # ProcessInput specific Parameters
+  if $ticker_interval { validate_integer($ticker_interval) }
+  if $immediate_start { validate_bool($immediate_start) }
+  if $stdout { validate_bool($stdout) }
+  if $stderr { validate_bool($stderr) }
+  if $timeout { validate_integer($timeout) }
+
+  validate_array($command)
+  validate_hash($command[0])
+
+  $plugin_name = "processinput_${name}"
   heka::snippet { $plugin_name:
     ensure  => $ensure,
-    content => template("${module_name}/plugin/tcpinput.toml.erb"),
+    content => template("${module_name}/plugin/processinput.toml.erb"),
   }
 }

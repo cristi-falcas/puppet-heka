@@ -15,7 +15,7 @@
 #                                Heka Message struct.
 #                                Some decoders, however, such as the ProtobufDecoder, expect to receive a blob of bytes representing
 #                                an entire Message struct, not just the payload. In this case, the data is expected to be found on the
-#                                MsgBytes attribute of the Message’s PipelinePack.
+#                                MsgBytes attribute of the Message's PipelinePack.
 #                                If use_message_bytes is true, then the data will be written as a byte slice to the MsgBytes
 #                                attribute, otherwise it will be written as a string to the Message payload. Defaults to false in most
 #                                cases, but defaults to true for the HekaFramingSplitter, which is almost always used with the
@@ -27,9 +27,9 @@
 #                                certain splitters may specify a different default.
 #
 # $deliver_incomplete_final::    When a splitter is used to split a stream, that stream can end part way through a record.
-#                                It’s sometimes appropriate to drop that data, but in other cases the incomplete data can still be
+#                                It's sometimes appropriate to drop that data, but in other cases the incomplete data can still be
 #                                useful.
-#                                If ‘deliver_incomplete_final’ is set to true, then when the SplitterRunner’s SplitStream method is
+#                                If 'deliver_incomplete_final' is set to true, then when the SplitterRunner's SplitStream method is
 #                                used a delivery attempt will be made with any partial record data that may come through immediately
 #                                before an EOF.
 #                                Defaults to false.
