@@ -13,7 +13,5 @@ http_disable_keepalives = <%= @http_disable_keepalives %>
 <% if @password then -%>password = "<%= @password -%>"
 <% end -%>
 use_buffering = <%= @use_buffering %>
-queue_max_buffer_size = <%= @queue_max_buffer_size %>
-queue_full_action = "<%= @queue_full_action %>"
 
 <%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>

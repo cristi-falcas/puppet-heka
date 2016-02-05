@@ -12,9 +12,6 @@
 # $message_signer::              The name of the message signer. If specified only messages with this signer are passed to the
 #                                filter for processing.
 #
-# $ticker_interval::             Frequency (in seconds) that a timer event will be sent to the filter. Defaults to not sending timer
-#                                events.
-#
 # $encoder::                     Encoder to be used by the output. This should refer to the name of an encoder plugin section that
 #                                is specified elsewhere in the TOML configuration.
 #                                Messages can be encoded using the specified encoder by calling the OutputRunner's Encode() method.
@@ -39,10 +36,6 @@
 #                                being sent.
 #                                Defaults to 7200 (i.e. 2 hours).
 #
-# $queue_max_buffer_size::
-#
-# $queue_full_action::
-#
 # $use_buffering::               Buffer records to a disk-backed buffer on the Heka server before sending them out over the TCP
 #                                connection.
 #                                Defaults to true.
@@ -59,7 +52,6 @@ define heka::outputs::tcpoutput (
   # Common Output Parameters
   $message_matcher,
   $message_signer               = undef,
-  $ticker_interval              = 300,
   $encoder                      = 'ProtobufEncoder',
   $use_framing                  = undef,
   $can_exit                     = undef,
@@ -69,8 +61,6 @@ define heka::outputs::tcpoutput (
   $local_address                = undef,
   $keep_alive                   = false,
   $keep_alive_period            = 7200,
-  $queue_max_buffer_size        = 0,
-  $queue_full_action            = 'shutdown',
   $use_buffering                = undef,
   $buffering                    = undef,
   $reconnect_after              = undef,
@@ -92,7 +82,6 @@ define heka::outputs::tcpoutput (
   # Common Output Parameters
   if $message_matcher { validate_string($message_matcher) }
   if $message_signer { validate_string($message_signer) }
-  validate_integer($ticker_interval)
   if $encoder { validate_string($encoder) }
   if $use_framing { validate_bool($use_framing) }
   if $can_exit { validate_bool($can_exit) }
@@ -101,8 +90,6 @@ define heka::outputs::tcpoutput (
   validate_bool($use_tls)
   validate_bool($keep_alive)
   validate_integer($keep_alive_period)
-  validate_integer($queue_max_buffer_size)
-  validate_string($queue_full_action)
   if $use_buffering { validate_bool($use_buffering) }
   if $buffering { validate_string($buffering) }
   if $reconnect_after { validate_integer($reconnect_after) }

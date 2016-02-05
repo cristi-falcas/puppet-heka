@@ -83,8 +83,6 @@ Forward all logs to a central logging server:
 	    tls_client_auth           => 'RequireAndVerifyClientCert',
 	    tls_prefer_server_ciphers => true,
 	    tls_min_version           => 'TLS11',
-	    queue_max_buffer_size     => 1073741824,
-	    queue_full_action         => 'drop',
 	  }
 	
 	
@@ -118,7 +116,6 @@ Send logs to an elasticsearch instance:
 	    encoder           => 'ESJsonEncoder',
 	    flush_count       => 10000,
 	    server            => 'http://localhost:9200',
-	    queue_full_action => 'drop',
 	  }
 	
 	  heka::encoder::esjsonencoder { 'ESJsonEncoder':
