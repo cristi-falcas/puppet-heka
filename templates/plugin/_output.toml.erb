@@ -10,6 +10,6 @@
 <% end -%>
 <% if @can_exit then -%>can_exit = <%= @can_exit %>
 <% end -%>
-<% if @use_buffering then -%>use_buffering = "<%= @use_buffering -%>"
+<% if @use_buffering then -%>use_buffering = <%= @use_buffering -%>
 <%= scope.function_template(['heka/plugin/_buffering.toml.erb']) %>
 <% end -%>
