@@ -11,10 +11,6 @@ use_tls = <%= @use_tls %>
 <% end -%>
 keep_alive = <%= @keep_alive %>
 keep_alive_period = <%= @keep_alive_period %>
-<% if @use_buffering   then -%>use_buffering = "<%= @use_buffering -%>"
-<% end -%>
-<% if @buffering       then -%>buffering = "<%= @buffering -%>"
-<% end -%>
 <% if @reconnect_after then -%>reconnect_after = "<%= @reconnect_after -%>"
 <% end -%>
 
