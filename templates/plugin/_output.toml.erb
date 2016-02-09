@@ -6,10 +6,10 @@
 <% end -%>
 <% if @encoder then -%>encoder = "<%= @encoder -%>"
 <% end -%>
-<% if @use_framing then -%>use_framing = "<%= @use_framing -%>"
+<% if @use_framing != nil then -%>use_framing = <%= @use_framing %>
 <% end -%>
-<% if @can_exit then -%>can_exit = <%= @can_exit %>
+<% if @can_exit != nil then -%>can_exit = <%= @can_exit %>
 <% end -%>
-<% if @use_buffering then -%>use_buffering = <%= @use_buffering -%>
+<% if @use_buffering != nil then -%>use_buffering = <%= @use_buffering %>
 <%= scope.function_template(['heka/plugin/_buffering.toml.erb']) %>
 <% end -%>

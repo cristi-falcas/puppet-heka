@@ -10,5 +10,5 @@ address = "<%= @address -%>"
 <% end -%>
 <% if @local_address    then -%>local_address = "<%= @local_address -%>"
 <% end -%>
-<% if @max_message_size then -%>max_message_size = "<%= @max_message_size -%>"
+<% if @max_message_size then -%>max_message_size = <%= @max_message_size %>
 <% end -%>
