@@ -1,7 +1,10 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "LogstreamerInput"
-<%= scope.function_template(['heka/plugin/_input.toml.erb']) -%>
+# common settings
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
+
+# specific settings
 log_directory = '<%= @log_directory -%>'
 file_match = '<%= @file_match -%>'
 <% if @hostname           then -%>hostname = "<%= @hostname -%>"

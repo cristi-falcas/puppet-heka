@@ -43,8 +43,8 @@ define heka::decoder::nginxerrorlogdecoder (
   heka::decoder::sandboxdecoder { $name:
     filename => 'lua_decoders/nginx_error.lua',
     config   => {
-      tz   => $tz,
-      type => $type,
+      'tz'   => $tz,
+      'type' => $type,
     },
   }
 }

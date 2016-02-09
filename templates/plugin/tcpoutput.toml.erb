@@ -1,7 +1,10 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "TcpOutput"
+# common settings
 <%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
+
+# specific settings
 address = "<%= @address -%>"
 use_tls = <%= @use_tls %>
 <% if @local_address then -%>local_address = "<%= @local_address -%>"
@@ -14,4 +17,6 @@ keep_alive_period = <%= @keep_alive_period %>
 <% end -%>
 <% if @reconnect_after then -%>reconnect_after = "<%= @reconnect_after -%>"
 <% end -%>
+
+# tls settings
 <%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>

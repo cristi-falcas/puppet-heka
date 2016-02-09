@@ -1,13 +1,14 @@
-# The SandboxInput provides a flexible execution environment for data ingestion and transformation without
-# the need to recompile Heka. Like all other sandboxes it needs to implement a process_message function.
-# However, it doesn't have to return until shutdown. If you would like to implement a polling interface process_message
-# can return zero when complete and it will be called again the next time TickerInterval fires
-# (if ticker_interval was set to zero it would simply exit after running once).
+# The SandboxOutput provides a flexible execution environment for data encoding and transmission without the need to recompile Heka. 
 #
 # === Parameters:
 #
 # $ensure::                       This is used to set the status of the config file: present or absent
 #
+### Common Output Parameters::    Check heka::outputs::tcpoutput for the description
+#                                 The common output configuration parameter 'encoder' is ignored since all
+#                                 data transformation should happen in the plugin.
+#
+### Common Sandbox Parameters ###
 # $script_type::                  The language the sandbox is written in. Currently the only valid option is 'lua' which is the
 #                                 default.
 #
@@ -35,19 +36,48 @@
 # $config::                       A map of configuration variables available to the sandbox via read_config.
 #                                 The map consists of a string key with: string, bool, int64, or float64 values.
 #
-
+### SandboxOutput Parameters ###
+# $timer_event_on_shutdown::      True if the sandbox should have its timer_event function called on shutdown.
+#
 define heka::outputs::sandboxoutput (
-  $ensure                       = 'present',
+  $ensure                  = 'present',
+  # Common Output Parameters
+  $message_matcher,
+  $message_signer          = undef,
+  $ticker_interval         = undef,
+  $use_framing             = undef,
+  $can_exit                = undef,
+  $use_buffering           = undef,
+  # Buffering
+  $max_file_size           = undef,
+  $max_buffer_size         = undef,
+  $full_action             = undef,
+  $cursor_update_count     = undef,
   # Common Sandbox Parameters
-  $script_type       = 'lua',
+  $script_type             = 'lua',
   $filename,
-  $preserve_data     = undef,
-  $memory_limit      = undef,
-  $instruction_limit = undef,
-  $output_limit      = undef,
-  $module_directory  = undef,
-  $config            = undef,
+  $preserve_data           = undef,
+  $memory_limit            = undef,
+  $instruction_limit       = undef,
+  $output_limit            = undef,
+  $module_directory        = undef,
+  $config                  = undef,
+  # SandboxOutput Parameters
+  $timer_event_on_shutdown = undef,
 ) {
+  # Common Output Parameters
+  if $message_matcher { validate_string($message_matcher) }
+  if $message_signer { validate_string($message_signer) }
+  if $ticker_interval { validate_integer($ticker_interval) }
+  if $use_framing { validate_bool($use_framing) }
+  if $can_exit { validate_bool($can_exit) }
+  $encoder = undef
+  if $use_buffering { validate_bool($use_buffering) }
+  # Buffering
+  if $max_file_size { validate_integer($max_file_size) }
+  if $max_buffer_size { validate_integer($max_buffer_size) }
+  if $full_action { validate_re($full_action, '^(shutdown|drop|block)$') }
+  if $cursor_update_count { validate_integer($cursor_update_count) }
   # Common Sandbox Parameters
   validate_string($filename)
   if $preserve_data { validate_bool($preserve_data) }
@@ -55,8 +85,10 @@ define heka::outputs::sandboxoutput (
   if $instruction_limit { validate_integer($instruction_limit) }
   if $output_limit { validate_integer($output_limit) }
   if $module_directory { validate_string($module_directory) }
+  # SandboxOutput Parameters
+  if $timer_event_on_shutdown { validate_bool($timer_event_on_shutdown) }
 
-  $plugin_name = "sandboxinput_${name}"
+  $plugin_name = "sandboxoutput_${name}"
   heka::snippet { $plugin_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/sandboxoutput.toml.erb"),

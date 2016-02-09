@@ -31,4 +31,3 @@ define heka::snippet ($ensure = 'file', $content = undef, $source = undef,) {
     require => Class['heka::config'],
   }
 }
-

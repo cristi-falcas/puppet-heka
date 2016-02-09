@@ -1,4 +1,5 @@
 <% if @use_tls then -%>
+# tls configuration
   [<%= @plugin_name -%>.tls]
 <% if @tls_server_name then -%>    server_name = "<%= @tls_server_name -%>"
 <% end -%>

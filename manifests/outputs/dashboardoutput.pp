@@ -5,24 +5,16 @@
 #
 # $ensure::                      This is used to set the status of the config file: present or absent
 #
-# $message_matcher::             Defaults to
-#                                "Type == 'heka.all-report' || Type == 'heka.sandbox-output' || Type == 'heka.sandbox-terminated'".
-#                                Not recommended to change this unless you know what you're doing.
+### Common Output Parameters::  Check heka::outputs::tcpoutput for the description
 #
-# $message_signer::              The name of the message signer. If specified only messages with this signer are passed to the
-#                                filter for processing.
+### Dashboar Parameters
 #
-# $ticker_interval::             Frequency (in seconds) that a timer event will be sent to the filter. Defaults to not sending timer
-#                                events.
+# $use_buffering::               If true, all messages delivered to this output will be buffered to disk before delivery, preventing back
+#                                pressure and allowing retries in cases of message processing failure. Defaults to false, unless otherwise
+#                                specified by the individual output's documentation.
 #
-# $encoder::                     Encoder to be used by the output. This should refer to the name of an encoder plugin section that
-#                                is specified elsewhere in the TOML configuration.
-#                                Messages can be encoded using the specified encoder by calling the OutputRunner's Encode() method.
-#
-# $use_framing::                 Specifies whether or not Heka's Stream Framing should be applied to the binary data returned from
-#                                the OutputRunner's Encode() method.
-#
-# $can_exit::                    Whether or not this plugin can exit without causing Heka to shutdown. Defaults to false.
+# $buffering::                   A sub-section that specifies the settings to be used for the buffering behavior. This will only have any
+#                                impact if use_buffering is set to true
 #
 # $host::                        An IP address on which we will serve output via HTTP. Defaults to "0.0.0.0".
 #
@@ -41,30 +33,41 @@
 #                                subsection entitled "headers" to you HttpOutput config section. All entries in the subsection
 #                                must be a list of string values.
 #
-
 define heka::outputs::dashboardoutput (
-  $ensure            = 'present',
+  $ensure              = 'present',
   # Common Output Parameters
-  $message_matcher   = undef,
-  $message_signer    = undef,
-  $ticker_interval   = 5,
-  $encoder           = undef,
-  $use_framing       = undef,
-  $can_exit          = undef,
+  $message_matcher     = undef,
+  $message_signer      = undef,
+  $ticker_interval     = 5,
+  $encoder             = undef,
+  $use_framing         = undef,
+  $can_exit            = undef,
+  $use_buffering       = undef,
+  # Buffering
+  $max_file_size       = undef,
+  $max_buffer_size     = undef,
+  $full_action         = undef,
+  $cursor_update_count = undef,
   # Dashboard Output
-  $host              = '0.0.0.0',
-  $port              = 4352,
-  $working_directory = undef,
-  $static_directory  = undef,
-  $headers           = undef,
+  $host                = '0.0.0.0',
+  $port                = 4352,
+  $working_directory   = undef,
+  $static_directory    = undef,
+  $headers             = undef,
 ) {
   # Common Output Parameters
   if $message_matcher { validate_string($message_matcher) }
   if $message_signer { validate_string($message_signer) }
-  validate_integer($ticker_interval)
+  if $ticker_interval { validate_integer($ticker_interval) }
   if $encoder { validate_string($encoder) }
   if $use_framing { validate_bool($use_framing) }
   if $can_exit { validate_bool($can_exit) }
+  if $use_buffering { validate_bool($use_buffering) }
+  # Buffering
+  if $max_file_size { validate_integer($max_file_size) }
+  if $max_buffer_size { validate_integer($max_buffer_size) }
+  if $full_action { validate_re($full_action, '^(shutdown|drop|block)$') }
+  if $cursor_update_count { validate_integer($cursor_update_count) }
   # Dashboard Output
   validate_string($host)
   validate_integer($port)

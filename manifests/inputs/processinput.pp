@@ -11,25 +11,9 @@
 #                                to decoding and/or injection to the router. Typically defaults to "NullSplitter",
 #                                although certain inputs override this with a different default value.
 #
-# $decoder::                     Decoder to be used by the input. This should refer to the name of a registered
-#                                decoder plugin configuration. If supplied, messages will be decoded before being
-#                                passed on to the router when the InputRunner's Deliver method is called.
+### Common Input Parameters::   Check heka::inputs::tcpinput for the description
 #
-# $synchronous_decode::          If synchronous_decode is false, then any specified decoder plugin will be
-#                                run by a DecoderRunner in its own goroutine and messages will be passed in
-#                                to the decoder over a channel, freeing the input to start processing the
-#                                next chunk of incoming or available data. If true, then any decoding will
-#                                happen synchronously and message delivery will not return control to the
-#                                input until after decoding has completed. Defaults to false.
-#
-# $send_decode_failures::        If false, then if an attempt to decode a message fails then Heka will log
-#                                an error message and then drop the message. If true, then in addition to
-#                                logging an error message, decode failure will cause the original, undecoded
-#                                message to be tagged with a decode_failure field (set to true) and delivered
-#                                to the router for possible further processing.
-#
-# $can_exit::                    If false, the input plugin exiting will trigger a Heka shutdown. If set to true,
-#                                Heka will continue processing other plugins. Defaults to false on most inputs.
+### Process Input Parameters
 #
 # $command::                     The command is a structure that contains the full path to the binary, command line
 #                                arguments, optional enviroment variables and an optional working directory (see below).
@@ -49,7 +33,6 @@
 #
 # $timeout::                     Timeout in seconds before any one of the commands in the chain is terminated.
 #
-
 define heka::inputs::processinput (
   $ensure               = 'present',
   # Common Input Parameters
@@ -58,6 +41,7 @@ define heka::inputs::processinput (
   $synchronous_decode   = undef,
   $send_decode_failures = undef,
   $can_exit             = undef,
+  $log_decode_failures  = true,
   # ProcessInput specific Parameters
   $command              = undef,
   $ticker_interval      = undef,
@@ -72,7 +56,7 @@ define heka::inputs::processinput (
   if $synchronous_decode { validate_bool($synchronous_decode) }
   if $send_decode_failures { validate_bool($send_decode_failures) }
   if $can_exit { validate_bool($can_exit) }
-
+  if $log_decode_failures { validate_bool($log_decode_failures) }
   # ProcessInput specific Parameters
   if $ticker_interval { validate_integer($ticker_interval) }
   if $immediate_start { validate_bool($immediate_start) }

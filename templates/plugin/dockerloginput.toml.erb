@@ -1,7 +1,10 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "DockerLogInput"
-<%= scope.function_template(['heka/plugin/_input.toml.erb']) -%>
+# common settings
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
+
+# specific settings
 endpoint = "<%= endpoint -%>"
 <% if @cert_path         then -%>cert_path = "<%= @cert_path -%>"
 <% end -%>

@@ -4,34 +4,23 @@
 #
 # $ensure::                      This is used to set the status of the config file: present or absent
 #
-# $message_matcher::             Boolean expression, when evaluated to true passes the message to the filter for processing.
-#                                Defaults to matching nothing
+### Common Output Parameters::   Check heka::outputs::tcpoutput for the description
 #
-# $message_signer::              The name of the message signer. If specified only messages with this signer are passed to the
-#                                filter for processing.
-#
-# $ticker_interval::             Frequency (in seconds) that a timer event will be sent to the filter. Defaults to not sending timer
-#                                events.
-#
-# $encoder::                     Encoder to be used by the output. This should refer to the name of an encoder plugin section that
-#                                is specified elsewhere in the TOML configuration.
-#                                Messages can be encoded using the specified encoder by calling the OutputRunner's Encode() method.
-#
-# $use_framing::                 Specifies whether or not Heka's Stream Framing should be applied to the binary data returned from
-#                                the OutputRunner's Encode() method.
-#
-# $can_exit::                    Whether or not this plugin can exit without causing Heka to shutdown. Defaults to false.
-#
-
 define heka::outputs::logoutput (
   $ensure          = 'present',
   # Common Output Parameters
-  $message_matcher = 'TRUE',
+  $message_matcher = undef,
   $message_signer  = undef,
-  $ticker_interval = undef,
-  $encoder         = 'PayloadEncoder',
+  $ticker_interval = 5,
+  $encoder         = undef,
   $use_framing     = undef,
   $can_exit        = undef,
+  $use_buffering   = undef,
+  # Buffering
+  $max_file_size                = undef,
+  $max_buffer_size              = undef,
+  $full_action                  = undef,
+  $cursor_update_count          = undef,
 ) {
   # Common Output Parameters
   if $message_matcher { validate_string($message_matcher) }
@@ -40,6 +29,12 @@ define heka::outputs::logoutput (
   if $encoder { validate_string($encoder) }
   if $use_framing { validate_bool($use_framing) }
   if $can_exit { validate_bool($can_exit) }
+  if $use_buffering { validate_bool($use_buffering) }
+  # Buffering
+  if $max_file_size { validate_integer($max_file_size) }
+  if $max_buffer_size { validate_integer($max_buffer_size) }
+  if $full_action { validate_re($full_action, '^(shutdown|drop|block)$') }
+  if $cursor_update_count { validate_integer($cursor_update_count) }
 
   $plugin_name = "logoutput_${name}"
   heka::snippet { $plugin_name:

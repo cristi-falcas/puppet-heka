@@ -1,3 +1,10 @@
 [<%= @name -%>]
 type = "SandboxOutput"
+# common settings
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
+
+# specific settings
+<% if @timer_event_on_shutdown then -%>timer_event_on_shutdown = "<%= @timer_event_on_shutdown -%>"
+<% end -%>
+
 <%= scope.function_template(['heka/_sandbox.toml.erb']) %>

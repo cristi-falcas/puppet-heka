@@ -63,12 +63,12 @@ define heka::decoder::apacheaccesslogdecoder (
   heka::decoder::sandboxdecoder { $name:
     filename => 'lua_decoders/apache_access.lua',
     config   => {
-      log_format             => $log_format,
-      type                   => $type,
-      user_agent_transform   => $user_agent_transform,
-      user_agent_keep        => $user_agent_keep,
-      user_agent_conditional => $user_agent_conditional,
-      payload_keep           => $payload_keep,
+      'log_format'             => $log_format,
+      'type'                   => $type,
+      'user_agent_transform'   => $user_agent_transform,
+      'user_agent_keep'        => $user_agent_keep,
+      'user_agent_conditional' => $user_agent_conditional,
+      'payload_keep'           => $payload_keep,
     },
   }
 }

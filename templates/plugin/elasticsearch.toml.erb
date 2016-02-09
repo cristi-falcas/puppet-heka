@@ -1,7 +1,10 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "ElasticSearchOutput"
+# common settings
 <%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
+
+# specific settings
 flush_interval = <%= @flush_interval %>
 flush_count = <%= @flush_count %>
 server = "<%= @server -%>"
@@ -12,6 +15,6 @@ http_disable_keepalives = <%= @http_disable_keepalives %>
 <% end -%>
 <% if @password then -%>password = "<%= @password -%>"
 <% end -%>
-use_buffering = <%= @use_buffering %>
 
+# tls settings
 <%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>
