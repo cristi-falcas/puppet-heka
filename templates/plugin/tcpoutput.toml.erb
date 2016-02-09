@@ -12,8 +12,6 @@ keep_alive_period = <%= @keep_alive_period %>
 <% if @reconnect_after then -%>reconnect_after = "<%= @reconnect_after -%>"
 <% end -%>
 
-# common settings
 <%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
 
-# tls settings
 <%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>
