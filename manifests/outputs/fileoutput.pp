@@ -4,23 +4,9 @@
 #
 # $ensure::                      This is used to set the status of the config file: present or absent
 #
-# $message_matcher::             Boolean expression, when evaluated to true passes the message to the filter for processing.
-#                                Defaults to matching nothing
+### Common Output Parameters::  Check heka::outputs::tcpoutput for the description
 #
-# $message_signer::              The name of the message signer. If specified only messages with this signer are passed to the
-#                                filter for processing.
-#
-# $ticker_interval::             Frequency (in seconds) that a timer event will be sent to the filter. Defaults to not sending timer
-#                                events.
-#
-# $encoder::                     Encoder to be used by the output. This should refer to the name of an encoder plugin section that
-#                                is specified elsewhere in the TOML configuration.
-#                                Messages can be encoded using the specified encoder by calling the OutputRunner's Encode() method.
-#
-# $use_framing::                 Specifies whether or not Heka's Stream Framing should be applied to the binary data returned from
-#                                the OutputRunner's Encode() method.
-#
-# $can_exit::                    Whether or not this plugin can exit without causing Heka to shutdown. Defaults to false.
+### File Parameters
 #
 # $path::                        Full path to the output file. If date rotation is in use, then the output file path can support
 #                                strftime syntax to embed timestamps in the file path: http://strftime.org
@@ -48,32 +34,43 @@
 #                                of the day.
 #                                Defaults to 0, i.e. disabled.
 #
-
 define heka::outputs::fileoutput (
-  $ensure            = 'present',
+  $ensure              = 'present',
   # Common Output Parameters
-  $message_matcher,
-  $message_signer    = undef,
-  $ticker_interval   = 300,
-  $encoder           = 'ProtobufEncoder',
-  $use_framing       = undef,
-  $can_exit          = undef,
+  $message_matcher     = undef,
+  $message_signer      = undef,
+  $ticker_interval     = 5,
+  $encoder             = undef,
+  $use_framing         = undef,
+  $can_exit            = undef,
+  $use_buffering       = undef,
+  # Buffering
+  $max_file_size       = undef,
+  $max_buffer_size     = undef,
+  $full_action         = undef,
+  $cursor_update_count = undef,
   # File Output Parameters
   $path,
-  $perm              = '644',
-  $folder_perm       = '700',
-  $flush_interval    = 1000,
-  $flush_count       = 1,
-  $flush_operator    = 'AND',
-  $rotation_interval = 0,
+  $perm                = '644',
+  $folder_perm         = '700',
+  $flush_interval      = 1000,
+  $flush_count         = 1,
+  $flush_operator      = 'AND',
+  $rotation_interval   = 0,
 ) {
   # Common Output Parameters
   if $message_matcher { validate_string($message_matcher) }
   if $message_signer { validate_string($message_signer) }
-  validate_integer($ticker_interval)
+  if $ticker_interval { validate_integer($ticker_interval) }
   if $encoder { validate_string($encoder) }
   if $use_framing { validate_bool($use_framing) }
   if $can_exit { validate_bool($can_exit) }
+  if $use_buffering { validate_bool($use_buffering) }
+  # Buffering
+  if $max_file_size { validate_integer($max_file_size) }
+  if $max_buffer_size { validate_integer($max_buffer_size) }
+  if $full_action { validate_re($full_action, '^(shutdown|drop|block)$') }
+  if $cursor_update_count { validate_integer($cursor_update_count) }
   # File Output Parameters
   validate_string($path)
   validate_string($perm)
@@ -84,7 +81,6 @@ define heka::outputs::fileoutput (
   validate_integer($rotation_interval)
 
   $plugin_name = "fileoutput_${name}"
-
   heka::snippet { $plugin_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/fileoutput.toml.erb"),

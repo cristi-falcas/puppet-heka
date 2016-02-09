@@ -1,7 +1,10 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "FileOutput"
+# common settings
 <%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
+
+# specific settings
 path = "<%= @path -%>"
 perm = "<%= @perm -%>"
 folder_perm = "<%= @folder_perm -%>"
