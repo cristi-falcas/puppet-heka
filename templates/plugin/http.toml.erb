@@ -1,0 +1,22 @@
+# This file is controlled via puppet.
+[<%= @plugin_name -%>]
+type = "HttpOutput"
+# common settings
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
+
+# specific settings
+address = "<%= @address -%>"
+<% if @method then -%>method = "<%= @method -%>"
+<% end -%>
+<% if @username then -%>username = "<%= @username -%>"
+<% end -%>
+<% if @password then -%>password = "<%= @password -%>"
+<% end -%>
+<% if @headers then -%>headers = "<%= @headers -%>"
+<% end -%>
+<% if @http_timeout then -%>http_timeout = "<%= @http_timeout -%>"
+<% end -%>
+
+# tls settings
+use_tls = <%= @use_tls %>
+<%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>
