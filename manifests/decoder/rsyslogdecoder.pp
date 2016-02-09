@@ -48,10 +48,10 @@ define heka::decoder::rsyslogdecoder (
   heka::decoder::sandboxdecoder { $name:
     filename => 'lua_decoders/rsyslog.lua',
     config   => {
-      type          => $type,
-      hostname_keep => $hostname_keep,
-      template      => $template,
-      tz            => $tz,
+      'type'          => $type,
+      'hostname_keep' => $hostname_keep,
+      'template'      => $template,
+      'tz'            => $tz,
     },
   }
 }
