@@ -1,8 +1,6 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "DockerLogInput"
-# common settings
-<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
 
 # specific settings
 endpoint = "<%= endpoint -%>"
@@ -12,3 +10,5 @@ endpoint = "<%= endpoint -%>"
 <% end -%>
 <% if @fields_from_env   then -%>fields_from_env = [<%= [fields_from_env].flatten.map! {|sub| "'"+sub+"'"}.join(",") -%>]
 <% end -%>
+
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>

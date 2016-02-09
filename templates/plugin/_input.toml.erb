@@ -1,12 +1,13 @@
+# common input settings
 <% if @decoder  then -%>decoder = "<%= @decoder -%>"
 <% end -%>
-<% if @synchronous_decode  then -%>synchronous_decode = "<%= @synchronous_decode -%>"
+<% if @synchronous_decode != nil then -%>synchronous_decode = <%= @synchronous_decode %>
 <% end -%>
-<% if @send_decode_failures  then -%>send_decode_failures = <%= @send_decode_failures %>
+<% if @send_decode_failures != nil then -%>send_decode_failures = <%= @send_decode_failures %>
 <% end -%>
-<% if @can_exit then -%>can_exit = <%= @can_exit %>
+<% if @can_exit != nil then -%>can_exit = <%= @can_exit %>
 <% end -%>
-<% if @splitter  then -%>splitter = "<%= @splitter -%>"
+<% if @splitter then -%>splitter = "<%= @splitter -%>"
 <% end -%>
-<% if @log_decode_failures  then -%>log_decode_failures = <%= @log_decode_failures -%>
+<% if @log_decode_failures != nil then -%>log_decode_failures = <%= @log_decode_failures %>
 <% end -%>
