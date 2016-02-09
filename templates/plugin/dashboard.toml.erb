@@ -1,7 +1,10 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "DashboardOutput"
+# common settings
 <%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
+
+# specific settings
 address = "<%= @host -%>:<%= @port -%>"
 <% if @working_directory then -%>working_directory = "<%= @working_directory -%>"
 <% end -%>
