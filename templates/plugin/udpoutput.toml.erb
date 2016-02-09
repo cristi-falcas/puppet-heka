@@ -1,8 +1,6 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "UdpOutput"
-# common settings
-<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
 
 # specific settings
 address = "<%= @address -%>"
@@ -12,3 +10,5 @@ address = "<%= @address -%>"
 <% end -%>
 <% if @max_message_size then -%>max_message_size = <%= @max_message_size %>
 <% end -%>
+
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>

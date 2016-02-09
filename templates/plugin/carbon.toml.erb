@@ -1,10 +1,10 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "CarbonOutput"
-# common settings
-<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
 
 # specific settings
 address = "<%= @address -%>"
 protocol = "<%= @protocol -%>"
 tcp_keep_alive = "<%= @tcp_keep_alive -%>"
+
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>

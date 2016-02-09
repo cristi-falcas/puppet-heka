@@ -1,8 +1,6 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "AMQPOutput"
-# common settings
-<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
 
 # specific settings
 url = "<%= @address -%>"
@@ -20,6 +18,7 @@ exchange = "<%= @exchange -%>"
 <% if @content_type then -%>content_type = "<%= @content_type -%>"
 <% end -%>
 
-# tls settings
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
+
 use_tls = <%= @use_tls %>
 <%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>

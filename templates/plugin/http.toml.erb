@@ -1,8 +1,6 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "HttpOutput"
-# common settings
-<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
 
 # specific settings
 address = "<%= @address -%>"
@@ -17,6 +15,7 @@ address = "<%= @address -%>"
 <% if @http_timeout then -%>http_timeout = "<%= @http_timeout -%>"
 <% end -%>
 
-# tls settings
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
+
 use_tls = <%= @use_tls %>
 <%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>

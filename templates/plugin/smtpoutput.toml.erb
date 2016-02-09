@@ -1,8 +1,6 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "SmtpOutput"
-# common settings
-<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
 
 # specific settings
 send_from = "<%= @send_from -%>"
@@ -15,3 +13,5 @@ auth = "<%= @auth -%>"
 <% if @password then -%>password = "<%= @password -%>"
 <% end -%>
 send_interval = <%= @send_interval -%>
+
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
