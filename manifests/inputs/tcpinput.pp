@@ -6,11 +6,7 @@
 #
 # $ensure::                      This is used to set the status of the config file: present or absent
 #
-# $splitter::                    Splitter to be used by the input. This should refer to the name of a
-#                                registered splitter plugin configuration. It specifies how the input
-#                                should split the incoming data stream into individual records prior
-#                                to decoding and/or injection to the router. Typically defaults to "NullSplitter",
-#                                although certain inputs override this with a different default value.
+### Common Input Parameters ###
 #
 # $decoder::                     Decoder to be used by the input. This should refer to the name of a registered
 #                                decoder plugin configuration. If supplied, messages will be decoded before being
@@ -32,7 +28,71 @@
 # $can_exit::                    If false, the input plugin exiting will trigger a Heka shutdown. If set to true,
 #                                Heka will continue processing other plugins. Defaults to false on most inputs.
 #
-
+# $splitter::                    Splitter to be used by the input. This should refer to the name of a
+#                                registered splitter plugin configuration. It specifies how the input
+#                                should split the incoming data stream into individual records prior
+#                                to decoding and/or injection to the router. Typically defaults to "NullSplitter",
+#                                although certain inputs override this with a different default value.
+#
+# $log_decode_failures::         If true, then if an attempt to decode a message fails then Heka will log an error message.
+#                                Defaults to true. See also send_decode_failures.
+#
+### TCP Input Parameters
+#
+# $address::                     An IP address:port on which this plugin will listen.
+#
+# $net::                         Network value must be one of: "tcp", "tcp4", "tcp6", "unix" or "unixpacket".
+#
+# $keep_alive::                  Specifies whether or not TCP keepalive should be used for established TCP connections.
+#                                Defaults to false.
+#
+# $keep_alive_period::           Time duration in seconds that a TCP connection will be maintained before keepalive probes start being sent.
+#                                Defaults to 7200 (i.e. 2 hours).
+#
+# $use_tls::                     Specifies whether or not SSL/TLS encryption should be used for the TCP connections.
+#                                Defaults to false.
+#
+### TLS Output Parameters ###
+#
+# $tls_server_name::              Name of the server being requested. Included in the client handshake to support virtual hosting server environments.
+#
+# $tls_cert_file::                Full filesystem path to the certificate file to be presented to the other side of the connection.
+#
+# $tls_key_file::                 Full filesystem path to the specified certificate's associated private key file.
+#
+# $tls_client_auth::              Specifies the server's policy for TLS client authentication.
+#                                 Defaults to "NoClientCert".
+#
+# $tls_ciphers::                  List of cipher suites supported for TLS connections. Earlier suites in the list have priority over
+#                                 those following. If omitted, the implementation's default ordering will be used.
+#
+# $tls_insecure_skip_verify::     If true, TLS client connections will accept any certificate presented by the server and any host
+#                                 name in that certificate. This causes TLS to be susceptible to man-in-the-middle attacks and should
+#                                 only be used for testing.
+#                                 Defaults to false.
+#
+# $tls_prefer_server_ciphers::    If true, a server will always favor the server's specified cipher suite priority order over
+#                                 that requested by the client.
+#                                 Defaults to true.
+#
+# $tls_session_tickets_disabled:: If true, session resumption support as specified in RFC 5077 will be disabled.
+#
+# $tls_session_ticket_key::       Used by the TLS server to provide session resumption per RFC 5077.
+#                                 If left empty, it will be filled with random data before the first server handshake.
+#
+# $tls_min_version::              Specifies the mininum acceptable SSL/TLS version.
+#                                 Defaults to SSL30.
+#
+# $tls_max_version::              Specifies the maximum acceptable SSL/TLS version.
+#                                 Defaults to TLS12.
+#
+# $tls_client_cafile::            File for server to authenticate client TLS handshake. Any client certs recieved by server must
+#                                 be chained to a CA found in this PEM file.
+#                                 Has no effect when NoClientCert is set.
+#
+# $tls_root_cafile::              File for client to authenticate server TLS handshake. Any server certs recieved by client must
+#                                 be must be chained to a CA found in this PEM file.
+#
 define heka::inputs::tcpinput (
   $ensure                       = 'present',
   # Common Input Parameters
@@ -41,12 +101,13 @@ define heka::inputs::tcpinput (
   $send_decode_failures         = false,
   $can_exit                     = undef,
   $splitter                     = 'HekaFramingSplitter',
+  $log_decode_failures          = true,
   # TCP Input
   $address                      = ':514',
-  $use_tls                      = false,
   $net                          = 'tcp',
   $keep_alive                   = false,
   $keep_alive_period            = 7200,
+  $use_tls                      = false,
   # TLS configuration settings
   $tls_server_name              = undef,
   $tls_cert_file                = undef,
@@ -67,11 +128,13 @@ define heka::inputs::tcpinput (
   if $synchronous_decode { validate_bool($synchronous_decode) }
   if $send_decode_failures { validate_bool($send_decode_failures) }
   if $can_exit { validate_bool($can_exit) }
-  validate_string($splitter)
+  if $splitter { validate_string($splitter) }
+  if $log_decode_failures { validate_bool($log_decode_failures) }
   # TCP Input
   validate_string($address)
   validate_bool($use_tls)
   validate_string($net)
+  validate_re($net, '^(tcp|tcp4|tcp6|unix|unixpacket)$')
   validate_bool($keep_alive)
   validate_integer($keep_alive_period)
   # TLS configuration settings
