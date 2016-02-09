@@ -36,11 +36,11 @@
 define heka::inputs::processinput (
   $ensure               = 'present',
   # Common Input Parameters
-  $splitter             = 'TokenSplitter',
   $decoder              = undef,
   $synchronous_decode   = undef,
   $send_decode_failures = undef,
   $can_exit             = undef,
+  $splitter             = 'TokenSplitter',
   $log_decode_failures  = true,
   # ProcessInput specific Parameters
   $command              = undef,
