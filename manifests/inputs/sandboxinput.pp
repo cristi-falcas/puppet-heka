@@ -8,23 +8,10 @@
 #
 # $ensure::                      This is used to set the status of the config file: present or absent
 #
-# $message_matcher::             Boolean expression, when evaluated to true passes the message to the filter for processing.
-#                                Defaults to matching nothing
+### Common Input Parameters::    All of the common input configuration parameters are ignored since the data processing
+#                               (splitting and decoding) should happen in the plugin.
 #
-# $message_signer::              The name of the message signer. If specified only messages with this signer are passed to the
-#                                filter for processing.
-#
-# $ticker_interval::             Frequency (in seconds) that a timer event will be sent to the filter. Defaults to not sending timer
-#                                events.
-#
-# $encoder::                     Encoder to be used by the output. This should refer to the name of an encoder plugin section that
-#                                is specified elsewhere in the TOML configuration.
-#                                Messages can be encoded using the specified encoder by calling the OutputRunner's Encode() method.
-#
-# $use_framing::                 Specifies whether or not Heka's Stream Framing should be applied to the binary data returned from
-#                                the OutputRunner's Encode() method.
-#
-# $can_exit::                    Whether or not this plugin can exit without causing Heka to shutdown. Defaults to false.
+### Common Sandbox Parameters ###
 #
 # $script_type::                 The language the sandbox is written in. Currently the only valid option is 'lua' which is the
 #                                default.
@@ -53,15 +40,8 @@
 # $config::                      A map of configuration variables available to the sandbox via read_config.
 #                                The map consists of a string key with: string, bool, int64, or float64 values.
 #
-
 define heka::inputs::sandboxinput (
   $ensure            = 'present',
-  # Common Output Parameters
-  $message_matcher   = undef,
-  $message_signer    = undef,
-  $ticker_interval   = undef,
-  $use_framing       = undef,
-  $can_exit          = undef,
   # Common Sandbox Parameters
   $script_type       = 'lua',
   $filename,
@@ -72,12 +52,6 @@ define heka::inputs::sandboxinput (
   $module_directory  = undef,
   $config            = undef,
 ) {
-  # Common Output Parameters
-  if $message_matcher { validate_string($message_matcher) }
-  if $message_signer { validate_string($message_signer) }
-  if $ticker_interval { validate_integer($ticker_interval) }
-  if $use_framing { validate_bool($use_framing) }
-  if $can_exit { validate_bool($can_exit) }
   # Common Sandbox Parameters
   validate_string($filename)
   if $preserve_data { validate_bool($preserve_data) }
