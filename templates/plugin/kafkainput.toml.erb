@@ -1,0 +1,42 @@
+# This file is controlled via puppet.
+[<%= @plugin_name -%>]
+type = "KafkaInput"
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
+<% if @id   then -%>id = "<%= @id -%>"
+<% end -%>
+addrs = [
+<% @addrs.each do |val| -%>
+"<%= val -%>",
+<% end -%>
+]
+<% if @metadata_retries   then -%>metadata_retries = <%= @metadata_retries %>
+<% end -%>
+<% if @wait_for_election   then -%>wait_for_election = <%= @wait_for_election %>
+<% end -%>
+<% if @background_refresh_frequency   then -%>background_refresh_frequency = <%= @background_refresh_frequency %>
+<% end -%>
+<% if @max_open_reqests   then -%>max_open_reqests = <%= @max_open_reqests %>
+<% end -%>
+<% if @dial_timeout   then -%>dial_timeout = <%= @dial_timeout %>
+<% end -%>
+<% if @read_timeout   then -%>read_timeout = <%= @read_timeout %>
+<% end -%>
+<% if @write_timeout   then -%>write_timeout = <%= @write_timeout %>
+<% end -%>
+topic = "<%= @topic -%>"
+<% if @partition   then -%>partition = <%= @partition %>
+<% end -%>
+<% if @group   then -%>group = "<%= @group -%>"
+<% end -%>
+<% if @default_fetch_size   then -%>default_fetch_size = <%= @default_fetch_size %>
+<% end -%>
+<% if @min_fetch_size   then -%>min_fetch_size = <%= @min_fetch_size %>
+<% end -%>
+<% if @max_message_size   then -%>max_message_size = <%= @max_message_size %>
+<% end -%>
+<% if @max_wait_time   then -%>max_wait_time = <%= @max_wait_time %>
+<% end -%>
+<% if @offset_method   then -%>offset_method = "<%= @offset_method -%>"
+<% end -%>
+<% if @event_buffer_size   then -%>event_buffer_size = <%= @event_buffer_size %>
+<% end -%>
