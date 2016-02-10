@@ -1,4 +1,3 @@
-<% if @use_buffering then -%>
     # buffering configuration
     [<%= @plugin_name -%>.buffering]
 <% if @max_file_size then -%>    max_file_size = <%= @max_file_size %>
@@ -9,4 +8,3 @@
 <% end -%>
 <% if @cursor_update_count then -%>    cursor_update_count = <%= @cursor_update_count %>
 <% end -%>
-<% end %>
