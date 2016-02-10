@@ -1,7 +1,7 @@
 # sandbox settings
 script_type = "<%= @script_type -%>"
 filename = "<%= @filename -%>"
-<% if @preserve_data != nil then -%>preserve_data = <%= @preserve_data %>
+<% unless [nil, :undefined, :undef].include?(@preserve_data) -%>preserve_data = <%= @preserve_data %>
 <% end -%>
 <% if @memory_limit then -%>memory_limit = <%= @memory_limit %>
 <% end -%>

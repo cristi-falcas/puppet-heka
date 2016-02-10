@@ -16,4 +16,5 @@ http_disable_keepalives = <%= @http_disable_keepalives %>
 
 <%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
 
+# tls settings
 <%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>

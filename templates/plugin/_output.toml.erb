@@ -7,10 +7,13 @@
 <% end -%>
 <% if @encoder then -%>encoder = "<%= @encoder -%>"
 <% end -%>
-<% if @use_framing != nil then -%>use_framing = <%= @use_framing %>
+<% unless [nil, :undefined, :undef].include?(@use_framing) -%>use_framing = <%= @use_framing %>
 <% end -%>
-<% if @can_exit != nil then -%>can_exit = <%= @can_exit %>
+<% unless [nil, :undefined, :undef].include?(@can_exit) -%>can_exit = <%= @can_exit %>
 <% end -%>
-<% if @use_buffering != nil then -%>use_buffering = <%= @use_buffering %>
+<% unless [nil, :undefined, :undef].include?(@use_buffering) -%>use_buffering = <%= @use_buffering %>
+<%= scope.function_template(['heka/plugin/_buffering.toml.erb']) %>
+<% end -%>
+<% if @use_buffering then -%>use_buffering = "<%= @use_buffering -%>"
 <%= scope.function_template(['heka/plugin/_buffering.toml.erb']) %>
 <% end -%>
