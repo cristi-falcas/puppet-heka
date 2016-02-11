@@ -1,8 +1,8 @@
-<% if @keep_truncated           then -%>keep_truncated = "<%= @keep_truncated -%>"
+<% unless [nil, :undefined, :undef].include?(keep_truncated) -%>keep_truncated = <%= @keep_truncated %>
 <% end -%>
-<% if @use_message_bytes        then -%>use_message_bytes = "<%= @use_message_bytes -%>"
+<% unless [nil, :undefined, :undef].include?(@use_message_bytes) -%>use_message_bytes = <%= @use_message_bytes %>
 <% end -%>
-<% if @min_buffer_size          then -%>min_buffer_size = "<%= @min_buffer_size -%>"
+<% if @min_buffer_size then -%>min_buffer_size = <%= @min_buffer_size %>
 <% end -%>
-<% if @deliver_incomplete_final then -%>deliver_incomplete_final = <%= @deliver_incomplete_final %>
+<% unless [nil, :undefined, :undef].include?(@deliver_incomplete_final) -%>deliver_incomplete_final = <%= @deliver_incomplete_final %>
 <% end -%>

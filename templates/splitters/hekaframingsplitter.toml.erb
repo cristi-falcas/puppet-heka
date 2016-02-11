@@ -1,7 +1,7 @@
 [<%= @name -%>]
 type = "HekaFramingSplitter"
 <%= scope.function_template(['heka/splitters/_splitter.toml.erb']) -%>
-skip_authentication = "<%= skip_authentication -%>"
+skip_authentication = <%= @skip_authentication %>
 
 <% if @signer then -%>
 <% @signer.each do |key, value| -%>

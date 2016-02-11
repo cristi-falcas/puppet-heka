@@ -1,8 +1,6 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "FileOutput"
-# common settings
-<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
 
 # specific settings
 path = "<%= @path -%>"
@@ -12,3 +10,5 @@ flush_interval = <%= @flush_interval %>
 flush_count = <%= @flush_count %>
 flush_operator = "<%= @flush_operator -%>"
 rotation_interval = <%= @rotation_interval %>
+
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>

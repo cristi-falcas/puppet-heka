@@ -1,20 +1,20 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "ProcessInput"
-# common settings
-<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
 
 # specific settings
 <% if @ticker_interval then -%>ticker_interval = <%= @ticker_interval %>
 <% end -%>
-<% if @immediate_start != nil then -%>immediate_start = <%= @immediate_start %>
+<% unless [nil, :undefined, :undef].include?(@immediate_start) -%>immediate_start = <%= @immediate_start %>
 <% end -%>
-<% if @stdout != nil then -%>stdout = <%= @stdout %>
+<% unless [nil, :undefined, :undef].include?(@stdout) -%>stdout = <%= @stdout %>
 <% end -%>
-<% if @stderr != nil then -%>stderr = <%= @stderr %>
+<% unless [nil, :undefined, :undef].include?(@stderr) -%>stderr = <%= @stderr %>
 <% end -%>
 <% if @timeout then -%>timeout = <%= @timeout %>
 <% end -%>
+
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
 
 <% @command.each_with_index do |item, index| -%>
 [<%= @plugin_name -%>.command.<%= index -%>]

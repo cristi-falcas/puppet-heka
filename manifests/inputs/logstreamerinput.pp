@@ -46,11 +46,11 @@
 define heka::inputs::logstreamerinput (
   $ensure               = 'present',
   # Common Input Parameters
-  $decoder              = 'TokenSplitter',
+  $decoder              = undef,
   $synchronous_decode   = false,
   $send_decode_failures = false,
   $can_exit             = undef,
-  $splitter             = undef,
+  $splitter             = 'TokenSplitter',
   $log_decode_failures  = true,
   # LogstreamerInput specific Parameters
   $hostname             = undef,

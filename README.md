@@ -18,6 +18,8 @@ processing of collected data, and delivering the results to any number of destin
 
 ## Module Description
 
+Current version only works with heka 0.10.
+
 If applicable, this section should have a brief description of the technology
 the module integrates with and what that integration enables. This section
 should answer the questions: "What does this module *do*?" and "Why would I use
