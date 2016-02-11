@@ -1,7 +1,8 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "KafkaInput"
-<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
+
+#specific settings
 <% if @id   then -%>id = "<%= @id -%>"
 <% end -%>
 addrs = [
@@ -40,3 +41,5 @@ topic = "<%= @topic -%>"
 <% end -%>
 <% if @event_buffer_size   then -%>event_buffer_size = <%= @event_buffer_size %>
 <% end -%>
+
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>

@@ -4,6 +4,10 @@
 #
 # $ensure::                      	This is used to set the status of the config file: present or absent
 #
+### Common Output Parameters::  	Check heka::outputs::tcpoutput for the description
+#
+### Kafka Output Parameters
+#
 # $message_matcher::             	Boolean expression, when evaluated to true passes the message to the filter for processing.
 #                                	Defaults to matching nothing
 #

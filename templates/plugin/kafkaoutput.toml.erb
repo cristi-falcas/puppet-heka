@@ -1,7 +1,8 @@
 # This file is controlled via puppet.
 [<%= @plugin_name -%>]
 type = "KafkaOutput"
-<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
+
+# specific settings
 <% if @id   then -%>id = "<%= @id -%>"
 <% end -%>
 addrs = [
@@ -42,3 +43,5 @@ topic = "<%= @topic -%>"
 <% end -%>
 <% if @back_pressure_threshold_bytes   then -%>back_pressure_threshold_bytes = <%= @back_pressure_threshold_bytes %>
 <% end -%>
+
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
