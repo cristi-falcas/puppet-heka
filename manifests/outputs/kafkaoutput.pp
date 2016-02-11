@@ -90,6 +90,11 @@ define heka::outputs::kafkaoutput (
   $encoder                              = 'ProtobufEncoder',
   $use_framing                          = undef,
   $can_exit                             = undef,
+  # Buffering
+  $max_file_size                        = undef,
+  $max_buffer_size                      = undef,
+  $full_action                          = undef,
+  $cursor_update_count                  = undef,
   # Kafka Output
   $id                                   = undef,
   $addrs,
@@ -117,6 +122,11 @@ define heka::outputs::kafkaoutput (
   if $encoder { validate_string($encoder) }
   if $use_framing { validate_bool($use_framing) }
   if $can_exit { validate_bool($can_exit) }
+  # Buffering
+  if $max_file_size { validate_integer($max_file_size) }
+  if $max_buffer_size { validate_integer($max_buffer_size) }
+  if $full_action { validate_re($full_action, '^(shutdown|drop|block)$') }
+  if $cursor_update_count { validate_integer($cursor_update_count) }
   # Kafka Output
   if $id { validate_string($id) }
   validate_array($addrs)
