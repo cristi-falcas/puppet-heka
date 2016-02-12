@@ -1,0 +1,47 @@
+# This file is controlled via puppet.
+[<%= @plugin_name -%>]
+type = "KafkaOutput"
+
+# specific settings
+<% if @id   then -%>id = "<%= @id -%>"
+<% end -%>
+addrs = [
+<% @addrs.each do |val| -%>
+"<%= val -%>",
+<% end -%>
+]
+<% if @metadata_retries   then -%>metadata_retries = <%= @metadata_retries %>
+<% end -%>
+<% if @wait_for_election   then -%>wait_for_election = <%= @wait_for_election %>
+<% end -%>
+<% if @background_refresh_frequency   then -%>background_refresh_frequency = <%= @background_refresh_frequency %>
+<% end -%>
+<% if @max_open_reqests   then -%>max_open_reqests = <%= @max_open_reqests %>
+<% end -%>
+<% if @dial_timeout   then -%>dial_timeout = <%= @dial_timeout %>
+<% end -%>
+<% if @read_timeout   then -%>read_timeout = <%= @read_timeout %>
+<% end -%>
+<% if @write_timeout   then -%>write_timeout = <%= @write_timeout %>
+<% end -%>
+<% if @partitioner   then -%>partitioner = "<%= @partitioner -%>"
+<% end -%>
+<% if @hash_variable   then -%>hash_variable = "<%= @hash_variable -%>"
+<% end -%>
+<% if @topic_variable   then -%>topic_variable = "<%= @topic_variable -%>"
+<% end -%>
+topic = "<%= @topic -%>"
+<% if @required_acks   then -%>required_acks = "<%= @required_acks -%>"
+<% end -%>
+<% if @timeout   then -%>timeout = <%= @timeout %>
+<% end -%>
+<% if @compression_codec   then -%>compression_codec = "<%= @compression_codec -%>"
+<% end -%>
+<% if @max_buffer_time   then -%>max_buffer_time = <%= @max_buffer_time %>
+<% end -%>
+<% if @max_buffered_bytes   then -%>max_buffered_bytes = <%= @max_buffered_bytes %>
+<% end -%>
+<% if @back_pressure_threshold_bytes   then -%>back_pressure_threshold_bytes = <%= @back_pressure_threshold_bytes %>
+<% end -%>
+
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
