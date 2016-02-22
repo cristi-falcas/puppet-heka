@@ -1,0 +1,13 @@
+# This file is controlled via puppet.
+[<%= @name -%>]
+type = "ProcessDirectoryInput"
+
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
+
+# specific settings
+<% if @ticker_interval then -%>ticker_interval = <%= @ticker_interval %>
+<% end -%>
+<% if @process_dir then -%>process_dir = <%= @process_dir %>
+<% end -%>
+
+<%= scope.function_template(['heka/plugin/_retries.toml.erb']) %>
