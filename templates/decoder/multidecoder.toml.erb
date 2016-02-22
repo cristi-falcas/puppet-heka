@@ -1,7 +1,7 @@
 [<%= @name -%>]
 type = "MultiDecoder"
 subs = [<%= subs.map! {|sub| "'"+sub+"'"}.join(",") -%>]
-<% if @cascade_strategy then -%>cascade_strategy = "<%= @cascade_strategy -%>"
+<% unless [nil, :undefined, :undef].include?(@log_sub_errors) -%>log_sub_errors = "<%= @log_sub_errors -%>"
 <% end -%>
-<% if @log_sub_errors then -%>log_sub_errors = "<%= @log_sub_errors -%>"
+<% if @cascade_strategy then -%>cascade_strategy = "<%= @cascade_strategy -%>"
 <% end -%>
