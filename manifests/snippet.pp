@@ -25,9 +25,10 @@ define heka::snippet ($ensure = 'file', $content = undef, $source = undef,) {
 
   file { "/etc/heka/${name}.toml":
     ensure  => $ensure,
+    owner   => 'root',
+    group   => 'root',
     content => $content,
     source  => $source,
     notify  => Service['heka'],
-    require => Class['heka::config'],
   }
 }
