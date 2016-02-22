@@ -3,45 +3,56 @@
 #
 # === Parameters:
 #
-# $ensure::                      This is used to set the status of the config file: present or absent
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
-### Common Input Parameters::   Check heka::inputs::tcpinput for the description
+### Common Input Parameters::     Check heka::inputs::tcpinput for the description
 #
 ### Logstreamer Input Parameters
 #
-# $hostname::                    The hostname to use for the messages, by default this will be the machine's qualified hostname.
-#                                This can be set explicitly to ensure it's the correct name in the event the machine has multiple
-#                                interfaces/hostnames.
+# $hostname::                     The hostname to use for the messages, by default this will be the machine's qualified hostname.
+#                                 This can be set explicitly to ensure it's the correct name in the event the machine has multiple
+#                                 interfaces/hostnames.
+#                                 Type: string
 #
-# $oldest_duration::             A time duration string (e.x. "2s", "2m", "2h"). Logfiles with a last modified time older than
-#                                oldest_duration ago will not be included for parsing. Defaults to "720h" (720 hours, i.e. 30 days).
+# $oldest_duration::              A time duration string (e.x. "2s", "2m", "2h"). Logfiles with a last modified time older than
+#                                 oldest_duration ago will not be included for parsing.
+#                                 Defaults to "720h" (720 hours, i.e. 30 days).
+#                                 Type: string
 #
-# $journal_directory::           The directory to store the journal files in for tracking the location that has been read to thus
-#                                far. By default this is stored under heka's base directory.
+# $journal_directory::            The directory to store the journal files in for tracking the location that has been read to thus
+#                                 far.
+#                                 Default: heka's base directory.
+#                                 Type: string
 #
-# $log_directory::               The root directory to scan files from. This scan is recursive so it should be suitably restricted
-#                                to the most specific directory this selection of logfiles will be matched under. The log_directory
-#                                path will be prepended to the file_match.
+# $log_directory::                The root directory to scan files from. This scan is recursive so it should be suitably restricted
+#                                 to the most specific directory this selection of logfiles will be matched under. The log_directory
+#                                 path will be prepended to the file_match.
+#                                 Type: string
 #
-# $rescan_interval::             During logfile rotation, or if the logfile is not originally present on the system, this interval
-#                                is how often the existence of the logfile will be checked for. The default of 5 seconds is usually
-#                                fine. This interval is in milliseconds.
+# $rescan_interval::              During logfile rotation, or if the logfile is not originally present on the system, this interval
+#                                 is how often the existence of the logfile will be checked for. This interval is in milliseconds.
+#                                 Default of 5 seconds
+#                                 Type: int
 #
-# $file_match::                  Regular expression used to match files located under the log_directory. This regular expression has $
-#                                added to the end automatically if not already present, and log_directory as the prefix. WARNING:
-#                                file_match should typically be delimited with single quotes, indicating use of a raw string, rather
-#                                than double quotes, which require all backslashes to be escaped. For example, 'access\.log' will
-#                                work as expected, but "access\.log" will not, you would need "access\\.log" to achieve the same result.
+# $file_match::                   Regular expression used to match files located under the log_directory. This regular expression has $
+#                                 added to the end automatically if not already present, and log_directory as the prefix.
+#                                 WARNING: file_match should typically be delimited with single quotes, indicating use of a raw string, rather
+#                                 than double quotes, which require all backslashes to be escaped. For example, 'access\.log' will
+#                                 work as expected, but "access\.log" will not, you would need "access\\.log" to achieve the same result.
+#                                 Type: string
 #
-# $priority::                    When using sequential logstreams, the priority is how to sort the logfiles in order from oldest to
-#                                newest.
+# $priority::                     When using sequential logstreams, the priority is how to sort the logfiles in order from oldest to
+#                                 newest.
+#                                 Type: string
 #
-# $differentiator::              When using multiple logstreams, the differentiator is a set of strings that will be used in the
-#                                naming of the logger, and portions that match a captured group from the file_match will have their
-#                                matched
-#                                value substituted in.
+# $differentiator::               When using multiple logstreams, the differentiator is a set of strings that will be used in the
+#                                 naming of the logger, and portions that match a captured group from the file_match will have their
+#                                 matched value substituted in.
+#                                 Type: [string]
 #
-# $translation::                 A set of translation mappings for matched groupings to the ints to use for sorting purposes.
+# $translation::                  A set of translation mappings for matched groupings to the ints to use for sorting purposes.
+#                                 Type: hash of hashes, or array of hash of hashes ($translation = {'Month' => {'hadukannas' => 1}})
 #
 define heka::inputs::logstreamerinput (
   $ensure               = 'present',
@@ -63,6 +74,7 @@ define heka::inputs::logstreamerinput (
   $differentiator       = undef,
   $translation          = undef,
 ) {
+  validate_re($ensure, '^(present|absent)$')
   # Common Input Parameters
   if $decoder { validate_string($decoder) }
   if $synchronous_decode { validate_bool($synchronous_decode) }
@@ -81,8 +93,8 @@ define heka::inputs::logstreamerinput (
   if $differentiator { validate_array($differentiator) }
   if $translation { validate_hash($translation) }
 
-  $plugin_name = "logstreamerinput_${name}"
-  heka::snippet { $plugin_name:
+  $full_name = "logstreamerinput_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/logstreamerinput.toml.erb"),
   }

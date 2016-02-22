@@ -1,9 +1,9 @@
 # This file is controlled via puppet.
-[<%= @plugin_name -%>]
+[<%= @name -%>]
 type = "FilePollingInput"
+
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
 
 # specific settings
 file_path = "<%= file_path -%>"
 ticker_interval = <%= ticker_interval -%>
-
-<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
