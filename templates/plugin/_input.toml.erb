@@ -11,3 +11,5 @@
 <% end -%>
 <% unless [nil, :undefined, :undef].include?(@log_decode_failures) -%>log_decode_failures = <%= @log_decode_failures %>
 <% end -%>
+<% unless [nil, :undefined, :undef].include?(@use_tls) then -%>use_tls = <%= @use_tls %>
+<% end %>

@@ -1,0 +1,33 @@
+# This file is controlled via puppet.
+[<%= @name -%>]
+type = "AMQPInput"
+
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
+
+# specific settings
+url = "<%= @address -%>"
+exchange = "<%= @exchange -%>"
+exchange_type = "<%= @exchange_type -%>"
+<% unless [nil, :undefined, :undef].include?(@exchange_durability) -%>exchange_durability = "<%= @exchange_durability -%>"
+<% end -%>
+<% unless [nil, :undefined, :undef].include?(@exchange_auto_delete) -%>exchange_auto_delete = "<%= @exchange_auto_delete -%>"
+<% end -%>
+<% if @routing_key then -%>routing_key = "<%= @routing_key -%>"
+<% end -%>
+<% if @prefetch_count then -%>prefetch_count = "<%= @prefetch_count -%>"
+<% end -%>
+<% if @queue then -%>queue = "<%= @queue -%>"
+<% end -%>
+<% unless [nil, :undefined, :undef].include?(@queue_durability) -%>queue_durability = "<%= @queue_durability -%>"
+<% end -%>
+<% unless [nil, :undefined, :undef].include?(@queue_exclusive) -%>queue_exclusive = "<%= @queue_exclusive -%>"
+<% end -%>
+<% unless [nil, :undefined, :undef].include?(@queue_auto_delete) -%>queue_auto_delete = "<%= @queue_auto_delete -%>"
+<% end -%>
+<% if @queue_ttl then -%>queue_ttl = "<%= @queue_ttl -%>"
+<% end -%>
+<% unless [nil, :undefined, :undef].include?(@read_only) -%>read_only = "<%= @read_only -%>"
+<% end -%>
+
+<%= scope.function_template(['heka/plugin/_retries.toml.erb']) %>
+<%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>
