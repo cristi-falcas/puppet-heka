@@ -3,7 +3,8 @@
 #
 # === Parameters:
 #
-# $ensure::                      This is used to set the status of the config file: present or absent
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
 # $keep_truncated::              If true, then any records that exceed the capacity of the input buffer
 #                                will still be delivered in their truncated form. If false, then these records will be dropped.
@@ -32,6 +33,8 @@
 #                                before an EOF.
 #                                Defaults to false.
 #
+### Heka Splitter Parameters
+#
 # $signer::                      Optional TOML subsection. Section name consists of a signer name, underscore, and numeric version
 #                                of the key.
 #
@@ -41,7 +44,6 @@
 #                                Setting this to true will do so.
 #                                Defaults to false.
 #
-
 define heka::splitters::hekaframingsplitter (
   $ensure                   = 'present',
   # Common Splitter Parameters
@@ -49,19 +51,20 @@ define heka::splitters::hekaframingsplitter (
   $use_message_bytes        = true,
   $min_buffer_size          = undef,
   $deliver_incomplete_final = false,
-  # Token Splitter Parameters
+  # Heka Splitter Parameters
   $signer                   = undef,
   $skip_authentication      = false,
 ) {
-  validate_string($ensure)
+  validate_re($ensure, '^(present|absent)$')
   validate_bool($keep_truncated)
+  if $use_message_bytes { validate_bool($use_message_bytes) }
+  if $min_buffer_size { validate_integer($min_buffer_size) }
   validate_bool($deliver_incomplete_final)
   validate_string($signer)
   validate_bool($skip_authentication)
 
-  $plugin_name = "hekaframingsplitter_${name}"
-
-  heka::snippet { $plugin_name:
+  $full_name = "hekaframingsplitter_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/splitters/hekaframingsplitter.toml.erb"),
   }
