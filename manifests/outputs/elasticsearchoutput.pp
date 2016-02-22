@@ -6,42 +6,54 @@
 #
 # === Parameters:
 #
-# $ensure::                     This is used to set the status of the config file: present or absent
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
-### Common Output Parameters::  Check heka::outputs::tcpoutput for the description
+### Common Output Parameters::    Check heka::outputs::tcpoutput for the description
 #
-# $flush_interval::             Interval at which accumulated messages should be bulk indexed into ElasticSearch,
-#                               in milliseconds.
-#                               Defaults to 1000 (i.e. one second).
+### Common TLS Parameters::       Check heka::outputs::tcpoutput for the description
 #
-# $flush_count::                Number of messages that, if processed, will trigger them to be bulk indexed into ElasticSearch.
-#                               Defaults to 10.
+### ElasticSearch Output
 #
-# $server::                     ElasticSearch server URL. Supports http://, https:// and udp:// urls.
-#                               Defaults to "http://localhost:9200".
+# $flush_interval::               Interval at which accumulated messages should be bulk indexed into ElasticSearch,
+#                                 in milliseconds.
+#                                 Defaults to 1000 (i.e. one second).
+#                                 Type: int
 #
-# $connect_timeout::            Time in milliseconds to wait for a server name resolving and connection to ES.
-#                               It's included in an overall time (see 'http_timeout' option), if they both are set.
-#                               Default is 0 (no timeout).
+# $flush_count::                  Number of messages that, if processed, will trigger them to be bulk indexed into ElasticSearch.
+#                                 Defaults to 10.
+#                                 Type: int
 #
-# $http_timeout::               Time in milliseconds to wait for a response for each http post to ES.
-#                               This may drop data as there is currently no retry.
-#                               Default is 0 (no timeout).
+# $server::                       ElasticSearch server URL. Supports http://, https:// and udp:// urls.
+#                                 Defaults to "http://localhost:9200".
+#                                 Type: string
 #
-# $http_disable_keepalives::    Specifies whether or not re-using of established TCP connections to ElasticSearch should be disabled.
-#                               Defaults to false, that means using both HTTP keep-alive mode and TCP keep-alives.
-#                               Set it to true to close each TCP connection after 'flushing' messages to ElasticSearch.
+# $connect_timeout::              Time in milliseconds to wait for a server name resolving and connection to ES.
+#                                 It's included in an overall time (see 'http_timeout' option), if they both are set.
+#                                 Default is 0 (no timeout).
+#                                 Type: int
 #
-# $username::                   The username to use for HTTP authentication against the ElasticSearch host.
-#                               Defaults to "" (i. e. no authentication).
+# $http_timeout::                 Time in milliseconds to wait for a response for each http post to ES.
+#                                 This may drop data as there is currently no retry.
+#                                 Default is 0 (no timeout).
+#                                 Type: int
 #
-# $password::                   The password to use for HTTP authentication against the ElasticSearch host.
-#                               Defaults to "" (i. e. no authentication).
+# $http_disable_keepalives::      Specifies whether or not re-using of established TCP connections to ElasticSearch should be disabled.
+#                                 Defaults to false, that means using both HTTP keep-alive mode and TCP keep-alives.
+#                                 Set it to true to close each TCP connection after 'flushing' messages to ElasticSearch.
+#                                 Type: bool
 #
-# $use_tls::                     Specifies whether or not SSL/TLS encryption should be used for the TCP connections.
-#                                Defaults to false.
+# $username::                     The username to use for HTTP authentication against the ElasticSearch host.
+#                                 Defaults to "" (i. e. no authentication).
+#                                 Type: string
 #
-### Common TLS Parameters::      Check heka::outputs::tcpoutput for the description
+# $password::                     The password to use for HTTP authentication against the ElasticSearch host.
+#                                 Defaults to "" (i. e. no authentication).
+#                                 Type: string
+#
+# $use_tls::                      Specifies whether or not SSL/TLS encryption should be used for the TCP connections.
+#                                 Defaults to false.
+#                                 Type: string
 #
 define heka::outputs::elasticsearchoutput (
   $ensure                       = 'present',
@@ -67,8 +79,8 @@ define heka::outputs::elasticsearchoutput (
   $http_disable_keepalives      = false,
   $username                     = undef,
   $password                     = undef,
-  $use_tls                      = false,
   # TLS configuration settings
+  $use_tls                      = false,
   $tls_server_name              = undef,
   $tls_cert_file                = undef,
   $tls_key_file                 = undef,
@@ -83,6 +95,7 @@ define heka::outputs::elasticsearchoutput (
   $tls_client_cafile            = undef,
   $tls_root_cafile              = undef,
 ) {
+  validate_re($ensure, '^(present|absent)$')
   # Common Output Parameters
   if $message_matcher { validate_string($message_matcher) }
   if $message_signer { validate_string($message_signer) }
@@ -121,9 +134,9 @@ define heka::outputs::elasticsearchoutput (
   if $tls_client_cafile { validate_string($tls_client_cafile) }
   if $tls_root_cafile { validate_string($tls_root_cafile) }
 
-  $plugin_name = "elasticsearch_${name}"
-  heka::snippet { $plugin_name:
+  $full_name = "elasticsearch_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
-    content => template("${module_name}/plugin/elasticsearch.toml.erb"),
+    content => template("${module_name}/plugin/elasticsearchoutput.toml.erb"),
   }
 }
