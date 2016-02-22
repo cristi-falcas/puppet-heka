@@ -3,7 +3,18 @@
 #
 # === Parameters: none
 #
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
+#
+define heka::encoder::rstencoder (
+  $ensure = 'present',
+) {
+  validate_re($ensure, '^(present|absent)$')
 
-define heka::encoder::rstencoder {
-  heka::snippet { $name: content => template("${module_name}/encoder/rstencoder.toml.erb"), }
+  $decoder_type = 'RstEncoder'
+
+  heka::snippet { $name:
+    ensure  => $ensure,
+    content => template("${module_name}/noparamsxxcoder.toml.erb"),
+  }
 }
