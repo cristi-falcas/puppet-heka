@@ -3,41 +3,30 @@
 #
 # === Parameters:
 #
-# $preserve_data::                True if the sandbox global data should be preserved/restored on plugin shutdown/startup.
-#                                 When true this works in conjunction with a global Lua _PRESERVATION_VERSION variable which
-#                                 is examined during restoration; if the previous version does not match the current version
-#                                 the restoration will be aborted and the sandbox will start cleanly. _PRESERVATION_VERSION should
-#                                 be incremented any time an incompatible change is made to the global data schema. If no version
-#                                 is set the check will always succeed and a version of zero is assumed.
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
-# $memory_limit::                 The number of bytes the sandbox is allowed to consume before being terminated (default 8MiB).
+### Check heka::decoder::sandboxdecoder for common parameters
 #
-# $instruction_limit::            The number of instructions the sandbox is allowed to execute during the
-#                                 process_message/timer_event functions before being terminated (default 1M).
-#
-# $output_limit::                 The number of bytes the sandbox output buffer can hold before being terminated (default 63KiB).
-#                                 Warning: messages exceeding 64KiB will generate an error and be discarded by the standard output
-#                                 plugins (File, TCP, UDP) since they exceed the maximum message size.
-#
-# $module_directory::             The directory where 'require' will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
-#
-# $index::                        (string, optional, default "heka-%{%Y.%m.%d}")
-#                                 String to use as the _index key's value in the generated JSON.
+### ElasticSearch Payload Parameters
+# $index::                        String to use as the _index key's value in the generated JSON.
 #                                 Supports field interpolation as described below.
+#                                 Default "heka-%{%Y.%m.%d}"
+#                                 Type: string
 #
-# $type_name::                    (string, optional, default "message")
-#                                 String to use as the _type key's value in the generated JSON.
+# $type_name::                    String to use as the _type key's value in the generated JSON.
+#                                 Type: string
 #
-# $es_index_from_timestamp::      (boolean, optional)
-#                                 If true, then any time interpolation (often used to generate the ElasticSeach index)
+# $es_index_from_timestamp::      If true, then any time interpolation (often used to generate the ElasticSeach index)
 #                                 will use the timestamp from the processed message rather than the system time.
+#                                 Type: string
 #
-# $id::                           (string, optional)
-#                                 String to use as the _id key's value in the generated JSON.
+# $id::                           String to use as the _id key's value in the generated JSON.
 #                                 Supports field interpolation as described below
+#                                 Type: bool
 #
-
 define heka::encoder::es_payload (
+  $ensure                  = 'present',
   # Common Sandbox Parameters
   $preserve_data           = undef,
   $memory_limit            = undef,
@@ -50,18 +39,32 @@ define heka::encoder::es_payload (
   $es_index_from_timestamp = false,
   $id                      = undef,
 ) {
+  validate_re($ensure, '^(present|absent)$')
+  # Common Sandbox Parameters
+  if $preserve_data { validate_bool($preserve_data) }
+  if $memory_limit { validate_integer($memory_limit) }
+  if $instruction_limit { validate_integer($instruction_limit) }
+  if $output_limit { validate_integer($output_limit) }
+  if $module_directory { validate_string($module_directory) }
+  # ElasticSearch Parameters
   validate_string($index)
   validate_string($type_name)
   validate_bool($es_index_from_timestamp)
   if $id { validate_string($id) }
 
-  heka::encoder::sandboxencoder { $name:
-    filename => 'lua_encoders/es_payload.lua',
-    config   => {
-      index                   => $index,
-      type_name               => $type_name,
-      es_index_from_timestamp => $es_index_from_timestamp,
-      id                      => $id,
-    },
+  $sandbox_type = 'SandboxEncoder'
+  $script_type = 'lua'
+  $filename = 'lua_encoders/es_payload.lua'
+  $config = {
+    'index'                   => $index,
+    'type_name'               => $type_name,
+    'es_index_from_timestamp' => $es_index_from_timestamp,
+    'id'                      => $id,
+  }
+
+  $full_name = "es_payload_${name}"
+  heka::snippet { $full_name:
+    ensure  => $ensure,
+    content => template("${module_name}/sandbox.toml.erb"),
   }
 }
