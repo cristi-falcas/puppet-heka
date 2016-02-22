@@ -164,3 +164,23 @@ Collect nginx logs:
 * Fork the project
 * Commit and push until you are happy with your contribution
 * Send a pull request with a description of your changes
+
+Templates standards:
+
+* bool variables should be checked with this rule if they can have undef as a default value (this allowes to set the variable to false):
+
+    <% unless [nil, :undefined, :undef].include?(@variable_name) -%>variable_name = "<%= @variable_name -%>"
+    <% end -%>
+
+* array variables:
+
+    variable_array = [<%= [variable_array].flatten.map! {|sub| "'"+sub+"'"}.join(",") -%>]
+
+* objects:
+
+    <% if @variable_name then -%>
+    [<%= @name -%>.variable_name]
+    <% variable_name.each do |key, value| -%>
+    <%= key -%> = "<%= value -%>"
+    <% end -%>
+    <% end -%>
