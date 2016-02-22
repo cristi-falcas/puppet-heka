@@ -60,7 +60,9 @@ define heka::outputs::httpoutput (
   $full_action                  = undef,
   $cursor_update_count          = undef,
   # HTTP Output Parameters
+  # lint:ignore:parameter_order
   $address,
+  # lint:endignore
   $method                       = undef,
   $username                     = undef,
   $password                     = undef,

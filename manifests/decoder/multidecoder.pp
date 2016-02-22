@@ -29,7 +29,9 @@
 define heka::decoder::multidecoder (
   $ensure           = 'present',
   # MultiDecoder Parameters
+  # lint:ignore:parameter_order
   $subs,
+  # lint:endignore
   $log_sub_errors   = false,
   $cascade_strategy = undef,
 ){

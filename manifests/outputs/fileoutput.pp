@@ -54,7 +54,9 @@ define heka::outputs::fileoutput (
   $full_action         = undef,
   $cursor_update_count = undef,
   # File Output Parameters
+  # lint:ignore:parameter_order
   $path,
+  # lint:endignore
   $perm                = '644',
   $folder_perm         = '700',
   $flush_interval      = 1000,

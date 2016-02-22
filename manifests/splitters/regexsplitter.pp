@@ -27,7 +27,9 @@ define heka::splitters::regexsplitter (
   $min_buffer_size          = undef,
   $deliver_incomplete_final = false,
   # Token Splitter Parameters
+  # lint:ignore:parameter_order
   $delimiter,
+  # lint:endignore
   $delimiter_eol            = true,
 ) {
   validate_re($ensure, '^(present|absent)$')

@@ -45,7 +45,9 @@ define heka::inputs::sandboxinput (
   $ensure            = 'present',
   # Common Sandbox Parameters
   $script_type       = 'lua',
+  # lint:ignore:parameter_order
   $filename,
+  # lint:endignore
   $preserve_data     = undef,
   $memory_limit      = undef,
   $instruction_limit = undef,

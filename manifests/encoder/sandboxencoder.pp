@@ -44,7 +44,9 @@
 define heka::encoder::sandboxencoder (
   $ensure            = 'present',
   # Common Sandbox Parameters
+  # lint:ignore:parameter_order
   $filename,
+  # lint:endignore
   $script_type       = 'lua',
   $preserve_data     = undef,
   $memory_limit      = undef,

@@ -67,9 +67,11 @@ define heka::inputs::logstreamerinput (
   $hostname             = undef,
   $oldest_duration      = undef,
   $journal_directory    = undef,
+  # lint:ignore:parameter_order
   $log_directory,
-  $rescan_interval      = undef,
   $file_match,
+  # lint:endignore
+  $rescan_interval      = undef,
   $priority             = undef,
   $differentiator       = undef,
   $translation          = undef,

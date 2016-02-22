@@ -154,7 +154,7 @@
 define heka::outputs::tcpoutput (
   $ensure                       = 'present',
   # Common Output Parameters
-  $message_matcher,
+  $message_matcher              = undef,
   $message_signer               = undef,
   $ticker_interval              = undef,
   $encoder                      = 'ProtobufEncoder',

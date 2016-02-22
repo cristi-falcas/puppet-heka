@@ -46,7 +46,7 @@
 define heka::outputs::sandboxoutput (
   $ensure                  = 'present',
   # Common Output Parameters
-  $message_matcher,
+  $message_matcher         = undef,
   $message_signer          = undef,
   $ticker_interval         = undef,
   $use_framing             = undef,
@@ -59,7 +59,9 @@ define heka::outputs::sandboxoutput (
   $cursor_update_count     = undef,
   # Common Sandbox Parameters
   $script_type             = 'lua',
+  # lint:ignore:parameter_order
   $filename,
+  # lint:endignore
   $preserve_data           = undef,
   $memory_limit            = undef,
   $instruction_limit       = undef,

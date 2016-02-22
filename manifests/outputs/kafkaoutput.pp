@@ -90,7 +90,7 @@
 define heka::outputs::kafkaoutput (
   $ensure                        = 'present',
   # Common Output Parameters
-  $message_matcher,
+  $message_matcher               = undef,
   $message_signer                = undef,
   $encoder                       = 'ProtobufEncoder',
   $use_framing                   = undef,
