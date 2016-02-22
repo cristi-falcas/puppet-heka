@@ -49,15 +49,15 @@
 #                                 Type: string
 #
 # $hash_variable::                The message variable used for the Hash partitioner only. The variables are restricted to Type, Logger,
-#                                 Hostname, Payload or any of the message’s dynamic field values. All dynamic field values will be converted to a
+#                                 Hostname, Payload or any of the message's dynamic field values. All dynamic field values will be converted to a
 #                                 string representation. Field specifications are the same as with the Message Matcher Syntax e.g. Fields[foo][0][0].
 #                                 Type: string
 #
-# $topic_variable::               The message variable used as the Kafka topic (cannot be used in conjunction with the ‘topic’ configuration).
+# $topic_variable::               The message variable used as the Kafka topic (cannot be used in conjunction with the 'topic' configuration).
 #                                 The variable restrictions are the same as the hash_variable.
 #                                 Type: string
 #
-# $topic::                        A static Kafka topic (cannot be used in conjunction with the ‘topic_variable’ configuration).
+# $topic::                        A static Kafka topic (cannot be used in conjunction with the 'topic_variable' configuration).
 #                                 Type: string
 #
 # $required_acks::                The level of acknowledgement reliability needed from the broker.
