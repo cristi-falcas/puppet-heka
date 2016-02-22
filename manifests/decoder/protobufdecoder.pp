@@ -3,9 +3,20 @@
 # in your Heka configuration under the name "ProtobufDecoder", whether specified or not.
 # The ProtobufDecoder has no configuration options.
 #
-# === Parameters: none
+# === Parameters
 #
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
+#
+define heka::decoder::protobufdecoder (
+  $ensure = 'present',
+) {
+  validate_re($ensure, '^(present|absent)$')
 
-define heka::decoder::protobufdecoder {
-  heka::snippet { $name: content => template("${module_name}/decoder/protobufdecoder.toml.erb"), }
+  $decoder_type = 'ProtobufDecoder'
+
+  heka::snippet { $name:
+    ensure  => $ensure,
+    content => template("${module_name}/noparamsxxcoder.toml.erb"),
+  }
 }
