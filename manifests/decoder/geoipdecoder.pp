@@ -1,5 +1,5 @@
 # Decoder plugin that generates GeoIP data based on the IP address of a specified field.
-# It uses the GeoIP Go project as a wrapper around MaxMind’s geoip-api-c library, and thus assumes
+# It uses the GeoIP Go project as a wrapper around MaxMind's geoip-api-c library, and thus assumes
 # you have the library downloaded and installed. Currently, only the GeoLiteCity database is supported,
 # which you must also download and install yourself into a location to be referenced by the db_file config option.
 # By default the database file is opened using "GEOIP_MEMORY_CACHE" mode.
