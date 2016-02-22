@@ -1,6 +1,5 @@
 # Default parameters for heka module
 class heka::params {
-
   case $::operatingsystem {
     'RedHat', 'CentOS', 'Fedora', 'Scientific', 'OracleLinux': {
       if versioncmp($::operatingsystemmajrelease, '7') >= 0 {
@@ -35,8 +34,6 @@ class heka::params {
   }
 
   $package_ensure = 'installed'
-  $service_ensure = 'running'
-  $service_enable = true
   $cpuprof = undef
   $max_message_loops = 4
   $max_process_inject = 1
@@ -54,5 +51,4 @@ class heka::params {
   $hostname = undef
   $max_message_size = 65536
   $logrotate = true
-
 }
