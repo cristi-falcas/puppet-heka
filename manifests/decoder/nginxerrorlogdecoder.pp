@@ -3,48 +3,53 @@
 #
 # === Parameters:
 #
-# $preserve_data::                True if the sandbox global data should be preserved/restored on plugin shutdown/startup.
-#                                 When true this works in conjunction with a global Lua _PRESERVATION_VERSION variable which
-#                                 is examined during restoration; if the previous version does not match the current version
-#                                 the restoration will be aborted and the sandbox will start cleanly. _PRESERVATION_VERSION should
-#                                 be incremented any time an incompatible change is made to the global data schema. If no version
-#                                 is set the check will always succeed and a version of zero is assumed.
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
-# $memory_limit::                 The number of bytes the sandbox is allowed to consume before being terminated (default 8MiB).
+### Check heka::decoder::sandboxdecoder for common parameters
 #
-# $instruction_limit::            The number of instructions the sandbox is allowed to execute during the
-#                                 process_message/timer_event functions before being terminated (default 1M).
-#
-# $output_limit::                 The number of bytes the sandbox output buffer can hold before being terminated (default 63KiB).
-#                                 Warning: messages exceeding 64KiB will generate an error and be discarded by the standard output
-#                                 plugins (File, TCP, UDP) since they exceed the maximum message size.
-#
-# $module_directory::             The directory where 'require' will attempt to load the external Lua modules from. Defaults to ${SHARE_DIR}/lua_modules.
+### Nginx error log Parameters
 #
 # $tz::                           The conversion actually happens on the Go side since there isn't good TZ support here.
+#                                 Type: string
 #
 # $type::                         Sets the message 'Type' header to the specified value
+#                                 Type: string
 #
-
 define heka::decoder::nginxerrorlogdecoder (
+  $ensure            = 'present',
   # Common Sandbox Parameters
-  $preserve_data          = undef,
-  $memory_limit           = undef,
-  $instruction_limit      = undef,
-  $output_limit           = undef,
-  $module_directory       = undef,
+  $preserve_data     = undef,
+  $memory_limit      = undef,
+  $instruction_limit = undef,
+  $output_limit      = undef,
+  $module_directory  = undef,
   # Nginx error logs Parameters
-  $tz                     = 'UTC',
-  $type                   = $name,
+  $tz                = 'UTC',
+  $type              = $name,
 ) {
+  validate_re($ensure, '^(present|absent)$')
+  # Common Sandbox Parameters
+  if $preserve_data { validate_bool($preserve_data) }
+  if $memory_limit { validate_integer($memory_limit) }
+  if $instruction_limit { validate_integer($instruction_limit) }
+  if $output_limit { validate_integer($output_limit) }
+  if $module_directory { validate_string($module_directory) }
+  # Nginx error logs Parameters
   validate_string($tz)
   validate_string($type)
 
-  heka::decoder::sandboxdecoder { $name:
-    filename => 'lua_decoders/nginx_error.lua',
-    config   => {
-      'tz'   => $tz,
-      'type' => $type,
-    },
+  $sandbox_type = 'SandboxDecoder'
+  $script_type = 'lua'
+  $filename = 'lua_decoders/nginx_error.lua'
+  $config = {
+    'tz'   => $tz,
+    'type' => $type,
+  }
+
+  $full_name = "nginxerrorlogdecoder_${name}"
+  heka::snippet { $full_name:
+    ensure  => $ensure,
+    content => template("${module_name}/sandbox.toml.erb"),
   }
 }
