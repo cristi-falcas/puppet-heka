@@ -1,12 +1,16 @@
 [<%= @name -%>]
-type = "PayloadRegexDecoder"
+type = "PayloadXmlDecoder"
 
-match_regex = '<%= match_regex -%>'
 <% if @timestamp_layout then -%>timestamp_layout = "<%= @timestamp_layout -%>"
 <% end -%>
 <% if @timestamp_location then -%>timestamp_location = "<%= @timestamp_location -%>"
 <% end -%>
-<% unless [nil, :undefined, :undef].include?(@log_errors) -%>log_errors = "<%= @log_errors -%>"
+
+<% if @xpath_map then -%>
+[<%= @name -%>.xpath_map]
+<% @xpath_map.each do |key, value| -%>
+<%= key -%> = "<%= value -%>"
+<% end -%>
 <% end -%>
 
 <% if @severity_map then -%>
