@@ -1,14 +1,22 @@
 # This file is controlled via puppet.
-[<%= @plugin_name -%>]
+[<%= @name -%>]
 type = "DashboardOutput"
 
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
+
 # specific settings
-address = "<%= @host -%>:<%= @port -%>"
+address = "<%= @address -%>"
 <% if @working_directory then -%>working_directory = "<%= @working_directory -%>"
 <% end -%>
 <% if @static_directory then -%>static_directory = "<%= @static_directory -%>"
 <% end -%>
 <% if @headers then -%>headers = "<%= @headers -%>"
 <% end -%>
+<% if @headers then -%>
+    [<%= @name -%>.headers]
+<% headers.each do |key, value| -%>
+    <%= key -%> = "<%= value -%>"
+<% end -%>
+<% end -%>
 
-<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
+<%= scope.function_template(['heka/plugin/_buffering.toml.erb']) %>

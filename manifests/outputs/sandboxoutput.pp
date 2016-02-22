@@ -3,12 +3,14 @@
 # === Parameters:
 #
 # $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
 ### Common Output Parameters::    Check heka::outputs::tcpoutput for the description
 #                                 The common output configuration parameter 'encoder' is ignored since all
 #                                 data transformation should happen in the plugin.
 #
-### Common Sandbox Parameters ###
+### Common Sandbox Parameters
+#
 # $script_type::                  The language the sandbox is written in. Currently the only valid option is 'lua' which is the
 #                                 default.
 #
@@ -36,8 +38,10 @@
 # $config::                       A map of configuration variables available to the sandbox via read_config.
 #                                 The map consists of a string key with: string, bool, int64, or float64 values.
 #
-### SandboxOutput Parameters ###
+### SandboxOutput Parameters
+#
 # $timer_event_on_shutdown::      True if the sandbox should have its timer_event function called on shutdown.
+#                                 Type: bool
 #
 define heka::outputs::sandboxoutput (
   $ensure                  = 'present',
@@ -65,6 +69,7 @@ define heka::outputs::sandboxoutput (
   # SandboxOutput Parameters
   $timer_event_on_shutdown = undef,
 ) {
+  validate_re($ensure, '^(present|absent)$')
   # Common Output Parameters
   if $message_matcher { validate_string($message_matcher) }
   if $message_signer { validate_string($message_signer) }
@@ -88,8 +93,8 @@ define heka::outputs::sandboxoutput (
   # SandboxOutput Parameters
   if $timer_event_on_shutdown { validate_bool($timer_event_on_shutdown) }
 
-  $plugin_name = "sandboxoutput_${name}"
-  heka::snippet { $plugin_name:
+  $full_name = "sandboxoutput_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/sandboxoutput.toml.erb"),
   }

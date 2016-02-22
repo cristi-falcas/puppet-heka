@@ -3,33 +3,42 @@
 #
 # === Parameters:
 #
-# $ensure::                      This is used to set the status of the config file: present or absent
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
-### Common Output Parameters::   Check heka::outputs::tcpoutput for the description
+### Common Output Parameters::    Check heka::outputs::tcpoutput for the description
 #
 ### SMTP Output
 #
-# $send_from::                   The email address of the sender.
-#                                Default: "heka@localhost.localdomain"
+# $send_from::                    The email address of the sender.
+#                                 Default: "heka@localhost.localdomain"
+#                                 Type: string
 #
-# $send_to::                     An array of email addresses where the output will be sent to.
+# $send_to::                      An array of email addresses where the output will be sent to.
+#                                 Type: []string
 #
-# $subject::                     Custom subject line of email.
-#                                Default: "Heka [SmtpOutput]"
+# $subject::                      Custom subject line of email.
+#                                 Default: "Heka [SmtpOutput]"
+#                                 Type: string
 #
-# $host::                        SMTP host to send the email to.
-#                                Default: "127.0.0.1:25"
+# $host::                         SMTP host to send the email to.
+#                                 Default: "127.0.0.1:25"
+#                                 Type: string
 #
-# $auth::                        SMTP authentication type: "none", "Plain", "CRAMMD5".
-#                                Default: "none"
+# $auth::                         SMTP authentication type: "none", "Plain", "CRAMMD5".
+#                                 Default: "none"
+#                                 Type: string
 #
-# $user::                        SMTP user name
+# $user::                         SMTP user name
+#                                 Type: string
 #
-# $password::                    SMTP user password
+# $password::                     SMTP user password
+#                                 Type: string
 #
-# $send_interval::               Minimum time interval between each email, in seconds. First email in an interval goes out immediately,
-#                                subsequent messages in the same interval are concatenated and all sent when the interval expires.
-#                                Defaults to 0, meaning all emails are sent immediately.
+# $send_interval::                Minimum time interval between each email, in seconds. First email in an interval goes out immediately,
+#                                 subsequent messages in the same interval are concatenated and all sent when the interval expires.
+#                                 Defaults to 0, meaning all emails are sent immediately.
+#                                 Type: uint
 #
 define heka::outputs::smtpoutput (
   $ensure              = 'present',
@@ -56,6 +65,7 @@ define heka::outputs::smtpoutput (
   $password            = undef,
   $send_interval       = 0,
 ) {
+  validate_re($ensure, '^(present|absent)$')
   # Common Output Parameters
   if $message_matcher { validate_string($message_matcher) }
   if $message_signer { validate_string($message_signer) }
@@ -78,8 +88,8 @@ define heka::outputs::smtpoutput (
   if $password { validate_string($password) }
   if $send_interval { validate_integer($send_interval) }
 
-  $plugin_name = "smtpoutput_${name}"
-  heka::snippet { $plugin_name:
+  $full_name = "smtpoutput_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/smtpoutput.toml.erb"),
   }

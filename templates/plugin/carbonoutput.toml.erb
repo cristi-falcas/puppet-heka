@@ -1,16 +1,14 @@
 # This file is controlled via puppet.
 [<%= @name -%>]
-type = "UdpOutput"
+type = "CarbonOutput"
 
 <%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
 
 # specific settings
 address = "<%= @address -%>"
-<% if @net then -%>net = "<%= @net -%>"
-<% end -%>
-<% if @local_address then -%>local_address = "<%= @local_address -%>"
-<% end -%>
-<% if @max_message_size then -%>max_message_size = <%= @max_message_size %>
-<% end -%>
+<% if @protocol then -%>protocol = "<%= @protocol -%>"
+<% end %>
+<% unless [nil, :undefined, :undef].include?(@tcp_keep_alive) then -%>tcp_keep_alive = <%= @tcp_keep_alive %>
+<% end %>
 
 <%= scope.function_template(['heka/plugin/_buffering.toml.erb']) %>

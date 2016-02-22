@@ -4,41 +4,46 @@
 #
 # === Parameters:
 #
-# $ensure::                      This is used to set the status of the config file: present or absent
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
 ### Common Output Parameters::  Check heka::outputs::tcpoutput for the desciption
 #
 ### Carbon Parameters
 #
-# $address::                     An IP address:port on which this plugin will write to.
-#                                Default: "localhost:2003"
+# $address::                      An IP address:port on which this plugin will write to.
+#                                 Default: "localhost:2003"
+#                                 Type: string
 #
-# $protocol::                    "tcp" or "udp".
-#                                Default: tcp
+# $protocol::                     "tcp" or "udp".
+#                                 Default: tcp
+#                                 Type: string
 #
-# $tcp_keep_alive::              if set, keep the TCP connection open and reuse it until a failure; then retry.
-#                                Default: false
+# $tcp_keep_alive::               If set, keep the TCP connection open and reuse it until a failure; then retry.
+#                                 Default: false
+#                                 Type: bool
 #
 define heka::outputs::carbonoutput (
-  $ensure          = 'present',
+  $ensure              = 'present',
   # Common Output Parameters
-  $message_matcher = undef,
-  $message_signer  = undef,
-  $ticker_interval = 5,
-  $encoder         = undef,
-  $use_framing     = undef,
-  $can_exit        = undef,
-  $use_buffering   = undef,
+  $message_matcher     = undef,
+  $message_signer      = undef,
+  $ticker_interval     = 5,
+  $encoder             = undef,
+  $use_framing         = undef,
+  $can_exit            = undef,
+  $use_buffering       = undef,
   # Buffering
-  $max_file_size                = undef,
-  $max_buffer_size              = undef,
-  $full_action                  = undef,
-  $cursor_update_count          = undef,
+  $max_file_size       = undef,
+  $max_buffer_size     = undef,
+  $full_action         = undef,
+  $cursor_update_count = undef,
   # Carbon Parameters
-  $address         = 'localhost:2003',
-  $protocol        = 'tcp',
-  $tcp_keep_alive  = false,
+  $address             = 'localhost:2003',
+  $protocol            = 'tcp',
+  $tcp_keep_alive      = false,
 ) {
+  validate_re($ensure, '^(present|absent)$')
   # Common Output Parameters
   if $message_matcher { validate_string($message_matcher) }
   if $message_signer { validate_string($message_signer) }
@@ -57,9 +62,9 @@ define heka::outputs::carbonoutput (
   if $protocol { validate_re($protocol, '^(tcp|udp)$') }
   if $tcp_keep_alive { validate_bool($tcp_keep_alive) }
 
-  $plugin_name = "carbon_${name}"
-  heka::snippet { $plugin_name:
+  $full_name = "carbon_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
-    content => template("${module_name}/plugin/carbon.toml.erb"),
+    content => template("${module_name}/plugin/carbonoutput.toml.erb"),
   }
 }

@@ -3,40 +3,38 @@
 #
 # === Parameters:
 #
-# $ensure::                      This is used to set the status of the config file: present or absent
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
 ### Common Output Parameters::  Check heka::outputs::tcpoutput for the description
 #
 ### Dashboar Parameters
 #
-# $use_buffering::               If true, all messages delivered to this output will be buffered to disk before delivery, preventing back
-#                                pressure and allowing retries in cases of message processing failure. Defaults to false, unless otherwise
-#                                specified by the individual output's documentation.
+# $address::                      An IP address on which we will serve output via HTTP.
+#                                 Defaults to "0.0.0.0".
+#                                 Type: string
 #
-# $buffering::                   A sub-section that specifies the settings to be used for the buffering behavior. This will only have any
-#                                impact if use_buffering is set to true
+# $working_directory::            File system directory into which the plugin will write data files and from which it will serve
+#                                 HTTP. The Heka process must have read / write access to this directory. Relative paths will be
+#                                 evaluated relative to the Heka base directory.
+#                                 Defaults to $(BASE_DIR)/dashboard.
+#                                 Type: string
 #
-# $host::                        An IP address on which we will serve output via HTTP. Defaults to "0.0.0.0".
+# $static_directory::             File system directory where the Heka dashboard source code can be found. The Heka process must have
+#                                 read access to this directory. Relative paths will be evaluated relative to the Heka base
+#                                 directory.
+#                                 Defaults to ${SHARE_DIR}/dasher.
+#                                 Type: string
 #
-# $port::                        An IP port on which we will serve output via HTTP. Defaults to "4352".
-#
-# $working_directory::           File system directory into which the plugin will write data files and from which it will serve
-#                                HTTP. The Heka process must have read / write access to this directory. Relative paths will be
-#                                evaluated relative to the Heka base directory. Defaults to $(BASE_DIR)/dashboard.
-#
-# $static_directory::            File system directory where the Heka dashboard source code can be found. The Heka process must have
-#                                read access to this directory. Relative paths will be evaluated relative to the Heka base
-#                                directory.
-#                                Defaults to ${SHARE_DIR}/dasher.
-#
-# $headers::                     It is possible to inject arbitrary HTTP headers into each outgoing response by adding a TOML
-#                                subsection entitled "headers" to you HttpOutput config section. All entries in the subsection
-#                                must be a list of string values.
+# $headers::                      It is possible to inject arbitrary HTTP headers into each outgoing response by adding a TOML
+#                                 subsection entitled "headers" to you HttpOutput config section. All entries in the subsection
+#                                 must be a list of string values.
+#                                 Type: subsection
 #
 define heka::outputs::dashboardoutput (
   $ensure              = 'present',
   # Common Output Parameters
-  $message_matcher     = undef,
+  $message_matcher     = "Type == 'heka.all-report' || Type == 'heka.sandbox-output' || Type == 'heka.sandbox-terminated'",
   $message_signer      = undef,
   $ticker_interval     = 5,
   $encoder             = undef,
@@ -49,12 +47,12 @@ define heka::outputs::dashboardoutput (
   $full_action         = undef,
   $cursor_update_count = undef,
   # Dashboard Output
-  $host                = '0.0.0.0',
-  $port                = 4352,
+  $address             = '0.0.0.0:4352',
   $working_directory   = undef,
   $static_directory    = undef,
   $headers             = undef,
 ) {
+  validate_re($ensure, '^(present|absent)$')
   # Common Output Parameters
   if $message_matcher { validate_string($message_matcher) }
   if $message_signer { validate_string($message_signer) }
@@ -69,14 +67,13 @@ define heka::outputs::dashboardoutput (
   if $full_action { validate_re($full_action, '^(shutdown|drop|block)$') }
   if $cursor_update_count { validate_integer($cursor_update_count) }
   # Dashboard Output
-  validate_string($host)
-  validate_integer($port)
+  validate_string($address)
   if $working_directory { validate_string($working_directory) }
   if $static_directory { validate_string($static_directory) }
-  if $headers { validate_string($headers) }
+  if $headers { validate_hash($headers) }
 
-  $plugin_name = "dashboard_${name}"
-  heka::snippet { $plugin_name:
+  $full_name = "dashboard_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/dashboard.toml.erb"),
   }

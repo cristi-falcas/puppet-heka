@@ -2,7 +2,8 @@
 #
 # === Parameters:
 #
-# $ensure::                      This is used to set the status of the config file: present or absent
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
 ### Common Output Parameters::   Check heka::outputs::tcpoutput for the description
 #
@@ -22,6 +23,7 @@ define heka::outputs::logoutput (
   $full_action                  = undef,
   $cursor_update_count          = undef,
 ) {
+  validate_re($ensure, '^(present|absent)$')
   # Common Output Parameters
   if $message_matcher { validate_string($message_matcher) }
   if $message_signer { validate_string($message_signer) }
@@ -36,8 +38,8 @@ define heka::outputs::logoutput (
   if $full_action { validate_re($full_action, '^(shutdown|drop|block)$') }
   if $cursor_update_count { validate_integer($cursor_update_count) }
 
-  $plugin_name = "logoutput_${name}"
-  heka::snippet { $plugin_name:
+  $full_name = "logoutput_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/logoutput.toml.erb"),
   }

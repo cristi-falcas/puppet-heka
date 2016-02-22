@@ -2,37 +2,41 @@
 #
 # === Parameters:
 #
-# $ensure::                      This is used to set the status of the config file: present or absent
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
 ### Common Output Parameters::  Check heka::outputs::tcpoutput for the description
 #
 ### File Parameters
 #
-# $path::                        Full path to the output file. If date rotation is in use, then the output file path can support
-#                                strftime syntax to embed timestamps in the file path: http://strftime.org
+# $path::                         Full path to the output file. If date rotation is in use, then the output file path can support
+#                                 strftime syntax to embed timestamps in the file path: http://strftime.org
+#                                 Type: string
 #
-# $perm::                        File permission for writing. A string of the octal digit representation. Defaults to "644".
+# $perm::                         File permission for writing. A string of the octal digit representation. Defaults to "644".
+#                                 Type: string
 #
-# $folder_perm::                 Permissions to apply to directories created for FileOutput's parent directory if it doesn't exist.
-#                                Must be a string representation of an octal integer. Defaults to "700".
+# $folder_perm::                  Permissions to apply to directories created for FileOutput's parent directory if it doesn't exist.
+#                                 Must be a string representation of an octal integer. Defaults to "700".
+#                                 Type: string
 #
-# $flush_interval::              Interval at which accumulated file data should be written to disk, in milliseconds (default 1000,
-#                                i.e. 1 second).
-#                                Set to 0 to disable.
+# $flush_interval::               Interval at which accumulated file data should be written to disk, in milliseconds (default 1000,
+#                                 i.e. 1 second).
+#                                 Set to 0 to disable.
+#                                 Type: uint32
 #
-# $flush_count::                 Number of messages to accumulate until file data should be written to disk (default 1, minimum 1).
+# $flush_count::                  Number of messages to accumulate until file data should be written to disk (default 1, minimum 1).
+#                                 Type: uint32
 #
-# $flush_operator::              Operator describing how the two parameters "flush_interval" and "flush_count" are combined.
-#                                Allowed values are "AND" or "OR" (default is "AND").
+# $flush_operator::               Operator describing how the two parameters "flush_interval" and "flush_count" are combined.
+#                                 Allowed values are "AND" or "OR" (default is "AND").
+#                                 Type: string
 #
-# $use_framing::                 Specifies whether or not the encoded data sent out over the TCP connection should be delimited by
-#                                Heka's Stream Framing.
-#                                Defaults to true if a ProtobufEncoder is used, false otherwise.
-#
-# $rotation_interval::           Interval at which the output file should be rotated, in hours. Only the following values are
-#                                allowed: 0, 1, 4, 12, 24 (set to 0 to disable). The files will be named relative to midnight
-#                                of the day.
-#                                Defaults to 0, i.e. disabled.
+# $rotation_interval::            Interval at which the output file should be rotated, in hours. Only the following values are
+#                                 allowed: 0, 1, 4, 12, 24 (set to 0 to disable). The files will be named relative to midnight
+#                                 of the day.
+#                                 Defaults to 0, i.e. disabled.
+#                                 Type: uint32
 #
 define heka::outputs::fileoutput (
   $ensure              = 'present',
@@ -58,6 +62,7 @@ define heka::outputs::fileoutput (
   $flush_operator      = 'AND',
   $rotation_interval   = 0,
 ) {
+  validate_re($ensure, '^(present|absent)$')
   # Common Output Parameters
   if $message_matcher { validate_string($message_matcher) }
   if $message_signer { validate_string($message_signer) }
@@ -80,8 +85,8 @@ define heka::outputs::fileoutput (
   validate_string($flush_operator)
   validate_integer($rotation_interval)
 
-  $plugin_name = "fileoutput_${name}"
-  heka::snippet { $plugin_name:
+  $full_name = "fileoutput_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/fileoutput.toml.erb"),
   }

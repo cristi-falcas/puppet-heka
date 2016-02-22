@@ -1,17 +1,19 @@
 # This file is controlled via puppet.
-[<%= @plugin_name -%>]
+[<%= @name -%>]
 type = "TcpOutput"
+
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
 
 # specific settings
 address = "<%= @address -%>"
-use_tls = <%= @use_tls %>
 <% if @local_address then -%>local_address = "<%= @local_address -%>"
 <% end -%>
 keep_alive = <%= @keep_alive %>
 keep_alive_period = <%= @keep_alive_period %>
-<% if @reconnect_after then -%>reconnect_after = "<%= @reconnect_after -%>"
+<% if @reconnect_after then -%>reconnect_after = <%= @reconnect_after %>
 <% end -%>
+<% unless [nil, :undefined, :undef].include?(@use_tls) then -%>use_tls = <%= @use_tls %>
+<% end %>
 
-<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
-
+<%= scope.function_template(['heka/plugin/_buffering.toml.erb']) %>
 <%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>

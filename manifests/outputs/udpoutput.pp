@@ -2,25 +2,31 @@
 #
 # === Parameters:
 #
-# $ensure::                      This is used to set the status of the config file: present or absent
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
-### Common Output Parameters::   Check heka::outputs::tcpoutput for the description
+### Common Output Parameters::    Check heka::outputs::tcpoutput for the description
 #
-### TCP Output Parameters ###
-# $net::                         Network type to use for communication. Must be one of "udp", "udp4", "udp6", or "unixgram".
-#                                "unixgram" option only available on systems that support Unix datagram sockets.
-#                                Defaults to "udp".
+### UDP Output Parameters
 #
-# $address::                     Address to which we will be sending the data. Must be IP:port for net types of "udp", "udp4", or
-#                                "udp6". Must be a path to a Unix datagram socket file for net type "unixgram".
+# $net::                          Network type to use for communication. Must be one of "udp", "udp4", "udp6", or "unixgram".
+#                                 "unixgram" option only available on systems that support Unix datagram sockets.
+#                                 Defaults to "udp".
+#                                 Type: bool
 #
-# $local_address::               Local address to use on the datagram packets being generated. Must be IP:port for net types of
-#                                "udp", "udp4", or "udp6".
-#                                Must be a path to a Unix datagram socket file for net type "unixgram".
+# $address::                      Address to which we will be sending the data. Must be IP:port for net types of "udp", "udp4", or
+#                                 "udp6". Must be a path to a Unix datagram socket file for net type "unixgram".
+#                                 Type: bool
 #
-# $max_message_size::            Maximum size of message that is allowed to be sent via UdpOutput. Messages which exceeds this limit
-#                                will be dropped.
-#                                Defaults to 65507 (the limit for UDP packets in IPv4).
+# $local_address::                Local address to use on the datagram packets being generated. Must be IP:port for net types of
+#                                 "udp", "udp4", or "udp6".
+#                                 Must be a path to a Unix datagram socket file for net type "unixgram".
+#                                 Type: bool
+#
+# $max_message_size::             Maximum size of message that is allowed to be sent via UdpOutput. Messages which exceeds this limit
+#                                 will be dropped.
+#                                 Defaults to 65507 (the limit for UDP packets in IPv4).
+#                                 Type: bool
 #
 define heka::outputs::udpoutput (
   $ensure                       = 'present',
@@ -37,12 +43,15 @@ define heka::outputs::udpoutput (
   $max_buffer_size              = undef,
   $full_action                  = undef,
   $cursor_update_count          = undef,
-  # TCP Output
+  # UDP Output
   $net                          = 'udp',
+  # lint:ignore:parameter_order
   $address,
+  # lint:endignore
   $local_address                = undef,
   $max_message_size             = 65507,
 ) {
+  validate_re($ensure, '^(present|absent)$')
   # Common Output Parameters
   if $message_matcher { validate_string($message_matcher) }
   if $message_signer { validate_string($message_signer) }
@@ -62,8 +71,8 @@ define heka::outputs::udpoutput (
   validate_string($local_address)
   validate_integer($max_message_size)
 
-  $plugin_name = "udpoutput_${name}"
-  heka::snippet { $plugin_name:
+  $full_name = "udpoutput_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/udpoutput.toml.erb"),
   }
