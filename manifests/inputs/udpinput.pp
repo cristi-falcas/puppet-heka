@@ -4,7 +4,8 @@
 #
 # === Parameters:
 #
-# $ensure::                      This is used to set the status of the config file: present or absent
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
 ### Common Input Parameters::    Check heka::inputs::tcpinput for the description
 #
@@ -16,7 +17,6 @@
 #
 # $set_hostname                  Set Hostname field from remote address.
 #
-
 define heka::inputs::udpinput (
   $ensure                       = 'present',
   # Common Input Parameters
@@ -32,6 +32,7 @@ define heka::inputs::udpinput (
   $net                          = 'udp',
   $set_hostname                 = false,
 ) {
+  validate_re($ensure, '^(present|absent)$')
   # Common Input Parameters
   if $decoder { validate_string($decoder) }
   if $synchronous_decode { validate_bool($synchronous_decode) }
@@ -45,8 +46,8 @@ define heka::inputs::udpinput (
   validate_string($net)
   validate_bool($set_hostname)
 
-  $plugin_name = "udpinput_${name}"
-  heka::snippet { $plugin_name:
+  $full_name = "udpinput_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/udpinput.toml.erb"),
   }

@@ -1,6 +1,8 @@
 # This file is controlled via puppet.
-[<%= @plugin_name -%>]
+[<%= @name -%>]
 type = "ProcessInput"
+
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
 
 # specific settings
 <% if @ticker_interval then -%>ticker_interval = <%= @ticker_interval %>
@@ -14,10 +16,10 @@ type = "ProcessInput"
 <% if @timeout then -%>timeout = <%= @timeout %>
 <% end -%>
 
-<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
+<%= scope.function_template(['heka/plugin/_retries.toml.erb']) %>
 
 <% @command.each_with_index do |item, index| -%>
-[<%= @plugin_name -%>.command.<%= index -%>]
+    [<%= @name -%>.command.<%= index -%>]
 <% if item["bin"] then -%>    bin = "<%= item["bin"] -%>"
 <% end -%>
 <% if item["args"] then -%>    args = [<%= item["args"].collect{ |x| '"%s"' % x }.join(", ") -%>]

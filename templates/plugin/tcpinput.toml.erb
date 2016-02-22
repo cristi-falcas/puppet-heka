@@ -1,14 +1,13 @@
 # This file is controlled via puppet.
-[<%= @plugin_name -%>]
+[<%= @name -%>]
 type = "TcpInput"
-
-# specific settings
-net = "<%= @net -%>"
-keep_alive = <%= @keep_alive %>
-keep_alive_period = <%= @keep_alive_period %>
-address = "<%= @address -%>"
 
 <%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
 
-use_tls = <%= @use_tls %>
+# specific settings
+address = "<%= @address -%>"
+net = "<%= @net -%>"
+keep_alive = <%= @keep_alive %>
+keep_alive_period = <%= @keep_alive_period %>
+
 <%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>

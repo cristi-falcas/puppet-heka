@@ -1,6 +1,8 @@
 # This file is controlled via puppet.
-[<%= @plugin_name -%>]
+[<%= @name -%>]
 type = "UdpInput"
+
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
 
 # specific settings
 address = "<%= @address -%>"
@@ -13,5 +15,3 @@ set_hostname = <%= @set_hostname %>
 hmac_key = "<%= value -%>"
 <% end -%>
 <% end -%>
-
-<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>

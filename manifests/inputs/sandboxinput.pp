@@ -6,7 +6,8 @@
 #
 # === Parameters:
 #
-# $ensure::                      This is used to set the status of the config file: present or absent
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
 ### Common Input Parameters::    All of the common input configuration parameters are ignored since the data processing
 #                               (splitting and decoding) should happen in the plugin.
@@ -52,6 +53,7 @@ define heka::inputs::sandboxinput (
   $module_directory  = undef,
   $config            = undef,
 ) {
+  validate_re($ensure, '^(present|absent)$')
   # Common Sandbox Parameters
   validate_string($filename)
   if $preserve_data { validate_bool($preserve_data) }
@@ -60,8 +62,8 @@ define heka::inputs::sandboxinput (
   if $output_limit { validate_integer($output_limit) }
   if $module_directory { validate_string($module_directory) }
 
-  $plugin_name = "sandboxinput_${name}"
-  heka::snippet { $plugin_name:
+  $full_name = "sandboxinput_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/sandboxinput.toml.erb"),
   }
