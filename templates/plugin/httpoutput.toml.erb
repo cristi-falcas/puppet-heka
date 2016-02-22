@@ -1,6 +1,8 @@
 # This file is controlled via puppet.
-[<%= @plugin_name -%>]
+[<%= @name -%>]
 type = "HttpOutput"
+
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
 
 # specific settings
 address = "<%= @address -%>"
@@ -10,12 +12,16 @@ address = "<%= @address -%>"
 <% end -%>
 <% if @password then -%>password = "<%= @password -%>"
 <% end -%>
+<% if @http_timeout then -%>http_timeout = <%= @http_timeout %>
+<% end -%>
 <% if @headers then -%>headers = "<%= @headers -%>"
 <% end -%>
-<% if @http_timeout then -%>http_timeout = "<%= @http_timeout -%>"
+<% if @headers then -%>
+    [<%= @name -%>.headers]
+<% headers.each do |key, value| -%>
+    <%= key -%> = "<%= value -%>"
+<% end -%>
 <% end -%>
 
-<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
-
-use_tls = <%= @use_tls %>
+<%= scope.function_template(['heka/plugin/_buffering.toml.erb']) %>
 <%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>

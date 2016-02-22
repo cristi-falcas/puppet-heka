@@ -1,42 +1,48 @@
 # A very simple output plugin that uses HTTP GET, POST, or PUT requests to deliver data to an HTTP endpoint.
 # When using POST or PUT request methods the encoded output will be uploaded as the request body.
 # When using GET the encoded output will be ignored.
+#
 # This output doesn't support any request batching; each received message will generate an HTTP request.
 # Batching can be achieved by use of a filter plugin that accumulates message data, periodically emitting a single
 # message containing the batched, encoded HTTP request data in the payload. An HttpOutput can then be configured to
 # capture these batch messages, using a Payload Encoder to extract the message payload.
+#
 # For now the HttpOutput only supports statically defined request parameters (URL, headers, auth, etc.).
 # Future iterations will provide a mechanism for dynamically specifying these values on a per-message basis.
 #
 # === Parameters:
 #
-# $ensure::                      This is used to set the status of the config file: present or absent
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
-### Common Output Parameters::   Check heka::outputs::tcpoutput for the description
+### Common Output Parameters::    Check heka::outputs::tcpoutput for the description
 #
-### HTTP Parameters
+### Common TLS Parameters::       Check heka::outputs::tcpoutput for the description
 #
-# $address::                     URL address of HTTP server to which requests should be sent. Must begin with "http://" or "https://".
+### HTTP Output Parameters
 #
-# $method::                      HTTP request method to use, must be one of GET, POST, or PUT.
-#                                Defaults to POST.
+# $address::                      URL address of HTTP server to which requests should be sent. Must begin with "http://" or "https://".
+#                                 Type: string
 #
-# $username::                    If specified, HTTP Basic Auth will be used with the provided user name.
+# $method::                       HTTP request method to use, must be one of GET, POST, or PUT.
+#                                 Defaults to POST.
+#                                 Type: string
 #
-# $password::                    If specified, HTTP Basic Auth will be used with the provided password.
+# $username::                     If specified, HTTP Basic Auth will be used with the provided user name.
+#                                 Type: string
 #
-# $headers::                     It is possible to inject arbitrary HTTP headers into each outgoing request by adding a TOML subsection
-#                                entitled "headers" to you HttpOutput config section.
-#                                All entries in the subsection must be a list of string values.
+# $password::                     If specified, HTTP Basic Auth will be used with the provided password.
+#                                 Type: string
 #
-# $http_timeout::                Time in milliseconds to wait for a response for each http request.
-#                                This may drop data as there is currently no retry.
-#                                Default is 0 (no timeout)
+# $headers::                      It is possible to inject arbitrary HTTP headers into each outgoing request by adding a TOML subsection
+#                                 entitled "headers" to you HttpOutput config section.
+#                                 All entries in the subsection must be a list of string values.
+#                                 Type: subsection
 #
-# $use_tls::                     Specifies whether or not SSL/TLS encryption should be used for the TCP connections.
-#                                Defaults to false.
-#
-### Common TLS Parameters::      Check heka::outputs::tcpoutput for the description
+# $http_timeout::                 Time in milliseconds to wait for a response for each http request.
+#                                 This may drop data as there is currently no retry.
+#                                 Default is 0 (no timeout)
+#                                 Type: uint
 #
 define heka::outputs::httpoutput (
   $ensure                       = 'present',
@@ -53,7 +59,7 @@ define heka::outputs::httpoutput (
   $max_buffer_size              = undef,
   $full_action                  = undef,
   $cursor_update_count          = undef,
-  # HTTP Parameters
+  # HTTP Output Parameters
   $address,
   $method                       = undef,
   $username                     = undef,
@@ -76,6 +82,7 @@ define heka::outputs::httpoutput (
   $tls_client_cafile            = undef,
   $tls_root_cafile              = undef,
 ) {
+  validate_re($ensure, '^(present|absent)$')
   # Common Output Parameters
   if $message_matcher { validate_string($message_matcher) }
   if $message_signer { validate_string($message_signer) }
@@ -94,10 +101,10 @@ define heka::outputs::httpoutput (
   if $method { validate_re($method, '^(GET|POST|PUT)$') }
   if $username { validate_string($username) }
   if $password { validate_string($password) }
-  if $headers { fail('Headers are not implemented yet') }
+  if $headers { validate_hash($headers) }
   if $http_timeout { validate_integer($http_timeout) }
-  if $use_tls { validate_bool($use_tls) }
   # TLS configuration settings
+  if $use_tls { validate_bool($use_tls) }
   if $tls_server_name { validate_string($tls_server_name) }
   if $tls_cert_file { validate_string($tls_cert_file) }
   if $tls_key_file { validate_string($tls_key_file) }
@@ -112,9 +119,9 @@ define heka::outputs::httpoutput (
   if $tls_client_cafile { validate_string($tls_client_cafile) }
   if $tls_root_cafile { validate_string($tls_root_cafile) }
 
-  $plugin_name = "amqp_${name}"
-  heka::snippet { $plugin_name:
+  $full_name = "httpoutput_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
-    content => template("${module_name}/plugin/amqp.toml.erb"),
+    content => template("${module_name}/plugin/httpoutput.toml.erb"),
   }
 }
