@@ -1,0 +1,27 @@
+# This file is controlled via puppet.
+[<%= @name -%>]
+type = "HttpListenInput"
+
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
+
+# specific settings
+address = "<%= @address -%>"
+<% if @request_headers then -%>request_headers = [<%= [request_headers].flatten.map! {|sub| "'"+sub+"'"}.join(",") -%>]
+<% end -%>
+<% if @auth_type then -%>auth_type = "<%= @auth_type -%>"
+<% end -%>
+<% if @username then -%>username = "<%= @username -%>"
+<% end -%>
+<% if @password then -%>password = "<%= @password -%>"
+<% end -%>
+<% if @api_key then -%>api_key = <%= @api_key %>
+<% end -%>
+
+<% if @headers then -%>
+[<%= @name -%>.headers]
+<% @headers.each do |key, value| -%>
+<%= key -%> = "<%= value -%>"
+<% end -%>
+<% end -%>
+
+<%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>

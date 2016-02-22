@@ -1,0 +1,32 @@
+# This file is controlled via puppet.
+[<%= @name -%>]
+type = "HttpInput"
+
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
+
+# specific settings
+<% if @url then -%>url = "<%= @url -%>"
+<% end -%>
+<% if @urls then -%>urls = [<%= [urls].flatten.map! {|sub| "'"+sub+"'"}.join(",") -%>]
+<% end -%>
+<% if @method then -%>method = "<%= @method -%>"
+<% end -%>
+<% if @body then -%>body = "<%= @body -%>"
+<% end -%>
+<% if @username then -%>username = "<%= @username -%>"
+<% end -%>
+<% if @password then -%>password = "<%= @password -%>"
+<% end -%>
+<% if @ticker_interval then -%>ticker_interval = <%= @ticker_interval %>
+<% end -%>
+<% if @success_severity then -%>success_severity = <%= @success_severity %>
+<% end -%>
+<% if @error_severity then -%>error_severity = <%= @error_severity %>
+<% end -%>
+
+<% if @headers then -%>
+[<%= @name -%>.headers]
+<% @headers.each do |key, value| -%>
+<%= key -%> = "<%= value -%>"
+<% end -%>
+<% end -%>
