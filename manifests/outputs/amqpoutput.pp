@@ -4,45 +4,43 @@
 #
 # === Parameters:
 #
-# $ensure::                      This is used to set the status of the config file: present or absent
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
-### Common Output Parameters::   Check heka::outputs::tcpoutput for the description
+### Common Output Parameters::    Check heka::outputs::tcpoutput for the description
+#
+### Common TLS Parameters::       Check heka::outputs::tcpoutput for the description
 #
 ### AMQP Parameters
 #
-# $url::                         An AMQP connection string formatted per the RabbitMQ URI Spec.
+# $url::                          An AMQP connection string formatted per the RabbitMQ URI Spec.
+#                                 Type: string
 #
-# $exchange::                    AMQP exchange name
+# $exchange::                     AMQP exchange name
+#                                 Type: string
 #
-# $exchange_type::               AMQP exchange type (fanout, direct, topic, or headers).
+# $exchange_type::                AMQP exchange type (fanout, direct, topic, or headers).
+#                                 Type: string
 #
-# $exchange_durability::         Whether the exchange should be configured as a durable exchange.
-#                                Defaults to non-durable.
+# $exchange_durability::          Whether the exchange should be configured as a durable exchange.
+#                                 Defaults to non-durable.
+#                                 Type: bool
 #
-# $exchange_auto_delete::        Whether the exchange is deleted when all queues have finished and there is no publishing.
-#                                Defaults to auto-delete.
+# $exchange_auto_delete::         Whether the exchange is deleted when all queues have finished and there is no publishing.
+#                                 Defaults to auto-delete.
+#                                 Type: bool
 #
-# $routing_key::                 The message routing key used to bind the queue to the exchange.
-#                                Defaults to empty string.
+# $routing_key::                  The message routing key used to bind the queue to the exchange.
+#                                 Defaults to empty string.
+#                                 Type: string
 #
-# $persistent::                  Whether published messages should be marked as persistent or transient.
-#                                Defaults to non-persistent.
+# $persistent::                   Whether published messages should be marked as persistent or transient.
+#                                 Defaults to non-persistent.
+#                                 Type: bool
 #
-# $content_type::                MIME content type of the payload used in the AMQP header.
-#                                Defaults to "application/hekad".
-#
-# $encoder::                     Specifies which of the registered encoders should be used for converting Heka messages to binary
-#                                data that is sent out over the AMQP connection.
-#                                Defaults to the always available "ProtobufEncoder".
-#
-# $use_framing::                 Specifies whether or not the encoded data sent out over the TCP connection should be delimited
-#                                by Heka's Stream Framing.
-#                                Defaults to true.
-#
-# $use_tls::                     Specifies whether or not SSL/TLS encryption should be used for the TCP connections.
-#                                Defaults to false.
-#
-### Common TLS Parameters::      Check heka::outputs::tcpoutput for the description
+# $content_type::                 MIME content type of the payload used in the AMQP header.
+#                                 Defaults to "application/hekad".
+#                                 Type: string
 #
 define heka::outputs::amqpoutput (
   $ensure                       = 'present',
@@ -60,16 +58,18 @@ define heka::outputs::amqpoutput (
   $full_action                  = undef,
   $cursor_update_count          = undef,
   # AMQP Parameters
+  # lint:ignore:parameter_order
   $url,
   $exchange,
-  $exchange_type                = undef,
+  $exchange_type,
+  # lint:endignore
   $exchange_durability          = undef,
   $exchange_auto_delete         = undef,
   $routing_key                  = undef,
   $persistent                   = undef,
   $content_type                 = undef,
-  $use_tls                      = false,
   # TLS configuration settings
+  $use_tls                      = false,
   $tls_server_name              = undef,
   $tls_cert_file                = undef,
   $tls_key_file                 = undef,
@@ -84,6 +84,7 @@ define heka::outputs::amqpoutput (
   $tls_client_cafile            = undef,
   $tls_root_cafile              = undef,
 ) {
+  validate_re($ensure, '^(present|absent)$')
   # Common Output Parameters
   if $message_matcher { validate_string($message_matcher) }
   if $message_signer { validate_string($message_signer) }
@@ -100,7 +101,7 @@ define heka::outputs::amqpoutput (
   # AMQP Parameters
   validate_string($url)
   validate_string($exchange)
-  if $exchange_type { validate_re($exchange_type, '^(fanout|direct|topic|headers)$') }
+  validate_re($exchange_type, '^(fanout|direct|topic|headers)$')
   if $exchange_durability { validate_bool($exchange_durability) }
   if $exchange_auto_delete { validate_bool($exchange_auto_delete) }
   if $routing_key { validate_string($routing_key) }
@@ -122,9 +123,9 @@ define heka::outputs::amqpoutput (
   if $tls_client_cafile { validate_string($tls_client_cafile) }
   if $tls_root_cafile { validate_string($tls_root_cafile) }
 
-  $plugin_name = "amqp_${name}"
-  heka::snippet { $plugin_name:
+  $full_name = "amqpoutput_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
-    content => template("${module_name}/plugin/amqp.toml.erb"),
+    content => template("${module_name}/plugin/amqpoutput.toml.erb"),
   }
 }

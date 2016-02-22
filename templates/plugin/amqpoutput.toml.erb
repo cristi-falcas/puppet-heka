@@ -1,0 +1,25 @@
+# This file is controlled via puppet.
+[<%= @name -%>]
+type = "AMQPOutput"
+
+<%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
+
+# specific settings
+url = "<%= @address -%>"
+exchange = "<%= @exchange -%>"
+exchange_type = "<%= @exchange_type -%>"
+<% unless [nil, :undefined, :undef].include?(@exchange_durability) -%>exchange_durability = <%= @exchange_durability %>
+<% end -%>
+<% unless [nil, :undefined, :undef].include?(@exchange_auto_delete) -%>exchange_auto_delete = <%= @exchange_auto_delete %>
+<% end -%>
+<% if @routing_key then -%>routing_key = "<%= @routing_key -%>"
+<% end -%>
+<% unless [nil, :undefined, :undef].include?(@persistent) -%>persistent = <%= @persistent %>
+<% end -%>
+<% if @content_type then -%>content_type = "<%= @content_type -%>"
+<% end -%>
+<% unless [nil, :undefined, :undef].include?(@use_tls) then -%>use_tls = <%= @use_tls %>
+<% end %>
+
+<%= scope.function_template(['heka/plugin/_buffering.toml.erb']) %>
+<%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>
