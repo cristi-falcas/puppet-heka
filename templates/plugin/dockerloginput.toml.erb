@@ -1,14 +1,14 @@
 # This file is controlled via puppet.
-[<%= @plugin_name -%>]
+[<%= @name -%>]
 type = "DockerLogInput"
+
+<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
 
 # specific settings
 endpoint = "<%= endpoint -%>"
-<% if @cert_path         then -%>cert_path = "<%= @cert_path -%>"
+<% if @cert_path then -%>cert_path = "<%= @cert_path -%>"
 <% end -%>
 <% if @name_from_env_var then -%>name_from_env_var = "<%= @name_from_env_var -%>"
 <% end -%>
-<% if @fields_from_env   then -%>fields_from_env = [<%= [fields_from_env].flatten.map! {|sub| "'"+sub+"'"}.join(",") -%>]
+<% if @fields_from_env then -%>fields_from_env = [<%= [fields_from_env].flatten.map! {|sub| "'"+sub+"'"}.join(",") -%>]
 <% end -%>
-
-<%= scope.function_template(['heka/plugin/_input.toml.erb']) %>

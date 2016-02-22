@@ -3,30 +3,34 @@
 #
 # === Parameters:
 #
-# $ensure::                      This is used to set the status of the config file: present or absent
+# $ensure::                       This is used to set the status of the config file: present or absent
+#                                 Default: present
 #
-### Common Input Parameters::   Check heka::inputs::tcpinput for the description
+### Common Input Parameters::     Check heka::inputs::tcpinput for the description
 #
 ### Docker Event Input Parameters
-# $endpoint::                    A Docker endpoint.
-#                                Defaults to "unix:///var/run/docker.sock".
+# $endpoint::                     A Docker endpoint.
+#                                 Defaults to "unix:///var/run/docker.sock".
+#                                 Type: string
 #
-# $cert_path::                   Path to directory containing client certificate and keys. This value works in the same way as
-#                                DOCKER_CERT_PATH.
+# $cert_path::                    Path to directory containing client certificate and keys. This value works in the same way as
+#                                 DOCKER_CERT_PATH.
+#                                 Type: string
 #
 define heka::inputs::dockereventinput (
-  $ensure                       = 'present',
+  $ensure               = 'present',
   # Common Input Parameters
-  $decoder                      = 'ProtobufDecoder',
-  $synchronous_decode           = false,
-  $send_decode_failures         = false,
-  $can_exit                     = undef,
-  $splitter                     = undef,
-  $log_decode_failures          = true,
+  $decoder              = 'ProtobufDecoder',
+  $synchronous_decode   = false,
+  $send_decode_failures = false,
+  $can_exit             = undef,
+  $splitter             = undef,
+  $log_decode_failures  = true,
   # Docker Event Input
-  $endpoint                     = undef,
-  $cert_path                    = undef,
+  $endpoint             = undef,
+  $cert_path            = undef,
 ) {
+  validate_re($ensure, '^(present|absent)$')
   # Common Input Parameters
   if $decoder { validate_string($decoder) }
   if $synchronous_decode { validate_bool($synchronous_decode) }
@@ -38,8 +42,8 @@ define heka::inputs::dockereventinput (
   validate_string($endpoint)
   if $cert_path { validate_string($cert_path) }
 
-  $plugin_name = "dockereventinput_${name}"
-  heka::snippet { $plugin_name:
+  $full_name = "dockereventinput_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/dockereventinput.toml.erb"),
   }
