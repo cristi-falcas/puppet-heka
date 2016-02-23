@@ -16,7 +16,7 @@ es_index_from_timestamp = <%= @es_index_from_timestamp %>
 <% end -%>
 
 <% if @field_mappings then -%>
-[<%= @name -%>.field_mappings]
+[<%= @full_name -%>.field_mappings]
 <% @field_mappings.each do |key, value| if value -%>
 <%= key -%> = "<%= value -%>"
 <% end end -%>

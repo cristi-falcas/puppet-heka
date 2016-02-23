@@ -7,7 +7,7 @@ skip_authentication = <%= @skip_authentication %>
 
 <% if @signer then -%>
 <% @signer.each do |key, value| -%>
-    [<%= @name -%>.signer.<%= key -%>]
+    [<%= @full_name -%>.signer.<%= key -%>]
     hmac_key = "<%= value %>"
 <% end -%>
 <% end -%>

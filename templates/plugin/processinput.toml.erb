@@ -19,7 +19,7 @@ type = "ProcessInput"
 <%= scope.function_template(['heka/plugin/_retries.toml.erb']) %>
 
 <% @command.each_with_index do |item, index| -%>
-    [<%= @name -%>.command.<%= index -%>]
+    [<%= @full_name -%>.command.<%= index -%>]
 <% if item["bin"] then -%>    bin = "<%= item["bin"] -%>"
 <% end -%>
 <% if item["args"] then -%>    args = [<%= item["args"].collect{ |x| '"%s"' % x }.join(", ") -%>]

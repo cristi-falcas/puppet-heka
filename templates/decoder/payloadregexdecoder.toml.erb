@@ -11,14 +11,14 @@ match_regex = '<%= match_regex -%>'
 <% end -%>
 
 <% if @severity_map then -%>
-[<%= @name -%>.severity_map]
+[<%= @full_name -%>.severity_map]
 <% @severity_map.each do |key, value| -%>
 <%= key -%> = "<%= value -%>"
 <% end -%>
 <% end -%>
 
 <% if @message_fields then -%>
-[<%= @name -%>.message_fields]
+[<%= @full_name -%>.message_fields]
 <% @message_fields.each do |key, value| -%>
 <%= key -%> = "<%= value -%>"
 <% end -%>

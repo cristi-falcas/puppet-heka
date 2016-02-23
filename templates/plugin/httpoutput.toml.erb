@@ -17,7 +17,7 @@ address = "<%= @address -%>"
 <% if @headers then -%>headers = "<%= @headers -%>"
 <% end -%>
 <% if @headers then -%>
-    [<%= @name -%>.headers]
+    [<%= @full_name -%>.headers]
 <% headers.each do |key, value| -%>
     <%= key -%> = "<%= value -%>"
 <% end -%>
