@@ -1,5 +1,5 @@
 # This file is controlled via puppet.
-[<%= @name -%>]
+[<%= @full_name -%>]
 type = "AMQPInput"
 
 <%= scope.function_template(['heka/plugin/_input.toml.erb']) %>

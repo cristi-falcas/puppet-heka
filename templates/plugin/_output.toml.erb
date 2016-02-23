@@ -11,7 +11,5 @@
 <% end -%>
 <% unless [nil, :undefined, :undef].include?(@can_exit) -%>can_exit = <%= @can_exit %>
 <% end -%>
-
-<% if @use_buffering then -%>use_buffering = <%= @use_buffering -%>
-<%= scope.function_template(['heka/plugin/_buffering.toml.erb']) %>
+<% unless [nil, :undefined, :undef].include?(@use_buffering) then -%>use_buffering = <%= @use_buffering -%>
 <% end -%>

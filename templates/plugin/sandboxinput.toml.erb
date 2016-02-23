@@ -1,3 +1,4 @@
-[<%= @name -%>]
+# This file is controlled via puppet.
+[<%= @full_name -%>]
 type = "SandboxInput"
 <%= scope.function_template(['heka/_sandbox.toml.erb']) %>

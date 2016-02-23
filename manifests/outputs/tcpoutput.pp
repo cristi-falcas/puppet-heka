@@ -39,7 +39,7 @@
 # All of the buffering config options are set to the standard default options, except for
 # cursor_update_count, which is set to 50 instead of the standard default of 1.
 #
-# $use_buffering::                A boolean that decides if bufering is used or not
+# $use_buffering::                A boolean that decides if buffering is used or not
 #                                 Default: false
 #                                 Type: bool
 #

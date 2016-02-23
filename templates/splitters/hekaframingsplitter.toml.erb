@@ -1,4 +1,5 @@
-[<%= @name -%>]
+# This file is controlled via puppet.
+[<%= @full_name -%>]
 type = "HekaFramingSplitter"
 
 <%= scope.function_template(['heka/splitters/_splitter.toml.erb']) -%>

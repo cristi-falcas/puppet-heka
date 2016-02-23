@@ -1,4 +1,5 @@
-[<%= @name -%>]
+# This file is controlled via puppet.
+[<%= @full_name -%>]
 type = "PayloadXmlDecoder"
 
 <% if @timestamp_layout then -%>timestamp_layout = "<%= @timestamp_layout -%>"
