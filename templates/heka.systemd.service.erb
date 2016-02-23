@@ -6,9 +6,13 @@ ConditionPathExists=!/etc/heka/hekad_not_to_be_run
 [Service]
 EnvironmentFile=-/etc/default/heka
 Type=simple
-PIDFile=/var/run/hekad.pid
-ExecStart=/usr/bin/hekad -config=/etc/heka
-ExecReload=/bin/kill -HUP $MAINPID
+# HUP not implemented in heka yet
+#ExecReload=/bin/kill -HUP $MAINPID
+# http://unix.stackexchange.com/questions/263369
+ExecStart=-/usr/bin/hekad -config=/etc/heka
+ExecStartPost=/bin/sleep 3
+ExecStartPost=/bin/bash -c "[ ! -z $MAINPID ]"
+
 KillMode=process
 Restart=on-failure
 StandardError=inherit
