@@ -13,7 +13,8 @@ define heka::encoder::rstencoder (
 
   $decoder_type = 'RstEncoder'
 
-  heka::snippet { $name:
+  $full_name = "rstencoder_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/noparamsxxcoder.toml.erb"),
   }

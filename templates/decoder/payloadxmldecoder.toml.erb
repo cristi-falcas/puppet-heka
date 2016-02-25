@@ -1,5 +1,5 @@
 # This file is controlled via puppet.
-[<%= @full_name -%>]
+[<%= @name -%>]
 type = "PayloadXmlDecoder"
 
 <% if @timestamp_layout then -%>timestamp_layout = "<%= @timestamp_layout -%>"
@@ -8,21 +8,21 @@ type = "PayloadXmlDecoder"
 <% end -%>
 
 <% if @xpath_map then -%>
-[<%= @full_name -%>.xpath_map]
+[<%= @name -%>.xpath_map]
 <% @xpath_map.each do |key, value| -%>
 <%= key -%> = "<%= value -%>"
 <% end -%>
 <% end -%>
 
 <% if @severity_map then -%>
-[<%= @full_name -%>.severity_map]
+[<%= @name -%>.severity_map]
 <% @severity_map.each do |key, value| -%>
 <%= key -%> = "<%= value -%>"
 <% end -%>
 <% end -%>
 
 <% if @message_fields then -%>
-[<%= @full_name -%>.message_fields]
+[<%= @name -%>.message_fields]
 <% @message_fields.each do |key, value| -%>
 <%= key -%> = "<%= value -%>"
 <% end -%>

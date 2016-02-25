@@ -15,7 +15,8 @@ define heka::decoder::protobufdecoder (
 
   $decoder_type = 'ProtobufDecoder'
 
-  heka::snippet { $name:
+  $full_name = "protobufdecoder_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/noparamsxxcoder.toml.erb"),
   }

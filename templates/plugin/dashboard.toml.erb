@@ -1,5 +1,5 @@
 # This file is controlled via puppet.
-[<%= @full_name -%>]
+[<%= @name -%>]
 type = "DashboardOutput"
 
 <%= scope.function_template(['heka/plugin/_output.toml.erb']) %>
@@ -13,7 +13,7 @@ address = "<%= @address -%>"
 <% if @headers then -%>headers = "<%= @headers -%>"
 <% end -%>
 <% if @headers then -%>
-    [<%= @full_name -%>.headers]
+    [<%= @name -%>.headers]
 <% headers.each do |key, value| -%>
     <%= key -%> = "<%= value -%>"
 <% end -%>

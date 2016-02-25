@@ -1,4 +1,4 @@
-[<%= @full_name -%>]
+[<%= @name -%>]
 type = "<%= @sandbox_type -%>"
 
 # sandbox settings
@@ -15,7 +15,7 @@ filename = "<%= @filename -%>"
 <% if @module_directory then -%>module_directory = "<%= @module_directory -%>"
 <% end -%>
 
-<% if @config then -%>[<%= @full_name -%>.config]
+<% if @config then -%>[<%= @name -%>.config]
 <% @config.sort.each do |key, value| -%>
 <% unless [nil, :undefined, :undef].include?(value) -%><%= key -%> = '<%= value -%>'
 <% end -%>

@@ -1,6 +1,6 @@
 <% if @use_buffering then -%>
     # buffering configuration
-    [<%= @full_name -%>.buffering]
+    [<%= @name -%>.buffering]
 <% if @max_file_size then -%>
     max_file_size = <%= @max_file_size %>
 <% end -%>

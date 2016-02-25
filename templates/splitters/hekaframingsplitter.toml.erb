@@ -1,5 +1,5 @@
 # This file is controlled via puppet.
-[<%= @full_name -%>]
+[<%= @name -%>]
 type = "HekaFramingSplitter"
 
 <%= scope.function_template(['heka/splitters/_splitter.toml.erb']) -%>
@@ -7,7 +7,7 @@ skip_authentication = <%= @skip_authentication %>
 
 <% if @signer then -%>
 <% @signer.each do |key, value| -%>
-    [<%= @full_name -%>.signer.<%= key -%>]
+    [<%= @name -%>.signer.<%= key -%>]
     hmac_key = "<%= value %>"
 <% end -%>
 <% end -%>

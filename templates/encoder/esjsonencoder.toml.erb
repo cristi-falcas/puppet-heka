@@ -1,5 +1,5 @@
 # This file is controlled via puppet.
-[<%= @full_name -%>]
+[<%= @name -%>]
 type = "ESJsonEncoder"
 
 index = "<%= @index -%>"
@@ -16,7 +16,7 @@ es_index_from_timestamp = <%= @es_index_from_timestamp %>
 <% end -%>
 
 <% if @field_mappings then -%>
-[<%= @full_name -%>.field_mappings]
+[<%= @name -%>.field_mappings]
 <% @field_mappings.each do |key, value| if value -%>
 <%= key -%> = "<%= value -%>"
 <% end end -%>

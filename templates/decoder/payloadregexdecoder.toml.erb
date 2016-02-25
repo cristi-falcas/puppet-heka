@@ -1,5 +1,5 @@
 # This file is controlled via puppet.
-[<%= @full_name -%>]
+[<%= @name -%>]
 type = "PayloadRegexDecoder"
 
 match_regex = '<%= match_regex -%>'
@@ -11,14 +11,14 @@ match_regex = '<%= match_regex -%>'
 <% end -%>
 
 <% if @severity_map then -%>
-[<%= @full_name -%>.severity_map]
+[<%= @name -%>.severity_map]
 <% @severity_map.each do |key, value| -%>
 <%= key -%> = "<%= value -%>"
 <% end -%>
 <% end -%>
 
 <% if @message_fields then -%>
-[<%= @full_name -%>.message_fields]
+[<%= @name -%>.message_fields]
 <% @message_fields.each do |key, value| -%>
 <%= key -%> = "<%= value -%>"
 <% end -%>

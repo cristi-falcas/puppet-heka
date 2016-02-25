@@ -18,7 +18,8 @@ define heka::decoder::statstofieldsdecoder (
 
   $decoder_type = 'StatsToFieldsDecoder'
 
-  heka::snippet { $name:
+  $full_name = "statstofieldsdecoder_${name}"
+  heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/noparamsxxcoder.toml.erb"),
   }

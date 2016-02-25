@@ -81,7 +81,7 @@ define heka::encoder::esjsonencoder (
   validate_bool($es_index_from_timestamp)
   if $id { validate_string($id) }
 
-  $full_name = "elasticsearch_${name}"
+  $full_name = "esjsonencoder_${name}"
   heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/encoder/esjsonencoder.toml.erb"),

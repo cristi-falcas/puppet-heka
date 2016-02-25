@@ -1,6 +1,6 @@
 <% if @retries then -%>
     # retries configuration
-    [<%= @full_name -%>.retries]
+    [<%= @name -%>.retries]
 <% if @retries_max_jitter then -%>
     retries_max_jitter = "<%= @retries_max_jitter -%>"
 <% end -%>

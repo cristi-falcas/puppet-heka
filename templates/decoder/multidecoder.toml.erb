@@ -1,5 +1,5 @@
 # This file is controlled via puppet.
-[<%= @full_name -%>]
+[<%= @name -%>]
 type = "MultiDecoder"
 subs = [<%= subs.map! {|sub| "'"+sub+"'"}.join(",") -%>]
 <% unless [nil, :undefined, :undef].include?(@log_sub_errors) -%>log_sub_errors = "<%= @log_sub_errors -%>"

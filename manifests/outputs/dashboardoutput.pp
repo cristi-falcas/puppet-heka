@@ -72,7 +72,7 @@ define heka::outputs::dashboardoutput (
   if $static_directory { validate_string($static_directory) }
   if $headers { validate_hash($headers) }
 
-  $full_name = "dashboard_${name}"
+  $full_name = "dashboardoutput_${name}"
   heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/dashboard.toml.erb"),

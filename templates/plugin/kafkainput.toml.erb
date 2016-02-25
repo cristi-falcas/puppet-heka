@@ -1,5 +1,5 @@
 # This file is controlled via puppet.
-[<%= @full_name -%>]
+[<%= @name -%>]
 type = "KafkaInput"
 
 <%= scope.function_template(['heka/plugin/_input.toml.erb']) %>

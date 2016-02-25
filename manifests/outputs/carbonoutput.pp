@@ -62,7 +62,7 @@ define heka::outputs::carbonoutput (
   if $protocol { validate_re($protocol, '^(tcp|udp)$') }
   if $tcp_keep_alive { validate_bool($tcp_keep_alive) }
 
-  $full_name = "carbon_${name}"
+  $full_name = "carbonoutput_${name}"
   heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/carbonoutput.toml.erb"),

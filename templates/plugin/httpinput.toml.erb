@@ -1,5 +1,5 @@
 # This file is controlled via puppet.
-[<%= @full_name -%>]
+[<%= @name -%>]
 type = "HttpInput"
 
 <%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
@@ -25,7 +25,7 @@ type = "HttpInput"
 <% end -%>
 
 <% if @headers then -%>
-[<%= @full_name -%>.headers]
+[<%= @name -%>.headers]
 <% @headers.each do |key, value| -%>
 <%= key -%> = "<%= value -%>"
 <% end -%>

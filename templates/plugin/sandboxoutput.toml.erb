@@ -1,5 +1,5 @@
 # This file is controlled via puppet.
-[<%= @full_name -%>]
+[<%= @name -%>]
 type = "SandboxOutput"
 
 <%= scope.function_template(['heka/plugin/_output.toml.erb']) %>

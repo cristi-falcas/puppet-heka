@@ -1,5 +1,5 @@
 # This file is controlled via puppet.
-[<%= @full_name -%>]
+[<%= @name -%>]
 type = "LogstreamerInput"
 
 <%= scope.function_template(['heka/plugin/_input.toml.erb']) %>
@@ -18,7 +18,7 @@ file_match = '<%= @file_match -%>'
 <% if @differentiator then -%>differentiator = [ <%= differentiator.map {|sub| '"'+sub+'"'}.join(",") -%> ]
 <% end -%>
 <% if @translation then -%><%- Array(@translation).flatten.each do |key,value|  -%>
-[<%= @full_name -%>.translation.<%= key -%>]
+[<%= @name -%>.translation.<%= key -%>]
 <% value.each do |key2, value2| -%>
 <%= key2 -%> = "<%= value2 -%>"
 <% end -%>

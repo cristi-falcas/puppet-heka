@@ -134,7 +134,7 @@ define heka::outputs::elasticsearchoutput (
   if $tls_client_cafile { validate_string($tls_client_cafile) }
   if $tls_root_cafile { validate_string($tls_root_cafile) }
 
-  $full_name = "elasticsearch_${name}"
+  $full_name = "elasticsearchoutput_${name}"
   heka::snippet { $full_name:
     ensure  => $ensure,
     content => template("${module_name}/plugin/elasticsearchoutput.toml.erb"),
