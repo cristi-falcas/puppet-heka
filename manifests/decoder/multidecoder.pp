@@ -11,7 +11,7 @@
 # $subs::                         An ordered list of subdecoders to which the MultiDecoder will delegate.
 #                                 Each item in the list should specify another decoder configuration section
 #                                 by section name. Must contain at least one entry.
-#                                 Type: string
+#                                 Type: array
 #
 # $log_sub_errors::               If true, the DecoderRunner will log the errors returned whenever a delegate
 #                                 decoder fails to decode a message.
@@ -36,7 +36,7 @@ define heka::decoder::multidecoder (
   $cascade_strategy = undef,
 ){
   validate_re($ensure, '^(present|absent)$')
-  validate_string($subs)
+  validate_array($subs)
   validate_bool($log_sub_errors)
   if $cascade_strategy { validate_string($cascade_strategy) }
 

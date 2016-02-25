@@ -1,8 +1,8 @@
 # This file is controlled via puppet.
 [<%= @name -%>]
 type = "MultiDecoder"
-subs = [<%= subs.map! {|sub| "'"+sub+"'"}.join(",") -%>]
-<% unless [nil, :undefined, :undef].include?(@log_sub_errors) -%>log_sub_errors = "<%= @log_sub_errors -%>"
+subs = [<%= @subs.map! {|sub| "'"+sub+"'"}.join(",") -%>]
+<% unless [nil, :undefined, :undef].include?(@log_sub_errors) -%>log_sub_errors = <%= @log_sub_errors %>
 <% end -%>
 <% if @cascade_strategy then -%>cascade_strategy = "<%= @cascade_strategy -%>"
 <% end -%>
