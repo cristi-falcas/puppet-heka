@@ -16,7 +16,7 @@
 # $message_variable::             The Heka message variable containing the item to be counted.
 #                                 Type: string
 #
-# $title::                        The graph title for the cbuf output.
+# $graph_title::                        The graph title for the cbuf output.
 #                                 Default "Estimated Unique Daily message_variable"
 #                                 Type: string
 #
@@ -52,7 +52,7 @@ define heka::filter::uniqueitems (
   $module_directory     = undef,
   # Unique Items Parameters
   $message_variable,
-  $title                = undef,
+  $graph_title          = undef,
   $enable_delta         = undef,
   $preservation_version = undef
 ) {
@@ -76,7 +76,7 @@ define heka::filter::uniqueitems (
   if $module_directory { validate_string($module_directory) }
   # Unique Items Parameters
   validate_string($message_variable)
-  if $title { validate_string($title) }
+  if $graph_title { validate_string($graph_title) }
   if $enable_delta { validate_bool($enable_delta) }
   if $preservation_version { validate_integer($preservation_version) }
 
@@ -84,7 +84,7 @@ define heka::filter::uniqueitems (
   $filename = 'lua_filters/unique_items.lua'
   $config = {
     'message_variable'     => $message_variable,
-    'title'                => $title,
+    'title'                => $graph_title,
     'enable_delta'         => $enable_delta,
     'preservation_version' => $preservation_version,
   }
