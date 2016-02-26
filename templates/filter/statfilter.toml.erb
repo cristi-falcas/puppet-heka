@@ -7,10 +7,12 @@ type = "StatFilter"
 # specific settings
 <% if @stat_accum_name then -%>stat_accum_name = "<%= @stat_accum_name -%>"
 <% end -%>
-<% if @metric then -%><%- Array(@metric).flatten.each do |key,value|  -%>
+<% if @metric then -%>
+<%- Array(@metric).flatten.each do |key,value|  -%>
 [<%= @name -%>.Metric.<%= key -%>]
 <% value.each do |key2, value2| -%>
 <% unless [nil, :undefined, :undef].include?(value2) -%><%= key2 -%> = <%= value2.is_a?(String) ? '"'+value2+'"' : value2 %><% end -%>
+<% end -%>
 <% end -%>
 <% end -%>
 
