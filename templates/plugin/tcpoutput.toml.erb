@@ -15,5 +15,5 @@ keep_alive_period = <%= @keep_alive_period %>
 <% unless [nil, :undefined, :undef].include?(@use_tls) then -%>use_tls = <%= @use_tls %>
 <% end %>
 
-<%= scope.function_template(['heka/plugin/_buffering.toml.erb']) %>
+<%= scope.function_template(['heka/_buffering.toml.erb']) %>
 <%= scope.function_template(['heka/plugin/_tls.toml.erb']) %>

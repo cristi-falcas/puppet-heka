@@ -16,4 +16,4 @@ auth = "<%= @auth -%>"
 <% end -%>
 send_interval = <%= @send_interval -%>
 
-<%= scope.function_template(['heka/plugin/_buffering.toml.erb']) %>
+<%= scope.function_template(['heka/_buffering.toml.erb']) %>

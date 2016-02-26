@@ -20,7 +20,7 @@ file_match = '<%= @file_match -%>'
 <% if @translation then -%><%- Array(@translation).flatten.each do |key,value|  -%>
 [<%= @name -%>.translation.<%= key -%>]
 <% value.each do |key2, value2| -%>
-<%= key2 -%> = "<%= value2 -%>"
+<% unless [nil, :undefined, :undef].include?(value2) -%><%= key2 -%> = <%= value2.is_a?(String) ? '"'+value2+'"' : value2 %><% end -%>
 <% end -%>
 <% end -%>
 <% end -%>
