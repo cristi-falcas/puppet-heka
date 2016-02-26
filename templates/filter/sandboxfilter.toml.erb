@@ -1,0 +1,11 @@
+# This file is controlled via puppet.
+[<%= @name -%>]
+type = "SandboxFilter"
+
+# specific settings
+<% unless [nil, :undefined, :undef].include?(@timer_event_on_shutdown) then -%>timer_event_on_shutdown = "<%= @timer_event_on_shutdown -%>"
+<% end -%>
+
+<%= scope.function_template(['heka/filter/_common.toml.erb']) %>
+<%= scope.function_template(['heka/_sandbox.toml.erb']) %>
+<%= scope.function_template(['heka/_buffering.toml.erb']) %>

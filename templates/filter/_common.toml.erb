@@ -1,0 +1,11 @@
+# common filter settings
+<% if @message_matcher then -%>message_matcher = "<%= @message_matcher -%>"
+<% end -%>
+<% if @message_signer then -%>message_signer = "<%= @message_signer -%>"
+<% end -%>
+<% if @ticker_interval then -%>ticker_interval = <%= @ticker_interval %>
+<% end -%>
+<% unless [nil, :undefined, :undef].include?(@can_exit) -%>can_exit = <%= @can_exit %>
+<% end -%>
+<% unless [nil, :undefined, :undef].include?(@use_buffering) then -%>use_buffering = <%= @use_buffering -%>
+<% end -%>
