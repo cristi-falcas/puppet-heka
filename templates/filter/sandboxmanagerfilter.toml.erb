@@ -1,0 +1,20 @@
+# This file is controlled via puppet.
+[<%= @name -%>]
+type = "SandboxManagerFilter"
+
+# specific settings
+<% if @working_directory then -%>working_directory = "<%= @working_directory -%>"
+<% end -%>
+<% if @module_directory then -%>module_directory = "<%= @module_directory -%>"
+<% end -%>
+<% if @max_filters then -%>max_filters = <%= @max_filters %>
+<% end -%>
+<% if @memory_limit then -%>memory_limit = <%= @memory_limit %>
+<% end -%>
+<% if @instruction_limit then -%>instruction_limit = <%= @instruction_limit %>
+<% end -%>
+<% if @output_limit then -%>output_limit = <%= @output_limit %>
+<% end -%>
+
+<%= scope.function_template(['heka/filter/_common.toml.erb']) %>
+<%= scope.function_template(['heka/_buffering.toml.erb']) %>
