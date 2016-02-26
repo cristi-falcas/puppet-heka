@@ -51,7 +51,9 @@ define heka::filter::uniqueitems (
   $output_limit         = undef,
   $module_directory     = undef,
   # Unique Items Parameters
+  # lint:ignore:parameter_order
   $message_variable,
+  # lint:endignore
   $graph_title          = undef,
   $enable_delta         = undef,
   $preservation_version = undef
