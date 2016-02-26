@@ -1,0 +1,10 @@
+# This file is controlled via puppet.
+[<%= @name -%>]
+type = "ScribbleDecoder"
+
+<% if @message_fields then -%>
+[<%= @name -%>.message_fields]
+<% @message_fields.each do |key, value| -%>
+<%= key -%> = "<%= value -%>"
+<% end -%>
+<% end -%>
