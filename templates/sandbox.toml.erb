@@ -17,7 +17,7 @@ filename = "<%= @filename -%>"
 
 <% if @config then -%>[<%= @name -%>.config]
 <% @config.sort.each do |key, value| -%>
-<% unless [nil, :undefined, :undef].include?(value) -%><%= key -%> = '<%= value -%>'
+<% unless [nil, :undefined, :undef].include?(value) -%><%= key -%> = <%= value.is_a?(String) ? '"'+value+'"' : value %>
 <% end -%>
 <% end -%>
 <% end -%>
