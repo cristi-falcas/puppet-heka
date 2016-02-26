@@ -35,7 +35,7 @@
 #                                 Defaults to false.
 #                                 Type: bool
 #
-#### Buffering::
+### Buffering::
 # All of the buffering config options are set to the standard default options, except for
 # cursor_update_count, which is set to 50 instead of the standard default of 1.
 #
