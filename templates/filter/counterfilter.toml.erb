@@ -1,0 +1,6 @@
+# This file is controlled via puppet.
+[<%= @name -%>]
+type = "CounterFilter"
+
+<%= scope.function_template(['heka/filter/_common.toml.erb']) %>
+<%= scope.function_template(['heka/_buffering.toml.erb']) %>
