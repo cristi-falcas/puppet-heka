@@ -45,7 +45,7 @@ define heka::filter::cpustatsfilter (
   $output_limit        = undef,
   $module_directory    = undef,
   # CPU Stats Filter Parameters
-  $whitelist           = '',
+  $whitelist           = undef,
   $extras              = false,
   $percent_integer     = true,
 ) {
@@ -68,15 +68,15 @@ define heka::filter::cpustatsfilter (
   if $output_limit { validate_integer($output_limit) }
   if $module_directory { validate_string($module_directory) }
   # CPU Stats Filter Parameters
-  validate_string($whitelist)
+  if $whitelist { validate_string($whitelist) }
   validate_bool($extras, $percent_integer)
 
   $script_type = 'lua'
   $filename = 'lua_filters/procstat.lua'
   $config = {
-    'whitelist'            => $whitelist,
-    'extras'                 => $extras,
-    'percent_integer'      => $percent_integer,
+    'whitelist'       => $whitelist,
+    'extras'          => $extras,
+    'percent_integer' => $percent_integer,
   }
 
   $full_name = "cpustatsfilter_${name}"
