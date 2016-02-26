@@ -64,9 +64,11 @@ define heka::inputs::sandboxinput (
   if $output_limit { validate_integer($output_limit) }
   if $module_directory { validate_string($module_directory) }
 
+  $sandbox_type = 'SandboxInput'
+
   $full_name = "sandboxinput_${name}"
   heka::snippet { $full_name:
     ensure  => $ensure,
-    content => template("${module_name}/plugin/sandboxinput.toml.erb"),
+    content => template("${module_name}/sandbox.toml.erb"),
   }
 }
