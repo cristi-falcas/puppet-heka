@@ -13,9 +13,9 @@ file_match = '<%= @file_match -%>'
 <% end -%>
 <% if @rescan_interval then -%>rescan_interval = "<%= @rescan_interval -%>"
 <% end -%>
-<% if @priority then  %>priority = [ <%= priority.map {|sub| '"'+sub+'"'}.join(",") -%> ]
+<% if @priority then  %>priority = [ <%= @priority.map {|sub| '"'+sub+'"'}.join(",") -%> ]
 <% end -%>
-<% if @differentiator then -%>differentiator = [ <%= differentiator.map {|sub| '"'+sub+'"'}.join(",") -%> ]
+<% if @differentiator then -%>differentiator = [ <%= @differentiator.map {|sub| '"'+sub+'"'}.join(",") -%> ]
 <% end -%>
 <% if @translation then -%><%- @translation.each do |key,value|  -%>
 [<%= @name -%>.translation.<%= key -%>]
