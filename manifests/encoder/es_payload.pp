@@ -34,7 +34,7 @@ define heka::encoder::es_payload (
   $output_limit            = undef,
   $module_directory        = undef,
   # ElasticSearch Parameters
-  $index                   = 'heka-%{2006.01.02}',
+  $index                   = undef,
   $type_name               = 'message',
   $es_index_from_timestamp = false,
   $id                      = undef,

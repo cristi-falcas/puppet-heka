@@ -13,7 +13,8 @@
 #                                 'Pid', 'UUID', 'Logger', 'EnvVersion', 'Severity', a field name, or a timestamp format)
 #                                 with the use of '%{}' chars, so '%{Hostname}-%{Logger}-data' would add
 #                                 the records to an ES index called 'some.example.com-processname-data'.
-#                                 Allows to use strftime format codes. Defaults to 'heka-%{%Y.%m.%d}'.
+#                                 Allows to use strftime format codes.
+#                                 Defaults to 'heka-%{%Y.%m.%d}'.
 #                                 Type: string
 #
 # $type_name::                    Name of ES record type to create. Supports interpolation of message field values
@@ -27,17 +28,15 @@
 #                                 ElasticSearch.
 #                                 Available fields to choose are "Uuid", "Timestamp", "Type", "Logger", "Severity",
 #                                 "Payload", "EnvVersion", "Pid", "Hostname", and "DynamicFields" (where "DynamicFields" causes
-#                                 the inclusion of dynamically specified message fields, see dynamic_fields). Defaults to
-#                                 including all of the supported message fields.
+#                                 the inclusion of dynamically specified message fields, see dynamic_fields).
+#                                 Defaults to including all of the supported message fields.
 #                                 Type: []string
 #
-# $timestamp::                    Format to use for timestamps in generated ES documents. Allows to use strftime format
-#                                 codes.
+# $timestamp::                    Format to use for timestamps in generated ES documents. Allows to use strftime format codes.
 #                                 Defaults to "%Y-%m-%dT%H:%M:%S".
 #                                 Type: string
 #
-# $es_index_from_timestamp::      When generating the index name use the timestamp from the message instead of the current
-#                                 time.
+# $es_index_from_timestamp::      When generating the index name use the timestamp from the message instead of the current time.
 #                                 Defaults to false.
 #                                 Type: bool
 #
@@ -66,10 +65,10 @@
 #
 define heka::encoder::esjsonencoder (
   $ensure                  = 'present',
-  $index                   = 'heka-%{2006.01.02}',
+  $index                   = undef,
   $type_name               = 'message',
   $fields                  = undef,
-  $timestamp               = '2006-01-02T15:04:05.000Z',
+  $timestamp               = undef,
   $es_index_from_timestamp = false,
   $id                      = undef,
   $raw_bytes_fields        = undef,
@@ -79,6 +78,7 @@ define heka::encoder::esjsonencoder (
   validate_re($ensure, '^(present|absent)$')
   validate_string($index, $type_name, $timestamp)
   validate_bool($es_index_from_timestamp)
+
   if $id { validate_string($id) }
 
   $full_name = "esjsonencoder_${name}"

@@ -2,11 +2,13 @@
 [<%= @name -%>]
 type = "ESJsonEncoder"
 
-index = "<%= @index -%>"
+<% if @index then -%>index = "<%= @index -%>"
+<% end -%>
 type_name = "<%= @type_name -%>"
 <% if @fields then -%>fields = "<%= @fields -%>"
 <% end -%>
-timestamp = "<%= @timestamp -%>"
+<% if @timestamp then -%>timestamp = "<%= @timestamp -%>"
+<% end -%>
 es_index_from_timestamp = <%= @es_index_from_timestamp %>
 <% if @id then -%>id = "<%= @id -%>"
 <% end -%>

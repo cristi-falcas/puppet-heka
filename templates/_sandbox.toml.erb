@@ -13,8 +13,9 @@ filename = "<%= @filename -%>"
 <% end -%>
 
 <% if @config then -%>[<%= @name -%>.config]
+<% # We put string inside single quotes because the value may contain double quotes -%>
 <% @config.sort.each do |key, value| -%>
-<% unless [nil, :undefined, :undef].include?(value) -%><%= key -%> = <%= value.is_a?(String) ? '"'+value+'"' : value %>
+<% unless [nil, :undefined, :undef].include?(value) -%><%= key -%> = <%= value.is_a?(String) ? "'"+value+"'" : value %>
 <% end -%>
 <% end -%>
 <% end -%>
