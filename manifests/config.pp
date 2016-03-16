@@ -34,7 +34,7 @@ class heka::config {
   file { '/etc/heka':
     ensure  => directory,
     recurse => true,
-    purge   => true,
+    purge   => $heka:purge_conf_dir,
     force   => true,
   }
 

@@ -37,6 +37,8 @@
 # $share_dir::                            Root path of Heka's "share directory", where Heka will expect to find certain resources it needs to consume.
 #                                         The hekad process should have read- only access to this directory
 #
+# $purge_conf_dir::                       Purge all files from Heka's "configuration directory". Defaults to true
+#
 # $sample_denominator::                   Specifies the denominator of the sample rate Heka will use when computing the time required
 #                                         to perform certain operations, such as for the ProtobufDecoder to decode a message, or the router
 #                                         to compare a message against a message matcher. Defaults to 1000,
@@ -70,6 +72,7 @@ class heka (
   $plugin_chansize      = $heka::params::plugin_chansize,
   $base_dir             = $heka::params::base_dir,
   $share_dir            = $heka::params::share_dir,
+  $purge_conf_dir       = $heka::params::purge_conf_dir,
   $sample_denominator   = $heka::params::sample_denominator,
   $pid_file             = $heka::params::pid_file,
   $hostname             = $heka::params::hostname,
