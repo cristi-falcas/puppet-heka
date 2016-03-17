@@ -1,6 +1,5 @@
-# A RegexSplitter considers any text that matches a specified regular expression to represent a boundary on which records should be split. 
-# The regular expression may consist of exactly one capture group. If a capture group is specified, then the captured text will be included in the returned record. 
-# If not, then the returned record will not include the text that caused the regular expression match.
+# The NullSplitter is used in cases where the incoming data is already naturally divided into logical messages, such that Heka doesn’t need to do any further splitting. 
+# For instance, when used in conjunction with a UdpInput, the contents of each UDP packet will be made into a separate message.
 #
 # === Parameters:
 #
