@@ -4,8 +4,8 @@ type = "ESJsonEncoder"
 
 <% if @index then -%>index = "<%= @index -%>"
 <% end -%>
-type_name = "<%= @type_name -%>"
-<% if @fields then -%>fields = "<%= @fields -%>"
+type_name = '<%= @type_name -%>'
+<% if @fields then  %>fields = [ <%= @fields.map {|sub| '"'+sub+'"'}.join(",") -%> ]
 <% end -%>
 <% if @timestamp then -%>timestamp = "<%= @timestamp -%>"
 <% end -%>
