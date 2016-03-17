@@ -77,6 +77,7 @@ define heka::encoder::esjsonencoder (
 ) {
   validate_re($ensure, '^(present|absent)$')
   validate_string($index, $type_name, $timestamp)
+  if $fields { validate_array($fields) }
   validate_bool($es_index_from_timestamp)
 
   if $id { validate_string($id) }
