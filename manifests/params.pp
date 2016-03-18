@@ -46,6 +46,7 @@ class heka::params {
   $plugin_chansize = 30
   $base_dir = '/var/cache/hekad'
   $share_dir = '/usr/share/heka'
+  $purge_conf_dir = true
   $sample_denominator = 1000
   $pid_file = undef
   $hostname = undef
