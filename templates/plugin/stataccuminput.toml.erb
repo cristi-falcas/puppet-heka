@@ -1,0 +1,29 @@
+# This file is controlled via puppet.
+[<%= @name -%>]
+type = "StatAccumInput"
+
+# specific settings
+<% if @emit_in_payload then -%>emit_in_payload = <%= emit_in_payload %>
+<% end -%>
+<% if @emit_in_fields then -%>emit_in_fields = <%= @emit_in_fields %>
+<% end -%>
+<% if @percent_threshold then -%>percent_threshold = <%= @percent_threshold %>
+<% end -%>
+<% if @ticker_interval then -%>ticker_interval = <%= @ticker_interval %>
+<% end -%>
+<% if @message_type then -%>message_type = "<%= @message_type -%>"
+<% end -%>
+<% if @legacy_namespaces then -%>legacy_namespaces = <%= @legacy_namespaces %>
+<% end -%>
+<% if @global_prefix then -%>global_prefix = "<%= @global_prefix -%>"
+<% end -%>
+<% if @counter_prefix then -%>counter_prefix = "<%= @counter_prefix -%>"
+<% end -%>
+<% if @timer_prefix then -%>timer_prefix = "<%= @timer_prefix -%>"
+<% end -%>
+<% if @gauge_prefix then -%>gauge_prefix = "<%= @gauge_prefix -%>"
+<% end -%>
+<% if @statsd_prefix then -%>statsd_prefix = "<%= @statsd_prefix -%>"
+<% end -%>
+<% if @delete_idle_stats then -%>delete_idle_stats = <%= @delete_idle_stats %>
+<% end -%>
