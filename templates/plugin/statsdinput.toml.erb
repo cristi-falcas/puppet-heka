@@ -1,0 +1,8 @@
+# This file is controlled via puppet.
+[<%= @name -%>]
+type = "StatsdInput"
+
+# specific settings
+address = "<%= @address -%>"
+stat_accum_name = "<%= @stat_accum_name -%>"
+max_msg_size = <%= @max_msg_size %>
