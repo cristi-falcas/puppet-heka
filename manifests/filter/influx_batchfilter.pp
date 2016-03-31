@@ -27,7 +27,7 @@
 #                                 Default "6"
 #                                 Type: string
 #
-# $name_prefix::                  String to use as the name key’s prefix value in the generated line. Supports message field
+# $name_prefix::                  String to use as the name key's prefix value in the generated line. Supports message field
 #                                 interpolation. %{fieldname}. Any fieldname values of "Type", "Payload", "Hostname", "Pid",
 #                                 "Logger", "Severity", or "EnvVersion" will be extracted from the the base message schema,
 #                                 any other values will be assumed to refer to a dynamic message field. Only the first value

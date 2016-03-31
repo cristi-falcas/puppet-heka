@@ -45,7 +45,6 @@
 #                                 Default: nil
 #                                 Type: string
 #
-
 define heka::encoder::schema_carbon_lineencoder (
   $ensure                = 'present',
   # Common Sandbox Parameters

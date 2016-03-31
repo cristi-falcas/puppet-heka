@@ -21,7 +21,7 @@
 #                                 be considered a configuration error and the input won't start.
 #                                 Defaults to false.
 #
-# $percent_threshold::            Percent threshold to use for computing “upper_N%” type stat values.
+# $percent_threshold::            Percent threshold to use for computing "upper_N%" type stat values.
 #                                 Defaults to 90.
 #
 # $ticker_interval::              Time interval (in seconds) between generated output messages.

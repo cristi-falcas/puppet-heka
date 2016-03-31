@@ -16,7 +16,7 @@
 #                                 Defaults to "StatAccumInput".
 #
 # $max_msg_size::                 Size of a buffer used for message read from statsd. In some cases, when statsd
-#                                 sends a lots in single message of stats it’s required to boost this value.
+#                                 sends a lots in single message of stats it's required to boost this value.
 #                                 All over-length data will be truncated without raising an error.
 #                                 Defaults to 512.
 #
