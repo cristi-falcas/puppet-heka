@@ -116,7 +116,7 @@ define heka::outputs::kafkaoutput (
   $hash_variable                 = undef,
   $topic_variable                = undef,
   # lint:ignore:parameter_order
-  $topic,                        = undef,
+  $topic                         = undef,
   # lint:endignore
   $required_acks                 = undef,
   $timeout                       = undef,
