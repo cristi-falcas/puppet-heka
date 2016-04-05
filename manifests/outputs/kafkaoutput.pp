@@ -116,7 +116,7 @@ define heka::outputs::kafkaoutput (
   $hash_variable                 = undef,
   $topic_variable                = undef,
   # lint:ignore:parameter_order
-  $topic,
+  $topic                         = undef,
   # lint:endignore
   $required_acks                 = undef,
   $timeout                       = undef,
@@ -150,7 +150,7 @@ define heka::outputs::kafkaoutput (
   if $partitioner { validate_string($partitioner) }
   if $hash_variable { validate_string($hash_variable) }
   if $topic_variable { validate_string($topic_variable) }
-  validate_string($topic)
+  if $topic { validate_string($topic) }
   if $required_acks { validate_string($required_acks) }
   if $timeout { validate_integer($timeout) }
   if $compression_codec { validate_string($compression_codec) }

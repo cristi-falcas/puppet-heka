@@ -28,7 +28,8 @@ addrs=[ <%= addrs.map {|sub| '"'+sub+'"'}.join(",") -%> ]
 <% end -%>
 <% if @topic_variable then -%>topic_variable = "<%= @topic_variable -%>"
 <% end -%>
-topic = "<%= @topic -%>"
+<% if @topic then -%>topic = "<%= @topic -%>"
+<% end -%>
 <% if @required_acks then -%>required_acks = "<%= @required_acks -%>"
 <% end -%>
 <% if @timeout then -%>timeout = <%= @timeout %>
