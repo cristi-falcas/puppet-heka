@@ -1,6 +1,6 @@
 {
   "name": "cristifalcas-heka",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "Falcas Cristian",
   "summary": "Installs and configures heka",
   "license": "Apache-2.0",
