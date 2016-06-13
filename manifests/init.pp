@@ -60,26 +60,29 @@
 #
 # $logrotate::                            Enable logrotating the heka log.
 #
+# $journald_forward_enable::              Enable the usage of the forward-journald binary to stand between heka and journald  (only for RHEL7).
+#                                         Default: false
 class heka (
-  $package_ensure       = $heka::params::package_ensure,
-  $max_message_loops    = $heka::params::max_message_loops,
-  $max_process_inject   = $heka::params::max_process_inject,
-  $max_process_duration = $heka::params::max_process_duration,
-  $max_timer_inject     = $heka::params::max_timer_inject,
-  $max_pack_idle        = $heka::params::max_pack_idle,
-  $maxprocs             = $heka::params::maxprocs,
-  $poolsize             = $heka::params::poolsize,
-  $plugin_chansize      = $heka::params::plugin_chansize,
-  $base_dir             = $heka::params::base_dir,
-  $share_dir            = $heka::params::share_dir,
-  $purge_conf_dir       = $heka::params::purge_conf_dir,
-  $sample_denominator   = $heka::params::sample_denominator,
-  $pid_file             = $heka::params::pid_file,
-  $hostname             = $heka::params::hostname,
-  $max_message_size     = $heka::params::max_message_size,
-  $cpuprof              = $heka::params::cpuprof,
-  $memprof              = $heka::params::memprof,
-  $logrotate            = $heka::params::logrotate,
+  $package_ensure          = $heka::params::package_ensure,
+  $max_message_loops       = $heka::params::max_message_loops,
+  $max_process_inject      = $heka::params::max_process_inject,
+  $max_process_duration    = $heka::params::max_process_duration,
+  $max_timer_inject        = $heka::params::max_timer_inject,
+  $max_pack_idle           = $heka::params::max_pack_idle,
+  $maxprocs                = $heka::params::maxprocs,
+  $poolsize                = $heka::params::poolsize,
+  $plugin_chansize         = $heka::params::plugin_chansize,
+  $base_dir                = $heka::params::base_dir,
+  $share_dir               = $heka::params::share_dir,
+  $purge_conf_dir          = $heka::params::purge_conf_dir,
+  $sample_denominator      = $heka::params::sample_denominator,
+  $pid_file                = $heka::params::pid_file,
+  $hostname                = $heka::params::hostname,
+  $max_message_size        = $heka::params::max_message_size,
+  $cpuprof                 = $heka::params::cpuprof,
+  $memprof                 = $heka::params::memprof,
+  $logrotate               = $heka::params::logrotate,
+  $journald_forward_enable = $heka::params::journald_forward_enable,
 ) inherits heka::params {
   contain heka::install
   contain heka::config

@@ -52,4 +52,6 @@ class heka::params {
   $hostname = undef
   $max_message_size = 65536
   $logrotate = true
+
+  $journald_forward_enable = false
 }

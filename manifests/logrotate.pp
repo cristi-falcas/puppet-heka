@@ -17,6 +17,7 @@ class heka::logrotate ($log_file = '/var/log/hekad.log') {
       size         => '100k',
       postrotate   => '/sbin/service heka restart',
       compress     => true,
+      missingok    => true,
     }
   }
 }

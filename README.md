@@ -28,7 +28,24 @@ it?"
 If your module has a range of functionality (installation, configuration,
 management, etc.) this is the time to mention it.
 
+## Journald forward:
+
+The class support a parameter called journald_forward_enable.
+
+This was added because of the PIPE signal that is sent to go programs when systemd-journald dies.
+
+For more information read here: https://github.com/projectatomic/forward-journald
+
+### Usage:
+
+	  include ::forward_journald
+	  Class['forward_journald'] -> Class['heka']
+
 ## Setup
+
+You should have a repository added containing the following packages:
+- heka (main heka binary)
+- docker-forward-journald (if $forward_journald_on = true )
 
 ### Beginning with heka
 

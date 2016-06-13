@@ -1,0 +1,4 @@
+[<%= @name -%>]
+type = "<%= @sandbox_type -%>"
+
+<%= scope.function_template(['heka/_sandbox.toml.erb']) %>
