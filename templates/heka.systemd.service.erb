@@ -13,13 +13,13 @@ Type=simple
 ExecStart=-/bin/sh -c '/usr/bin/hekad -config=/etc/heka 2>&1 | /usr/bin/forward-journald -tag heka'
 StandardOutput=null
 StandardError=null
+KillMode=control-group
 <% else -%>
 ExecStart=-/usr/bin/hekad -config=/etc/heka
+KillMode=process
 <% end -%>
 ExecStartPost=/bin/sleep 3
 ExecStartPost=/bin/bash -c "[ ! -z $MAINPID ]"
-
-KillMode=process
 Restart=on-failure
 StandardError=inherit
 
