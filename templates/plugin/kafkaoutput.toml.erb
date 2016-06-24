@@ -7,7 +7,7 @@ type = "KafkaOutput"
 # specific settings
 <% if @id then -%>id = "<%= @id -%>"
 <% end -%>
-addrs=[ <%= addrs.map {|sub| '"'+sub+'"'}.join(",") -%> ]
+addrs=[ <%= @addrs.map {|sub| '"'+sub+'"'}.join(",") -%> ]
 <% if @metadata_retries then -%>metadata_retries = <%= @metadata_retries %>
 <% end -%>
 <% if @wait_for_election then -%>wait_for_election = <%= @wait_for_election %>
