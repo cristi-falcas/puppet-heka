@@ -84,9 +84,9 @@ class heka (
   $logrotate               = $heka::params::logrotate,
   $journald_forward_enable = $heka::params::journald_forward_enable,
 ) inherits heka::params {
-  contain ::heka::install
-  contain ::heka::config
-  contain ::heka::service
+  contain '::heka::install'
+  contain '::heka::config'
+  contain '::heka::service'
 
   Class['heka::install'] ->
   Class['heka::config'] ~>
