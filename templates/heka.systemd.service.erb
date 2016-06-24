@@ -9,7 +9,7 @@ Type=simple
 # HUP not implemented in heka yet
 #ExecReload=/bin/kill -HUP $MAINPID
 # http://unix.stackexchange.com/questions/263369
-<% unless [nil, :undefined, :undef, ''].include?(scope['heka::journald_forward_enable']) -%>
+<% unless [false, nil, :undefined, :undef, ''].include?(scope['heka::journald_forward_enable']) -%>
 ExecStart=-/bin/sh -c '/usr/bin/hekad -config=/etc/heka 2>&1 | /usr/bin/forward-journald -tag heka'
 StandardOutput=null
 StandardError=null
