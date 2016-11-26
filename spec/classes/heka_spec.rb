@@ -12,9 +12,9 @@ describe 'heka' do
           it { is_expected.to compile.with_all_deps }
 
           it { is_expected.to contain_class('heka::params') }
-          it { is_expected.to contain_class('heka::install').that_comes_before('heka::config') }
+          it { is_expected.to contain_class('heka::install').that_comes_before('Class[heka::config]') }
           it { is_expected.to contain_class('heka::config') }
-          it { is_expected.to contain_class('heka::service').that_subscribes_to('heka::config') }
+          it { is_expected.to contain_class('heka::service').that_subscribes_to('Class[heka::config]') }
 
           it { is_expected.to contain_service('heka') }
           it { is_expected.to contain_package('heka').with_ensure('installed') }
