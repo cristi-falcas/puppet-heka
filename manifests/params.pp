@@ -8,6 +8,7 @@ class heka::params {
       } else {
         $service_provider = 'init'
         $service_template = 'heka.init.redhat.erb'
+        $service_cmd_path = '/sbin/service'
       }
     }
     'Debian': {
@@ -17,6 +18,7 @@ class heka::params {
       } else {
         $service_provider = 'init'
         $service_template = 'heka.init.debian.erb'
+        $service_cmd_path = '/usr/sbin/service'
       }
     }
     'Ubuntu': {
@@ -26,6 +28,7 @@ class heka::params {
       } else {
         $service_provider = 'init'
         $service_template = 'heka.init.debian.erb'
+        $service_cmd_path = '/usr/sbin/service'
       }
     }
     default: {

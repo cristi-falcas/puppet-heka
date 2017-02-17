@@ -82,6 +82,9 @@ class heka (
   $cpuprof                 = $heka::params::cpuprof,
   $memprof                 = $heka::params::memprof,
   $logrotate               = $heka::params::logrotate,
+  $service_provider        = $heka::params::service_provider,
+  $service_template        = $heka::params::service_template,
+  $service_cmd_path        = $heka::params::service_cmd_path,
   $journald_forward_enable = $heka::params::journald_forward_enable,
 ) inherits heka::params {
   contain '::heka::install'
