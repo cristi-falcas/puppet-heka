@@ -1,7 +1,7 @@
 fixtures:
   forge_modules:
     stdlib: "puppetlabs/stdlib"
-    logrotate: "yo61/logrotate"
+    logrotate: "puppet/logrotate"
   symlinks:
     heka: "#{source_dir}"
 
